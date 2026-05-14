@@ -1,0 +1,34 @@
+{
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/.svelte-kit": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/__screenshots__": true,
+    "**/.vitest-attachments": true
+  },
+  "search.exclude": {
+    "**/dist": true,
+    "**/build": true,
+    "**/.svelte-kit": true,
+    "**/node_modules": true,
+    "**/_/**": true,
+    "**/.git/**": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules": true,
+    "**/.svelte-kit": true,
+    "**/_": true
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "[svelte]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter @shardsui/svelte build && pnpm --filter docs dev",
+    "dev:watch": "pnpm --filter @shardsui/svelte build && pnpm --filter \"@shardsui/svelte\" --filter docs --parallel run dev",
+    "build": "pnpm --filter @shardsui/svelte build && pnpm --filter docs build",
+    "preview": "pnpm --filter docs preview",
+    "check": "pnpm --filter @shardsui/svelte build && pnpm --filter @shardsui/svelte check && pnpm --filter docs check",
+    "test": "pnpm --filter @shardsui/svelte test",
+    "test:jsdom": "pnpm --filter @shardsui/svelte test:jsdom",
+    "test:chromium": "pnpm --filter @shardsui/svelte test:chromium",
+    "test:firefox": "pnpm --filter @shardsui/svelte test:firefox",
+    "test:webkit": "pnpm --filter @shardsui/svelte test:webkit",
+    "lint": "oxfmt --check .",
+    "format": "oxfmt .",
+    "test:package": "pnpm --filter @shardsui/svelte test:package",
+    "test:package:types": "pnpm --filter @shardsui/svelte test:package:types"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.63.0",
+    "typescript": "catalog:dev"
+  }
+}

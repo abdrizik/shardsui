@@ -1,0 +1,13 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "singleQuote": true,
+  "trailingComma": "none",
+  "semi": false,
+  "printWidth": 100,
+  "sortPackageJson": false,
+  "sortTailwindcss": {
+    "stylesheet": "./docs/src/lib/styles/main.css"
+  },
+  "svelte": {},
+  "ignorePatterns": ["pnpm-lock.yaml", "docs/static/", "CLAUDE.md"]
+}
