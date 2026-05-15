@@ -1,0 +1,33 @@
+{
+  "name": "docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "prepare": "svelte-kit sync || echo ''",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
+  },
+  "dependencies": {
+    "@shardsui/svelte": "workspace:*",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@comark/svelte": "^0.6.2",
+    "@shikijs/themes": "^4.4.3",
+    "@shikijs/transformers": "^4.4.3",
+    "@sveltejs/adapter-auto": "^7.0.1",
+    "@sveltejs/kit": "catalog:dev",
+    "@sveltejs/vite-plugin-svelte": "catalog:dev",
+    "@tailwindcss/vite": "^4.3.3",
+    "comark": "^0.6.2",
+    "gsap": "^3.15.0",
+    "shiki": "^4.4.3",
+    "svelte": "catalog:dev",
+    "svelte-check": "catalog:dev",
+    "tailwindcss": "^4.3.3",
+    "typescript": "catalog:dev",
+    "vite": "catalog:dev"
+  }
+}
