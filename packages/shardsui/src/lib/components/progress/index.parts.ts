@@ -1,0 +1,5 @@
+export { default as Indicator } from './progress-indicator.svelte'
+export { default as Label } from './progress-label.svelte'
+export { default as Root } from './progress-root.svelte'
+export { default as Track } from './progress-track.svelte'
+export { default as Value } from './progress-value.svelte'
