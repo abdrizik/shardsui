@@ -1,0 +1,5 @@
+export { default as Indicator } from './tabs-indicator.svelte'
+export { default as List } from './tabs-list.svelte'
+export { default as Panel } from './tabs-panel.svelte'
+export { default as Root } from './tabs-root.svelte'
+export { default as Tab } from './tabs-tab.svelte'
