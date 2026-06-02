@@ -1,0 +1,6 @@
+export { default as Content } from './scroll-area-content.svelte'
+export { default as Corner } from './scroll-area-corner.svelte'
+export { default as Root } from './scroll-area-root.svelte'
+export { default as Scrollbar } from './scroll-area-scrollbar.svelte'
+export { default as Thumb } from './scroll-area-thumb.svelte'
+export { default as Viewport } from './scroll-area-viewport.svelte'
