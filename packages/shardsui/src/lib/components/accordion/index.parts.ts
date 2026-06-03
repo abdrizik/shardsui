@@ -1,0 +1,5 @@
+export { default as Header } from './accordion-header.svelte'
+export { default as Item } from './accordion-item.svelte'
+export { default as Panel } from './accordion-panel.svelte'
+export { default as Root } from './accordion-root.svelte'
+export { default as Trigger } from './accordion-trigger.svelte'
