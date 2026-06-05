@@ -1,0 +1,8 @@
+export const DRAWER_SWIPE_MOVEMENT_X_VAR = '--drawer-swipe-movement-x'
+export const DRAWER_SWIPE_MOVEMENT_Y_VAR = '--drawer-swipe-movement-y'
+export const DRAWER_HEIGHT_VAR = '--drawer-height'
+export const DRAWER_SWIPE_PROGRESS_VAR = '--drawer-swipe-progress'
+export const DRAWER_SWIPING_ATTR = 'data-swiping'
+export const DRAWER_CONTENT_SELECTOR = '[data-drawer-content]'
+export const DRAWER_SNAP_POINT_OFFSET_VAR = '--drawer-snap-point-offset'
+export const DRAWER_SWIPE_STRENGTH_VAR = '--drawer-swipe-strength'
