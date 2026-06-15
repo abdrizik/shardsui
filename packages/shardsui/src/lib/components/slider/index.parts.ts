@@ -1,0 +1,7 @@
+export { default as Control } from './slider-control.svelte'
+export { default as Indicator } from './slider-indicator.svelte'
+export { default as Label } from './slider-label.svelte'
+export { default as Root } from './slider-root.svelte'
+export { default as Thumb } from './slider-thumb.svelte'
+export { default as Track } from './slider-track.svelte'
+export { default as Value } from './slider-value.svelte'
