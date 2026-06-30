@@ -1,0 +1,17 @@
+<script lang="ts">
+  import { Select } from '$lib/components/select'
+
+  let {
+    value = $bindable<unknown>(undefined),
+    items = undefined
+  }: {
+    value?: unknown
+    items?: readonly unknown[] | Record<string, unknown> | undefined
+  } = $props()
+</script>
+
+<Select.Root multiple value={value as never} items={items as never}>
+  <Select.Trigger>
+    <Select.Value data-testid="value" />
+  </Select.Trigger>
+</Select.Root>
