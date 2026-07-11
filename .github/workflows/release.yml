@@ -1,0 +1,62 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: pnpm
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter @shardsui/svelte exec playwright install --with-deps chromium
+
+      - id: meta
+        shell: bash
+        run: |
+          version=$(node -p "require('./packages/shardsui/package.json').version")
+
+          if [ "$GITHUB_REF_TYPE" = tag ] && [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::tag $GITHUB_REF_NAME does not match package version $version"
+            exit 1
+          fi
+
+          case "$version" in
+            *-*) prerelease=${version#*-}; dist_tag=${prerelease%%.*} ;;
+            *)   dist_tag=latest ;;
+          esac
+
+          echo "tag=$dist_tag" >> "$GITHUB_OUTPUT"
+          echo "Publishing $version to dist-tag $dist_tag"
+
+      - run: pnpm lint
+
+      - run: pnpm check
+
+      - run: pnpm test
+
+      - run: pnpm test:chromium
+
+      - run: pnpm test:package
+
+      - run: pnpm --filter @shardsui/svelte publish --no-git-checks --provenance --tag ${{ steps.meta.outputs.tag }}

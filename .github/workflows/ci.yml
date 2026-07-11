@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '*.md'
+      - LICENSE
+      - .vscode/**
+      - .claude/**
+      - _/**
+  pull_request:
+    paths-ignore:
+      - '*.md'
+      - LICENSE
+      - .vscode/**
+      - .claude/**
+      - _/**
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        task:
+          [
+            lint,
+            check,
+            test,
+            test:chromium,
+            test:firefox,
+            test:webkit,
+            test:package,
+            test:package:types,
+            build
+          ]
+        include:
+          - task: test:chromium
+            browser: chromium
+          - task: test:firefox
+            browser: firefox
+          - task: test:webkit
+            browser: webkit
+    name: ${{ matrix.task }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - if: matrix.browser
+        run: pnpm --filter @shardsui/svelte exec playwright install --with-deps ${{ matrix.browser }}
+
+      - run: pnpm ${{ matrix.task }}
+        continue-on-error: ${{ matrix.task == 'test:package:types' }}
