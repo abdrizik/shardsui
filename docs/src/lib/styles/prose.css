@@ -1,0 +1,252 @@
+.prose {
+  --prose-flow: calc(var(--spacing) * 4);
+  --prose-muted: var(--color-gray-700);
+  --prose-rule: var(--color-border);
+
+  font-size: var(--text-base);
+  line-height: 1.6;
+  isolation: isolate;
+  margin-trim: block-start;
+
+  *:not(:where(.not-prose, .not-prose *)) {
+    &:where(p) {
+      max-inline-size: 65ch;
+      margin-block-start: var(--prose-flow);
+    }
+
+    &:where(h1, h2, h3, h4, h5, h6) {
+      font-weight: var(--font-weight-medium);
+      text-wrap: balance;
+      text-box: trim-both cap alphabetic;
+    }
+
+    &:where(h1) {
+      margin-block-start: var(--prose-flow);
+      font-size: var(--text-2xl);
+      line-height: 1.2;
+    }
+
+    &:where(h2) {
+      margin-block-start: calc(var(--prose-flow) * 3);
+      font-size: var(--text-lg);
+      line-height: 1.25;
+    }
+
+    &:where(h3) {
+      margin-block-start: calc(var(--prose-flow) * 2);
+      font-size: var(--text-base);
+      line-height: 1.4;
+    }
+
+    &:where(h4, h5, h6) {
+      margin-block-start: calc(var(--prose-flow) * 2);
+    }
+
+    &:where([id]) {
+      scroll-margin-block-start: 3lh;
+    }
+
+    /* Headings own the space below them. */
+    &:where(h1 + *, h2 + *, h3 + *, h4 + *, h5 + *, h6 + *) {
+      margin-block-start: var(--prose-flow);
+    }
+
+    /* Standfirst under the page title. */
+    &:where(h1 + p) {
+      margin-block-start: calc(var(--spacing) * 3);
+      font-size: var(--text-lg);
+      line-height: 1.5;
+      color: var(--prose-muted);
+      text-wrap: pretty;
+    }
+
+    &:where(a) {
+      font-weight: var(--font-weight-medium);
+      text-decoration-line: underline;
+      text-decoration-thickness: from-font;
+      text-decoration-color: color-mix(in oklab, currentColor 30%, transparent);
+      text-decoration-skip-ink: auto;
+      text-underline-position: from-font;
+      text-underline-offset: 0.16em;
+    }
+
+    &:where(a:has(code)) {
+      text-decoration-color: var(--color-blue-800);
+    }
+
+    &:where(a:focus-visible) {
+      outline: 2px solid currentColor;
+      outline-offset: calc(var(--spacing) * 0.5);
+      border-radius: var(--radius-sm);
+    }
+
+    &:where(:is(h1, h2, h3, h4, h5, h6) a) {
+      font-weight: inherit;
+    }
+
+    &:where(strong) {
+      font-weight: var(--font-weight-medium);
+      color: var(--color-foreground);
+    }
+
+    &:where(em) {
+      font-family: var(--font-serif);
+      font-size: 1.06em;
+    }
+
+    &:where(kbd) {
+      font-family: inherit;
+      font-size: 0.85em;
+      font-weight: var(--font-weight-medium);
+      border: 1px solid var(--prose-rule);
+      border-block-end-width: 2px;
+      border-radius: var(--radius-sm);
+      padding: 0.0625em 0.35em;
+    }
+
+    &:where(:not(pre) > code) {
+      font-family: var(--font-mono);
+      font-size: var(--text-code);
+      border-radius: var(--radius-md);
+      background-color: var(--color-code-surface);
+      color: var(--color-code);
+      padding: calc(var(--spacing) * 0.8) calc(var(--spacing) * 1.2);
+    }
+
+    /* Inside a link the blue underline is the affordance; emerald text would fight it. */
+    &:where(a code) {
+      background-color: color-mix(in oklab, currentColor 8%, transparent);
+      color: var(--prose-muted);
+    }
+
+    &:where(:is(p, li) code) {
+      letter-spacing: calc(var(--tracking-tight) * 0.4);
+      word-spacing: calc(var(--spacing) * -0.8);
+      line-height: normal;
+    }
+
+    &:where(blockquote) {
+      margin-block-start: calc(var(--spacing) * 6);
+      padding-inline-start: calc(var(--spacing) * 4);
+      border-inline-start: 2px solid var(--prose-rule);
+      color: var(--prose-muted);
+    }
+
+    &:where(hr) {
+      margin-block-start: calc(var(--prose-flow) * 3);
+      border-block-start: var(--border-hairline) solid var(--prose-rule);
+    }
+
+    &:where(hr + :is(h1, h2, h3, h4)) {
+      margin-block-start: var(--prose-flow);
+    }
+
+    &:where(img) {
+      margin-block-start: calc(var(--spacing) * 6);
+      border-radius: var(--radius-xl);
+      outline: 1px solid var(--color-image-outline);
+      outline-offset: -1px;
+    }
+
+    &:where(ul) {
+      list-style-type: disc;
+    }
+
+    &:where(ol) {
+      list-style-type: decimal;
+    }
+
+    &:where(ul ul) {
+      list-style-type: circle;
+    }
+
+    &:where(ul ul ul) {
+      list-style-type: square;
+    }
+
+    &:where(ul, ol) {
+      margin-block-start: var(--prose-flow);
+      padding-inline-start: calc(var(--spacing) * 4.5);
+    }
+
+    &:where(ol) {
+      padding-inline-start: calc(var(--spacing) * 7);
+    }
+
+    &:where(li) {
+      margin-block-start: calc(var(--spacing) * 0.5);
+      padding-inline-start: calc(var(--spacing) * 0.4);
+    }
+
+    &:where(li > :is(p, ul, ol)) {
+      margin-block-start: calc(var(--spacing) * 0.5);
+    }
+
+    &:where(:is(ul, ol) > li)::marker {
+      color: var(--color-gray-500);
+    }
+
+    &:where(.table-scroll) {
+      margin-block-start: calc(var(--spacing) * 6);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+    }
+
+    &:where(.table-scroll > *) {
+      margin-block-start: 0;
+    }
+
+    &:where(table) {
+      inline-size: 100%;
+      font-size: var(--text-sm);
+      line-height: 1.5;
+      font-variant-numeric: tabular-nums;
+      color: var(--prose-muted);
+    }
+
+    &:where(th, td) {
+      vertical-align: middle;
+      text-align: start;
+      padding: calc(var(--spacing) * 2) calc(var(--spacing) * 4);
+      white-space: nowrap;
+    }
+
+    &:where(th) {
+      font-weight: var(--font-weight-medium);
+      color: var(--color-foreground);
+    }
+
+    &:where(tr:not(:last-child)) {
+      border-block-end: var(--border-hairline) solid var(--prose-rule);
+    }
+
+    &:where(:is(th, td):first-child) {
+      padding-inline-start: 0;
+    }
+
+    &:where(:is(th, td):last-child) {
+      padding-inline-end: 0;
+    }
+  }
+
+  @media (hover: hover) {
+    *:not(:where(.not-prose, .not-prose *)):where(a:hover) {
+      text-decoration-color: currentColor;
+    }
+  }
+
+  @media (forced-colors: active) {
+    *:not(:where(.not-prose, .not-prose *)):where(:not(pre) > code) {
+      border: 1px solid;
+    }
+  }
+
+  /* First child adds no space above. Last so it wins ties. */
+  > :where(:first-child):not(:where(.not-prose, .not-prose *)),
+  > :where(:first-child) > :where(:first-child):not(:where(.not-prose, .not-prose *)),
+  :where(li > :first-child, blockquote > :first-child, td > :first-child, th > :first-child):not(
+    :where(.not-prose, .not-prose *)
+  ) {
+    margin-block-start: 0;
+  }
+}

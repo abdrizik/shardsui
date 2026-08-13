@@ -1,0 +1,75 @@
+@import 'tailwindcss';
+@import './theme.css';
+@import './animation.css';
+@import './prose.css';
+@import './shiki.css';
+
+@layer base {
+  @media only screen and (min-resolution: 2dppx), only screen and (min-resolution: 192dpi) {
+    :root {
+      --border-hairline: 0.5px;
+    }
+  }
+
+  .thin-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-gray-500) transparent;
+
+    &::-webkit-scrollbar {
+      block-size: calc(var(--spacing) * 2);
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border: 2px solid transparent;
+      border-radius: var(--radius-sm);
+      background-color: var(--color-gray-500);
+      background-clip: padding-box;
+
+      &:hover {
+        background-color: var(--color-gray-600);
+      }
+    }
+  }
+
+  :root::selection {
+    background-color: var(--color-selection);
+  }
+
+  html {
+    overflow-wrap: break-word;
+    color-scheme: light dark;
+  }
+
+  body {
+    isolation: isolate;
+    position: relative;
+    min-inline-size: 20rem;
+    font-synthesis: none;
+    font-variant-numeric: slashed-zero;
+    font-feature-settings: 'ss02' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-y: scroll;
+    background-color: var(--color-content);
+    color: var(--color-foreground);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --elevation-raised: 0 0 0 1px oklch(1 0 0 / 0.09);
+
+      --shadow-2xs: 0 0 0 1px oklch(1 0 0 / 0.06);
+      --shadow-xs: 0 0 0 1px oklch(1 0 0 / 0.07);
+      --shadow-sm: 0 0 0 1px oklch(1 0 0 / 0.08);
+      --shadow: 0 0 0 1px oklch(1 0 0 / 0.09);
+      --shadow-md: 0 0 0 1px oklch(1 0 0 / 0.1);
+      --shadow-lg: 0 0 0 1px oklch(1 0 0 / 0.11);
+      --shadow-xl: 0 0 0 1px oklch(1 0 0 / 0.12);
+      --shadow-2xl: 0 0 0 1px oklch(1 0 0 / 0.14);
+    }
+  }
+}

@@ -1,0 +1,56 @@
+@theme {
+  --color-gray-50: light-dark(oklch(1 0 0), oklch(0.17 0.004 260));
+  --color-gray-100: light-dark(oklch(0.967 0.003 260), oklch(0.26 0.005 260));
+  --color-gray-200: light-dark(oklch(0.928 0.005 260), oklch(0.32 0.006 260));
+  --color-gray-300: light-dark(oklch(0.87 0.007 260), oklch(0.4 0.007 260));
+  --color-gray-400: light-dark(oklch(0.72 0.009 260), oklch(0.52 0.009 260));
+  --color-gray-500: light-dark(oklch(0.58 0.01 260), oklch(0.64 0.01 260));
+  --color-gray-600: light-dark(oklch(0.48 0.01 260), oklch(0.74 0.009 260));
+  --color-gray-700: light-dark(oklch(0.4 0.009 260), oklch(0.84 0.007 260));
+  --color-gray-800: light-dark(oklch(0.32 0.007 260), oklch(0.9 0.005 260));
+  --color-gray-900: light-dark(oklch(0.26 0.005 260), oklch(0.94 0.003 260));
+  --color-gray-950: light-dark(oklch(0.2 0.004 260), oklch(1 0 0));
+
+  --text-code: 0.8125rem;
+  --text-code--line-height: 1.25rem;
+
+  --color-content: var(--color-gray-50);
+  --color-foreground: var(--color-gray-900);
+  --color-border: var(--color-gray-300);
+
+  --color-selection: light-dark(
+    var(--color-yellow-200),
+    color-mix(in oklab, var(--color-violet-300) 25%, transparent)
+  );
+
+  --color-selection-code: color-mix(in oklab, var(--color-gray-400) 45%, transparent);
+
+  --color-code: light-dark(var(--color-mist-700), var(--color-mist-400));
+  --color-code-surface: light-dark(var(--color-mist-100), var(--color-mist-950));
+
+  --color-line-highlight: light-dark(oklch(0.682 0.178 247 / 0.18), oklch(0.682 0.178 247 / 0.3));
+  --color-line-highlight-strong: light-dark(
+    oklch(0.682 0.178 247 / 0.3),
+    oklch(0.682 0.178 247 / 0.45)
+  );
+
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-serif: Georgia, 'Times New Roman', Times, serif;
+
+  --width-site: 82rem;
+  --width-rail: 25rem;
+
+  --radius-full: calc(infinity * 1px);
+
+  --color-blue-800: light-dark(oklch(0.524 0.171 255), oklch(0.805 0.108 255));
+
+  --tracking-tight: -0.025em;
+  --tracking-wide: 0.025em;
+
+  --border-hairline: 1px;
+  --color-image-outline: light-dark(oklch(0 0 0 / 0.1), oklch(1 0 0 / 0.1));
+  --elevation-raised:
+    0 0 0 1px oklch(0 0 0 / 0.05), 0 1px 3px oklch(0 0 0 / 0.05),
+    0 4px 10px -4px oklch(0 0 0 / 0.05);
+}

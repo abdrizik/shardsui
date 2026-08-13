@@ -1,0 +1,39 @@
+.code-block-root pre code .line.highlighted {
+  background-color: var(--color-line-highlight);
+}
+
+.code-block-root pre code .highlighted-word {
+  display: inline-flex;
+  background-color: var(--color-line-highlight);
+  color: var(--color-blue-800);
+}
+
+.code-block-root pre code .highlighted-word * {
+  color: var(--color-blue-800);
+}
+
+.code-block-root pre code .line.highlighted .highlighted-word {
+  background-color: var(--color-line-highlight-strong);
+}
+
+.shiki::selection {
+  background-color: var(--color-selection-code);
+}
+
+.shiki,
+.shiki span {
+  color: var(--shiki-light);
+  font-style: var(--shiki-light-font-style);
+  font-weight: var(--shiki-light-font-weight);
+  text-decoration: var(--shiki-light-text-decoration);
+}
+
+@media (prefers-color-scheme: dark) {
+  .shiki,
+  .shiki span {
+    color: var(--shiki-dark) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
+}
