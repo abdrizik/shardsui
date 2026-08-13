@@ -18,7 +18,7 @@
 <Accordion.Root class="flex w-full max-w-80 flex-col text-gray-900">
   {#each faqs as faq (faq.question)}
     <Accordion.Item class="border-b border-gray-200">
-      <Accordion.Header>
+      <Accordion.Header as="h2">
         <Accordion.Trigger
           class="group relative flex w-full items-center justify-between gap-4 bg-gray-50 px-3 py-2 text-left text-sm font-normal focus-visible:z-1 focus-visible:outline-2 focus-visible:outline-gray-950"
         >

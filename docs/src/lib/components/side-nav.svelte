@@ -175,7 +175,7 @@
     display: inline-flex;
     padding-block: var(--side-nav-item-padding-y);
     font-weight: var(--font-weight-normal);
-    color: var(--color-gray-500);
+    color: var(--color-gray-700);
   }
 
   .side-nav-item {
