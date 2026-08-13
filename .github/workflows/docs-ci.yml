@@ -1,0 +1,40 @@
+name: Docs CI
+
+on:
+  push:
+    branches: [main]
+    paths: ['docs/**', '.github/workflows/docs-ci.yml']
+  pull_request:
+    paths: ['docs/**', '.github/workflows/docs-ci.yml']
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm lint
+
+      - run: pnpm --filter @shardsui/svelte build
+
+      - run: pnpm --filter docs check
+
+      - run: pnpm --filter docs build
