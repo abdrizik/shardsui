@@ -1,0 +1,10 @@
+{
+  "name": "shardsui-docs",
+  "main": ".svelte-kit/cloudflare/_worker.js",
+  "compatibility_flags": ["nodejs_als"],
+  "compatibility_date": "2026-08-13",
+  "assets": {
+    "binding": "ASSETS",
+    "directory": ".svelte-kit/cloudflare"
+  }
+}

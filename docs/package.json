@@ -17,7 +17,7 @@
     "@comark/svelte": "^0.6.2",
     "@shikijs/themes": "^4.4.3",
     "@shikijs/transformers": "^4.4.3",
-    "@sveltejs/adapter-auto": "^7.0.1",
+    "@sveltejs/adapter-cloudflare": "^7.2.9",
     "@sveltejs/kit": "catalog:dev",
     "@sveltejs/vite-plugin-svelte": "catalog:dev",
     "@tailwindcss/vite": "^4.3.3",

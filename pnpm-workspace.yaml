@@ -2,6 +2,10 @@ packages:
   - packages/*
   - docs
 
+allowBuilds:
+  esbuild: true
+  workerd: true
+
 catalogs:
   dev:
     '@sveltejs/kit': ^2.70.2
@@ -14,3 +18,4 @@ catalogs:
 onlyBuiltDependencies:
   - '@tailwindcss/oxide'
   - esbuild
+  - workerd
