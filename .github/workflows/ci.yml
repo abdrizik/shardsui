@@ -9,6 +9,7 @@ on:
       - .vscode/**
       - .claude/**
       - _/**
+      - docs/**
   pull_request:
     paths-ignore:
       - '*.md'
@@ -16,6 +17,7 @@ on:
       - .vscode/**
       - .claude/**
       - _/**
+      - docs/**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
