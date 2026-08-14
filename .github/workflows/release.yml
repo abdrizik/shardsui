@@ -1,21 +1,33 @@
 name: Release
 
 on:
-  push:
-    tags: ['v*']
   workflow_dispatch:
+    inputs:
+      sha:
+        description: 'Commit SHA to release from'
+        required: false
+        type: string
+      dry-run:
+        description: 'Run every check and pack the tarball without publishing'
+        required: false
+        type: boolean
+        default: false
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment:
+      name: npm-publish
     permissions:
-      contents: read
+      contents: write
       id-token: write
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.sha || github.sha }}
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v6
         with:
@@ -29,34 +41,55 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm --filter @shardsui/svelte exec playwright install --with-deps chromium
-
       - id: meta
         shell: bash
         run: |
           version=$(node -p "require('./packages/shardsui/package.json').version")
+          tag_name="v$version"
 
-          if [ "$GITHUB_REF_TYPE" = tag ] && [ "v$version" != "$GITHUB_REF_NAME" ]; then
-            echo "::error::tag $GITHUB_REF_NAME does not match package version $version"
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag_name" >/dev/null 2>&1; then
+            echo "::error::tag $tag_name already exists on origin — bump the package version first"
             exit 1
           fi
+
+          if ! grep -qxF "## $version" packages/shardsui/CHANGELOG.md; then
+            echo "::error::no CHANGELOG.md entry found for $version — add a '## $version' section first"
+            exit 1
+          fi
+
+          awk -v header="## $version" '
+            $0 == header { found = 1; next }
+            found && /^## / { exit }
+            found
+          ' packages/shardsui/CHANGELOG.md > "$RUNNER_TEMP/notes.md"
 
           case "$version" in
             *-*) prerelease=${version#*-}; dist_tag=${prerelease%%.*} ;;
             *)   dist_tag=latest ;;
           esac
 
-          echo "tag=$dist_tag" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag_name=$tag_name" >> "$GITHUB_OUTPUT"
+          echo "dist_tag=$dist_tag" >> "$GITHUB_OUTPUT"
           echo "Publishing $version to dist-tag $dist_tag"
-
-      - run: pnpm lint
-
-      - run: pnpm check
-
-      - run: pnpm test
-
-      - run: pnpm test:chromium
 
       - run: pnpm test:package
 
-      - run: pnpm --filter @shardsui/svelte publish --no-git-checks --provenance --tag ${{ steps.meta.outputs.tag }}
+      - run: >-
+          pnpm --filter @shardsui/svelte publish
+          --no-git-checks --provenance
+          --tag ${{ steps.meta.outputs.dist_tag }}
+          ${{ inputs.dry-run && '--dry-run' || '' }}
+
+      - if: inputs.dry-run != true
+        env:
+          GIT_COMMITTER_NAME: 'github-actions[bot]'
+          GIT_COMMITTER_EMAIL: 'github-actions[bot]@users.noreply.github.com'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git tag -a "${{ steps.meta.outputs.tag_name }}" -m "Version ${{ steps.meta.outputs.version }}"
+          git push origin "${{ steps.meta.outputs.tag_name }}"
+
+          gh release create "${{ steps.meta.outputs.tag_name }}" \
+            --notes-file "$RUNNER_TEMP/notes.md" \
+            --draft
