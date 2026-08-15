@@ -32,14 +32,13 @@
         {#each links as section (section.heading)}
           <div class="side-nav-section">
             <div class="side-nav-heading">{section.heading}</div>
-            <ul class="side-nav-list">
+            <ul>
               {#each section.links as link (link.href)}
                 {@const isActive = page.url.pathname === link.href}
-                <li class="side-nav-item">
+                <li>
                   <a
                     href={link.href}
                     class="side-nav-link"
-                    data-active={isActive ? '' : undefined}
                     aria-current={isActive ? 'page' : undefined}
                     {@attach isActive ? trackActive : undefined}
                   >
@@ -68,13 +67,13 @@
     --side-nav-link-padding-x: calc(var(--spacing) * 5);
     --side-nav-dot-size: calc(var(--spacing) * 2);
     --side-nav-dot-gap: calc(var(--spacing) * 2);
+    --side-nav-dot-inset: calc(-1 * var(--side-nav-dot-gap) - var(--side-nav-dot-size));
     --side-nav-scrollbar-thumb-width: calc(var(--spacing) * 1);
     --side-nav-scrollbar-width: calc(var(--spacing) * 6);
     --side-nav-scrollbar-gap-left: calc(var(--spacing) * 4);
-    --side-nav-scrollbar-gap-right: calc(var(--spacing) * 10);
 
     font-size: var(--text-sm);
-    line-height: calc(var(--spacing) * 5.5);
+    line-height: var(--side-nav-item-line-height);
   }
 
   @media (width < 64rem) {
@@ -142,31 +141,29 @@
   /* Active indicator, centered in the left gutter — slides to the active link.
      It mounts already at position (transitions never fire on first render),
      so only later moves animate; @starting-style handles the initial fade-in. */
-  .side-nav-indicator {
+  .side-nav-indicator,
+  .side-nav-link::before {
     position: absolute;
-    inset-block-start: 0;
-    inset-inline-start: calc(-1 * var(--side-nav-dot-gap) - var(--side-nav-dot-size));
     inline-size: var(--side-nav-dot-size);
     block-size: var(--side-nav-dot-size);
     border-radius: var(--radius-full);
+    pointer-events: none;
+  }
+
+  .side-nav-indicator {
+    inset-block-start: 0;
+    inset-inline-start: var(--side-nav-dot-inset);
     background-color: var(--color-foreground);
     opacity: 1;
     transform: translateY(calc(var(--indicator-y) - 50%));
     transition:
       transform 250ms var(--ease-in-out),
       opacity 200ms ease;
-    pointer-events: none;
 
     @starting-style {
       opacity: 0;
     }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .side-nav-indicator {
-      transition: none;
-    }
-  }
-
   .side-nav-section:not(:last-child) {
     margin-block-end: calc(var(--spacing) * 4);
   }
@@ -174,45 +171,58 @@
   .side-nav-heading {
     display: inline-flex;
     padding-block: var(--side-nav-item-padding-y);
-    font-weight: var(--font-weight-normal);
-    color: var(--color-gray-700);
-  }
-
-  .side-nav-item {
-    display: flex;
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    color: var(--color-gray-400);
   }
 
   .side-nav-link {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: calc(var(--spacing) * 1);
-    flex-grow: 1;
-    padding-block: calc(var(--side-nav-item-padding-y) - 1px);
+    padding-block: var(--side-nav-item-padding-y);
     padding-inline: var(--side-nav-link-padding-x);
     margin-inline-start: calc(-1 * var(--side-nav-link-padding-x));
-    border-block: 1px solid transparent;
-    background-clip: padding-box;
     border-radius: var(--radius-md);
     color: var(--color-gray-700);
     user-select: none;
     transition: color 150ms var(--ease-out);
+
+    &:hover {
+      color: var(--color-foreground);
+    }
   }
 
-  .side-nav-link:hover {
-    color: var(--color-foreground);
+  .side-nav-link::before {
+    content: '';
+    inset-block-start: 50%;
+    inset-inline-start: calc(var(--side-nav-link-padding-x) + var(--side-nav-dot-inset));
+    background-color: var(--color-gray-400);
+    opacity: 0;
+    transform: translateY(-50%);
+    transition: opacity 150ms var(--ease-out);
   }
 
-  .side-nav-link[data-active] {
-    border: none;
-    padding-block: var(--side-nav-item-padding-y);
-    font-weight: var(--font-weight-medium);
+  .side-nav-link:hover:not([aria-current='page'])::before {
+    opacity: 1;
+  }
+
+  .side-nav-link[aria-current='page'] {
     color: var(--color-foreground);
-    word-spacing: -0.005em;
   }
 
   .side-nav-link:focus-visible {
     z-index: 1;
     outline: 2px solid var(--color-gray-900);
     outline-offset: -1px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .side-nav-indicator,
+    .side-nav-link::before {
+      transition: none;
+    }
   }
 </style>
