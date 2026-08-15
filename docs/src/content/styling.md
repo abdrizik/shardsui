@@ -46,7 +46,7 @@ The attributes are consistent across the library:
 - **Resolved position** — `[data-side]` and `[data-align]` on a positioner and popup carry where a floating element landed _after_ collision handling, so a popup can style the edge nearest its trigger.
 - **Enter and exit** — `[data-starting-style]` marks an element the frame it mounts; `[data-ending-style]` the moment before it unmounts. Set resting styles as the default and transitional styles behind these two attributes, and mount/unmount animate with a plain transition. See [Animation](/svelte/animation).
 
-[Props & attributes](/svelte/props-and-attributes#data-attributes) lists the shared set; each component's API reference lists what its own parts expose.
+Each component's API reference lists what its own parts expose.
 
 ## CSS variables: live measurements
 

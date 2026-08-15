@@ -17,7 +17,11 @@ export const docs = {
       title: 'Autocomplete',
       description: 'An input with type-ahead suggestions.'
     },
-    { slug: 'avatar', title: 'Avatar', description: 'A user image with a fallback.' },
+    {
+      slug: 'avatar',
+      title: 'Avatar',
+      description: 'A user image with a fallback.'
+    },
     {
       slug: 'button',
       title: 'Button',
@@ -98,7 +102,11 @@ export const docs = {
       title: 'Navigation Menu',
       description: 'A navigation menu with floating panels.'
     },
-    { slug: 'popover', title: 'Popover', description: 'A floating anchored panel.' },
+    {
+      slug: 'popover',
+      title: 'Popover',
+      description: 'A floating anchored panel.'
+    },
     {
       slug: 'preview-card',
       title: 'Preview Card',
@@ -144,7 +152,11 @@ export const docs = {
       title: 'Tabs',
       description: 'Switchable content panels.'
     },
-    { slug: 'toast', title: 'Toast', description: 'A self-dismissing message.' },
+    {
+      slug: 'toast',
+      title: 'Toast',
+      description: 'A self-dismissing message.'
+    },
     {
       slug: 'toggle',
       title: 'Toggle',
@@ -183,11 +195,6 @@ export const docs = {
       slug: 'styling',
       title: 'Styling',
       description: 'Style parts with CSS or Tailwind.'
-    },
-    {
-      slug: 'props-and-attributes',
-      title: 'Props & attributes',
-      description: 'Shared props and data attributes.'
     },
     {
       slug: 'animation',
