@@ -11,9 +11,8 @@
 
 <div class="mobile-nav">
   <Drawer.Root bind:open swipeDirection="left">
-    <Drawer.Trigger class="mobile-nav-trigger">
+    <Drawer.Trigger class="mobile-nav-trigger" aria-label="Navigation">
       <span class="mobile-nav-trigger-bars" aria-hidden="true"></span>
-      Navigation
     </Drawer.Trigger>
     <Drawer.Portal>
       <div class="mobile-nav-surface">

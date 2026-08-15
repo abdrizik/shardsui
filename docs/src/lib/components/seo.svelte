@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { dev } from '$app/environment'
+  import { asset } from '$app/paths'
   import { siteName, siteUrl } from '$lib/data/site'
 
   type Props = {
@@ -17,6 +19,7 @@
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={url} />
+  <link rel="icon" href={asset(dev ? '/favicon-dev.svg' : '/favicon.svg')} />
 
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content={siteName} />
