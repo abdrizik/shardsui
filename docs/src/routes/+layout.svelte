@@ -1,7 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state'
   import Banner from '$lib/components/banner.svelte'
-  import Cursor from '$lib/components/cursor.svelte'
   import Seo from '$lib/components/seo.svelte'
   import { siteName } from '$lib/data/site'
   import '$lib/styles/main.css'
@@ -20,8 +19,6 @@
 <Seo title={seo.title} description={seo.description} path={page.url.pathname} />
 
 <Banner />
-
-<Cursor />
 
 <div>
   {@render children()}
