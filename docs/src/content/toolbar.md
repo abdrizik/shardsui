@@ -50,7 +50,7 @@ Mount `<Select.Root>` inside the toolbar and let its own trigger be the control.
 
 ### Using an input
 
-`Toolbar.Input` joins the toolbar's single tab stop. Arrow-key focus selects the whole value, and an arrow key steps on to the next control only once the cursor sits collapsed at the matching edge of the text. Keep inputs to a minimum and place them last:
+`Toolbar.Input` joins the toolbar's single tab stop. Arrow-key focus selects the whole value, and an arrow key steps on to the next control only once the cursor sits collapsed at the matching edge of the text:
 
 ```svelte title="Using an input with toolbar"
 <Toolbar.Root>

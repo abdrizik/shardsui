@@ -45,7 +45,7 @@ A single-select listbox.
 ## Usage guidelines
 
 - **Prefer Combobox for large lists**: Select has no filtering beyond typeahead (typing jumps to the matching item). Once the list grows long enough to need filtering, switch to [Combobox](/svelte/combobox).
-- **Positioning**: the popup anchors to the trigger through `<Select.Positioner>` — set `side`, `align` and the offsets there, and size the popup against the anchor CSS variables it publishes (see [Styling](/svelte/styling)).
+- **Positioning**: the popup anchors to the trigger through `<Select.Positioner>`. Set `side`, `align` and the offsets there, and size the popup against the anchor CSS variables it publishes (see [Styling](/svelte/styling)).
 - **Give the control an accessible name**: add a `<Select.Label>`, or set an `aria-label` on `<Select.Trigger>` when there's no visible label. See the [forms guide](/svelte/forms).
 
 ## TypeScript
@@ -58,7 +58,7 @@ See the [TypeScript guide](/svelte/typescript#value-types-for-generic-parts) for
 
 ### Formatting the value
 
-With no `items`, `<Select.Value>` stringifies the selected `value`. Give `<Select.Root>` an `items` prop — an array of `{ value, label }` entries, groups of those, or a record mapping value to label — and it renders the matching label instead:
+With no `items`, `<Select.Value>` stringifies the selected `value`. Give `<Select.Root>` an `items` prop and it renders the matching label instead:
 
 ```svelte title="items prop"
 <script lang="ts">
@@ -98,7 +98,7 @@ For richer output, pass a `children` snippet to `<Select.Value>` and format the 
 </Select.Value>
 ```
 
-You can skip the lookup entirely by giving each item an [object value](#examples-object-values).
+Giving each item an [object value](#examples-object-values) skips the lookup.
 
 ### Labeling a select
 
@@ -155,7 +155,7 @@ An entry that labels `null` doubles as the empty-state text, so `<Select.Value>`
 
 ### Multiple selection
 
-Set the `multiple` prop on `<Select.Root>` and the `value` becomes an array of every chosen item. Render that array however you like through the `<Select.Value>` children snippet.
+Set the `multiple` prop on `<Select.Root>` and the `value` becomes an array of every chosen item. Render that array through the `<Select.Value>` children snippet.
 
 :demo{name="select/multiple"}
 
@@ -441,7 +441,7 @@ It carries the `listbox` role itself when no `<Select.List>` is rendered.
 
 ### List
 
-The `listbox` and the element that scrolls the items. Optional — without it the popup takes both roles.
+The `listbox` and the element that scrolls the items. Optional. Without it the popup takes both roles.
 Renders a `<div>` element.
 
 ::table{columns="Prop,Type,Default"}

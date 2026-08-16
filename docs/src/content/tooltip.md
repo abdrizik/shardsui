@@ -47,17 +47,15 @@ When a description is essential to understanding an element, keep it out of a to
 
 ### Contextual feedback messages
 
-For feedback tied to a specific control, use [Toast](/svelte/toast) and its anchoring — it announces the message to screen readers and handles richer content.
+For feedback tied to a specific control, use [Toast](/svelte/toast) and its anchoring. It announces the message to screen readers and handles richer content.
 
 ## Examples
 
 ### Detached triggers
 
-The trigger usually lives inside `<Tooltip.Root>`, next to the hint it shows, as in the hero demo above.
+The trigger usually lives inside `<Tooltip.Root>`. When the two can't share a spot in the markup, render `<Tooltip.Trigger>` wherever the element belongs and connect it to the root through a shared `handle` from `new Tooltip.Handle()`.
 
-When the two can't share a spot in the markup, render `<Tooltip.Trigger>` wherever the element belongs and connect it to the root through a shared `handle` from `new Tooltip.Handle()`.
-
-The handle's imperative methods, `open()` and `close()`, need a `<Tooltip.Root>` using the same handle to be mounted — calls made while no root is attached (before one mounts, or after it unmounts) are ignored and not replayed. Each root starts from fresh state when it mounts; no open state carries over from a previous mount.
+The handle's imperative methods, `open()` and `close()`, need a `<Tooltip.Root>` using the same handle to be mounted. Calls made while no root is attached (before one mounts, or after it unmounts) are ignored and not replayed, and each root starts from fresh state when it mounts.
 
 ```svelte title="Detached triggers"
 <script>
@@ -133,10 +131,8 @@ The content can shift too when triggers carry different hints. Wrap it in `<Tool
 
 Mid-transition, the viewport keeps both hints mounted, each in its own wrapper:
 
-- `data-current`: the entering content, or the sole content when nothing is transitioning. It also carries `data-starting-style` while it animates in.
-- `data-previous`: the leaving content during a transition. It also carries `data-ending-style` while it animates out.
-
-Target these to write the enter and exit animations.
+- `data-current`: the entering content, or the sole content when nothing is transitioning.
+- `data-previous`: the leaving content during a transition.
 
 :demo{name="tooltip/detached-triggers-full"}
 
@@ -357,7 +353,7 @@ Renders a `<div>` element.
 | `--popup-width`  | Width of the outgoing popup content, set on the `data-previous` container. Use it to freeze the popup size while the content morphs. |
 | `--popup-height` | Height of the outgoing popup content, set on the `data-previous` container.                                                          |
 
-Reach for the Viewport only when a single popup is opened by multiple triggers, its content differs per trigger, and the switch between them is animated. When you do, set `width: var(--positioner-width)` and `height: var(--positioner-height)` on the `Positioner` so its box is frozen to the measured size during the transition; otherwise content-driven resizing can make the popup thrash or flip to another side.
+Set `width: var(--positioner-width)` and `height: var(--positioner-height)` on the `Positioner` so its box is frozen to the measured size during the transition; otherwise content-driven resizing can make the popup thrash or flip to another side.
 
 ## Handle
 

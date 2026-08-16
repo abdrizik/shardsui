@@ -82,17 +82,17 @@ Veto the close with a [function binding](https://svelte.dev/docs/svelte/bind#Fun
 >
 ```
 
-Style the parent dialog through the `[data-nested-dialog-open]` selector and the `var(--nested-dialogs)` CSS variable. Child dialogs render their own backdrop, marked with `data-nested` — hide it with `[data-nested] { opacity: 0 }` to keep the parent visible behind the one on top.
+Style the parent dialog through the `[data-nested-dialog-open]` selector and the `var(--nested-dialogs)` CSS variable. Child dialogs render their own backdrop, marked with `data-nested`. Hide it with `[data-nested] { opacity: 0 }` to keep the parent visible behind the one on top.
 
-The demo below uses [Dialog](/svelte/dialog) — the same pattern applies to AlertDialog.
+The demo below uses [Dialog](/svelte/dialog). The same pattern applies to AlertDialog.
 
 :demo{name="dialog/close-confirmation"}
 
 ### Detached triggers
 
-For a simple one-off, keep `<AlertDialog.Trigger>` inside the root, as in the example at the top of this page. When the trigger and the alert dialog's content can't sit together in the markup, detach them: render `<AlertDialog.Trigger>` wherever it fits and connect it to the root with a shared `handle` from `new AlertDialog.Handle()`.
+`<AlertDialog.Trigger>` normally sits inside the root. When the trigger and the alert dialog's content can't share a spot in the markup, render `<AlertDialog.Trigger>` wherever it fits and connect it to the root with a shared `handle` from `new AlertDialog.Handle()`.
 
-The handle's imperative methods — `open()`, `openWithPayload()` and `close()` — only take effect while an `<AlertDialog.Root>` using the same handle is mounted. Calls made before a root mounts or after it unmounts are ignored, not queued: each mount starts from fresh state, with no replay and no open state carried over from a previous one.
+The handle's imperative methods — `open()`, `openWithPayload()` and `close()` — only take effect while an `<AlertDialog.Root>` using the same handle is mounted. Calls made before a root mounts or after it unmounts are ignored, not queued: each mount starts from fresh state.
 
 ```svelte title="Detached triggers"
 <!-- [!code word:handle={h}] -->

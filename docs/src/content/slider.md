@@ -42,7 +42,7 @@ When two thumbs meet under the pointer, `thumbCollisionBehavior` on `<Slider.Roo
 
 ### Formatting the value
 
-`format` and `locale` reach both `<Slider.Value>` and the thumbs' `aria-valuetext`. Without a `children` snippet, `Value` renders the formatted values joined by an en dash; pass one to compose the text yourself:
+`format` and `locale` reach both `<Slider.Value>` and the thumbs' `aria-valuetext`. Pass a `children` snippet to `Value` to compose the text yourself:
 
 ```svelte title="Composing the value text"
 <Slider.Value>
@@ -55,7 +55,7 @@ When two thumbs meet under the pointer, `thumbCollisionBehavior` on `<Slider.Roo
 
 ### Thumb alignment
 
-With the default `"center"` alignment, a thumb at `min` or `max` overhangs the ends of the control. With `thumbAlignment="edge"`, the thumb is inset so its edge lines up with the control's edge, keeping it fully inside.
+With the default `"center"` alignment, a thumb at `min` or `max` overhangs the ends of the control; `thumbAlignment="edge"` insets it so its edge lines up with the control's edge.
 
 :demo{name="slider/edge-alignment"}
 

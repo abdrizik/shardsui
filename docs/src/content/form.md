@@ -27,8 +27,8 @@ Pair Form with [Field](/svelte/field):
 
 ### Validating from code
 
-The component instance, obtained with `bind:this`, exposes `validate()`. It runs every field; pass
-a field `name` to run just that one.
+The component instance, obtained with `bind:this`, exposes `validate()` — call it with a field
+`name` to run just that one.
 
 ```svelte title="Triggering validation without submitting"
 <script>
@@ -43,8 +43,6 @@ a field `name` to run just that one.
   <button type="button" onclick={() => form.validate('email')}>Check email</button>
 </Form>
 ```
-
-The `name` matched is the one on `Field.Root`, falling back to the `name` on the control.
 
 ## API reference
 
@@ -68,7 +66,7 @@ is cancelled and focus moves to the first invalid control, selecting its text wh
 
 ::
 
-The component instance, obtained with `bind:this`, exposes:
+The component instance exposes:
 
 | Method                         | Description                                                                                                                                                |
 | :----------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |

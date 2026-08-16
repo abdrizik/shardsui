@@ -33,11 +33,9 @@ A link preview opened on hover.
 
 ### Detached triggers
 
-The trigger normally nests inside `<PreviewCard.Root>`, next to the content it reveals; that's the layout in the hero demo above.
+The trigger normally nests inside `<PreviewCard.Root>`. When the link and its card can't sit together in the markup — a link running inline in a paragraph, say — render `<PreviewCard.Trigger>` wherever the link belongs and tie it back to the root with a shared `handle` from `new PreviewCard.Handle()`.
 
-Sometimes the link and its card can't sit together in the markup, e.g. the link runs inline in a paragraph while the card is defined elsewhere. Render `<PreviewCard.Trigger>` wherever the link belongs and tie it back to the root with a shared `handle` from `new PreviewCard.Handle()`.
-
-The handle's imperative methods, `open()` and `close()`, need a `<PreviewCard.Root>` using the same handle to be mounted. Calls made before a root mounts or after it unmounts are ignored, not queued — and each root starts from fresh state when it mounts, so no open state carries over from a previous one.
+The handle's imperative methods, `open()` and `close()`, need a `<PreviewCard.Root>` using the same handle to be mounted. Calls made before a root mounts or after it unmounts are ignored, not queued. Each root starts from fresh state when it mounts.
 
 ```svelte title="Detached triggers"
 <script>
@@ -128,7 +126,7 @@ When a single card hops between triggers, it can slide across rather than pop in
 
 #### Position and Size
 
-The **Positioner** carries the card's position — transition its `left`, `right`, `top`, and `bottom`. The **Popup** carries its size — transition `width` and `height` there.
+The **Positioner** carries the card's position: transition its `left`, `right`, `top`, and `bottom`. The **Popup** carries its size, so transition `width` and `height` there.
 
 #### Content
 
@@ -138,8 +136,6 @@ While a transition runs, the viewport holds both the old and new contents, each 
 
 - `data-current`: the incoming content, or the only content when nothing is transitioning.
 - `data-previous`: the outgoing content during a transition.
-
-Style these to author the enter and exit animations.
 
 :demo{name="preview-card/detached-triggers-full"}
 
@@ -338,7 +334,7 @@ Renders a `<div>` element.
 | `--popup-width`  | Width of the outgoing popup content, set on the `data-previous` container. Use it to freeze the popup size while the content morphs. |
 | `--popup-height` | Height of the outgoing popup content, set on the `data-previous` container.                                                          |
 
-Reach for the Viewport only when a single popup is opened by multiple triggers, its content differs per trigger, and the switch between them is animated. When you do, set `width: var(--positioner-width)` and `height: var(--positioner-height)` on the `Positioner` so its box is frozen to the measured size during the transition; otherwise content-driven resizing can make the popup thrash or flip to another side.
+Set `width: var(--positioner-width)` and `height: var(--positioner-height)` on the `Positioner` so its box is frozen to the measured size during the transition; otherwise content-driven resizing can make the popup thrash or flip to another side.
 
 ### Arrow
 

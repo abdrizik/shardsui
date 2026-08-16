@@ -164,7 +164,7 @@ To open a dialog from a menu, hold the dialog's open state yourself and flip it 
 
 ### Detached triggers
 
-A menu's trigger can sit inside `<Menu.Root>` (as in the hero demo above) or somewhere else entirely. When the trigger and the menu content belong in different parts of the tree, create a `handle` with `new Menu.Handle()` and pass it to both the trigger and the root.
+A menu's trigger can sit inside `<Menu.Root>` (as in the hero demo above) or somewhere else entirely. When it lives outside, create a `handle` with `new Menu.Handle()` and pass it to both the trigger and the root.
 
 Only top-level menus support detached triggers; a submenu's trigger always stays inside its `SubmenuRoot`.
 
@@ -261,7 +261,7 @@ A menu can show different content depending on which trigger opened it. Give eac
 
 ### Controlled mode with multiple triggers
 
-Drive the open state yourself with `open` and `onOpenChange` on `<Menu.Root>`. With several triggers, track the active one through `bind:triggerId` on `<Menu.Root>` and a matching `id` on each `<Menu.Trigger>`: the binding follows whichever trigger opened the menu, and writing an id to it selects that trigger.
+Drive the open state yourself with `open` and `onOpenChange` on `<Menu.Root>`. With several triggers, track the active one through `bind:triggerId` on `<Menu.Root>` and a matching `id` on each `<Menu.Trigger>`: writing an id to the binding selects that trigger.
 
 :demo{name="menu/detached-triggers-controlled"}
 
@@ -273,7 +273,7 @@ Drive the open state yourself with `open` and `onOpenChange` on `<Menu.Root>`. W
 
 ### Animating the Menu
 
-When several detached triggers share one menu, you can animate its position, size, and content as it travels between them.
+When several detached triggers share one menu, its position, size, and content can animate as it travels between them.
 
 #### Position and Size
 
@@ -281,7 +281,7 @@ For position, transition the `left`, `right`, `top`, and `bottom` properties of 
 
 #### Content
 
-When different triggers swap what the menu shows, wrap the content in a `<Menu.Viewport>` to animate the change. It renders a `div` carrying `data-activation-direction` — space-separated horizontal (`left` or `right`) and vertical (`up` or `down`) values such as `right down` — so your animation can lean toward the direction of travel.
+When different triggers swap what the menu shows, wrap the content in a `<Menu.Viewport>` to animate the change. It renders a `div` carrying `data-activation-direction` — a space-separated horizontal and vertical pair such as `right down` — so your animation can lean toward the direction of travel. Match a single token with the `~=` attribute selector, such as `[data-activation-direction~='right']`.
 
 Within `<Menu.Viewport>`, each piece of content sits in a `div` tagged with a transition data attribute:
 
@@ -467,8 +467,8 @@ Renders a `<div>` element.
 ### Viewport
 
 A viewport for displaying content transitions.
-This component is only required if one popup can be opened by multiple triggers, its content
-changes based on the trigger, and switching between them is animated.
+Only needed when one popup has multiple triggers, its content changes with the trigger, and the
+switch is animated.
 Renders a `<div>` element.
 
 ::table{columns="Prop,Type,Default"}
@@ -547,7 +547,7 @@ Renders a `<div>` element.
 
 ### LinkItem
 
-A link in the menu that can be used to navigate to a different page or section.
+A link in the menu, for navigating to a different page or section.
 Renders an `<a>` element.
 
 ::table{columns="Prop,Type,Default"}

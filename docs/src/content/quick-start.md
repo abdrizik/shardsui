@@ -18,13 +18,13 @@ ShardsUI requires Svelte 5.40 or later. It ships as one package, and each compon
 
 ### Browser support
 
-ShardsUI supports Chrome and Edge 121, Firefox 97, and Safari 18.2 — on desktop and iOS — or later.
+ShardsUI supports Chrome and Edge 121, Firefox 97, and Safari 18.2 or later.
 
 ## Set up
 
 ### Portals
 
-Overlay components render their content through a **portal** so they escape clipping or a parent **stacking context**. Every overlay wraps its contents in a `<Component.Portal>` part, which appends them to the document body — pass `container` to send them somewhere else.
+Overlay components render their content through a **portal** so they escape clipping or a parent **stacking context**: a `<Component.Portal>` part appends the contents to the document body. Pass `container` to send them somewhere else.
 
 Give your layout root its own stacking context, and no `z-index` deeper in the tree can paint over a portalled overlay:
 

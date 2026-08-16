@@ -12,7 +12,7 @@ Every part that renders an element takes a `class` prop, applied to that element
 <Switch.Thumb class="switch-thumb" />
 ```
 
-Prefer a state selector over a class you compute yourself — most on/off state is already a `data-*` attribute (below).
+Prefer a state selector over a class you compute yourself. Most on/off state is already a `data-*` attribute (below).
 
 Parts take a `style` prop too, for the values only the running app knows:
 
@@ -42,9 +42,9 @@ Each part mirrors its state onto the element as `data-*` attributes. Write one s
 
 The attributes are consistent across the library:
 
-- **On/off state** — `[data-open]` / `[data-closed]`, `[data-checked]` / `[data-unchecked]`, `[data-disabled]`, `[data-selected]`, and `[data-highlighted]` for the item the keyboard or pointer has highlighted in a list.
-- **Resolved position** — `[data-side]` and `[data-align]` on a positioner and popup carry where a floating element landed _after_ collision handling, so a popup can style the edge nearest its trigger.
-- **Enter and exit** — `[data-starting-style]` marks an element the frame it mounts; `[data-ending-style]` the moment before it unmounts. Set resting styles as the default and transitional styles behind these two attributes, and mount/unmount animate with a plain transition. See [Animation](/svelte/animation).
+- **On/off state**: `[data-open]` / `[data-closed]`, `[data-checked]` / `[data-unchecked]`, `[data-disabled]`, `[data-selected]`, and `[data-highlighted]` for the item the keyboard or pointer has highlighted in a list.
+- **Resolved position**: `[data-side]` and `[data-align]` on a positioner and popup carry where a floating element landed _after_ collision handling, so a popup can style the edge nearest its trigger.
+- **Enter and exit**: `[data-starting-style]` marks an element the frame it mounts; `[data-ending-style]` the moment before it unmounts. Set resting styles as the default and transitional styles behind these two attributes, and mount/unmount animate with a plain transition. See [Animation](/svelte/animation).
 
 Each component's API reference lists what its own parts expose.
 
@@ -169,7 +169,7 @@ Give each part a `class`, then write the rules in a stylesheet. The same `data-*
 
 ## Scoped `<style>` reaches your markup, not the parts
 
-Scoped `<style>` stamps a hash onto the elements you write directly in a component and adds that hash to every selector. A `class` you pass to a part lands on the part's own element, deeper in the library — that element never gets your hash, so a scoped selector never matches it. This holds for every part, portalled or not.
+Scoped `<style>` stamps a hash onto the elements you write directly in a component and adds that hash to every selector. A `class` you pass to a part lands on the part's own element, deeper in the library. That element never gets your hash, so a scoped selector never matches it. This holds for every part, portalled or not.
 
 So this rule does nothing:
 

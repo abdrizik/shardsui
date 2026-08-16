@@ -51,7 +51,7 @@ For second-level navigation that stays inside the same panel, give the nested ro
 
 ### Custom links
 
-`<NavigationMenu.Link>` renders an `<a>`, so SvelteKit's router intercepts its `href` for client-side navigation — no wrapper component needed.
+`<NavigationMenu.Link>` renders an `<a>`, so SvelteKit's router intercepts its `href` for client-side navigation, with no wrapper component needed.
 
 ```svelte title="Custom link"
 <NavigationMenu.Link href="/docs">Docs</NavigationMenu.Link>
@@ -90,7 +90,7 @@ That only works if the content can compress. When it can't, let it scroll:
 }
 ```
 
-Native scrollbars stay visible while the panel transitions, so [Scroll Area](/svelte/scroll-area) is the better fit here — it keeps the scrollbars hidden and lets the `Arrow` stay centered.
+Native scrollbars stay visible while the panel transitions, so [Scroll Area](/svelte/scroll-area) is the better fit here. It keeps the scrollbars hidden and lets the `Arrow` stay centered.
 
 ## API reference
 

@@ -6,7 +6,7 @@ Toggle buttons sharing a selection.
 
 ## Anatomy
 
-A Toggle Group wraps a set of [Toggle](/svelte/toggle) parts. Import both and nest the toggles inside the group:
+A Toggle Group wraps a set of [Toggle](/svelte/toggle) parts:
 
 ```svelte title="Anatomy"
 <script>
@@ -71,7 +71,7 @@ A group nested in a [Toolbar](/svelte/toolbar) joins the toolbar's arrow-key nav
 
 **Keyboard:**
 
-The group is one tab stop: `Tab` moves into it and out again, arrow keys move between the toggles, and disabled toggles are skipped.
+The group is one tab stop: `Tab` moves into it and out again, and disabled toggles are skipped.
 
 | Key                        | Action                                                  |
 | :------------------------- | :------------------------------------------------------ |

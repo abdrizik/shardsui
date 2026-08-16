@@ -2,7 +2,7 @@
 
 Shared props and data attributes.
 
-Each component's API reference lists its own props and attributes. This page collects the ones that recur across the library, grouped by the part that takes them.
+Each component's API reference lists its own props and attributes; the ones that recur across the library are collected here, grouped by the part that takes them.
 
 ## Element props
 
@@ -20,7 +20,7 @@ Every part that renders an element accepts these.
 
 ::
 
-Anything that isn't one of a part's own props is forwarded to the element, and your event handlers run alongside the part's rather than replacing them — see [Composition](/svelte/composition).
+Anything that isn't one of a part's own props is forwarded to the element, and your event handlers run alongside the part's rather than replacing them. See [Composition](/svelte/composition).
 
 Every part that renders an element also exposes it through `ref`, populated once the element mounts:
 
@@ -111,7 +111,7 @@ On the `Positioner` part of floating components (Popover, Menu, Select, Tooltip,
 
 ::
 
-The resolved side and alignment come back as `data-side` and `data-align`, and the positioner sets `--anchor-width`, `--anchor-height`, `--available-width`, `--available-height` and `--transform-origin` for the popup to size and animate against — see [Styling](/svelte/styling).
+The positioner sets `--anchor-width`, `--anchor-height`, `--available-width`, `--available-height` and `--transform-origin` for the popup to size and animate against. See [Styling](/svelte/styling).
 
 ## Mounting
 
@@ -180,7 +180,7 @@ For the full controlled and uncontrolled patterns, see [State](/svelte/state).
 
 ## Data attributes
 
-Every part mirrors its live state onto its element as `data-*` attributes, so you style against state instead of tracking it yourself — see [Styling](/svelte/styling).
+Every part mirrors its live state onto its element as `data-*` attributes, so you style against state instead of tracking it yourself. See [Styling](/svelte/styling).
 
 ### Open and closed
 
@@ -236,7 +236,7 @@ Present within a [Field](/svelte/field), reflecting the control's validation sta
 
 ### Animation
 
-Set the resting styles as the default and the transitional styles behind these attributes — see [Animation](/svelte/animation).
+Set the resting styles as the default and the transitional styles behind these attributes. See [Animation](/svelte/animation).
 
 | Attribute              | Description                                                                                               |
 | :--------------------- | :-------------------------------------------------------------------------------------------------------- |

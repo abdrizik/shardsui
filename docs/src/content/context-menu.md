@@ -49,11 +49,11 @@ Most parts (`Backdrop`, `Popup`, `Item`, etc.) are re-exported from the [Menu](/
 
 ## Examples
 
-The [Menu](/svelte/menu#examples) page has more demos — most of its patterns carry over to the context menu.
+The [Menu](/svelte/menu#examples) page has more demos, and most of its patterns carry over to the context menu.
 
 ### Using with Menu
 
-A context menu should supplement a primary way to perform the same actions. This image card exposes actions through a visible menu button and reuses them in the context menu for right-click and long-press users.
+This card exposes actions through a visible menu button and reuses them in the context menu for right-click and long-press users.
 
 :demo{name="context-menu/with-menu"}
 
