@@ -148,36 +148,31 @@ describe('<Collapsible.Panel />', () => {
     })
 
     it('unmounts a zero-size panel without waiting for unrelated transitions', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      try {
-        render(StyledCollapsible, {
-          open: true,
-          content: '',
-          panelClass: 'zero-size-panel',
-          css: `
-            .zero-size-panel {
-              overflow: hidden;
-              width: 0;
-              height: 0;
-              opacity: 1;
-              transition: opacity 10s linear;
-            }
-            .zero-size-panel[data-ending-style] { opacity: 0; }
-          `
-        })
+      render(StyledCollapsible, {
+        open: true,
+        content: '',
+        panelClass: 'zero-size-panel',
+        css: `
+          .zero-size-panel {
+            overflow: hidden;
+            width: 0;
+            height: 0;
+            opacity: 1;
+            transition: opacity 10s linear;
+          }
+          .zero-size-panel[data-ending-style] { opacity: 0; }
+        `
+      })
 
-        const trigger = screen.getByRole('button', { name: 'Trigger' })
+      const trigger = screen.getByRole('button', { name: 'Trigger' })
 
-        expect(screen.getByTestId('panel')).toHaveAttribute('data-open')
+      expect(screen.getByTestId('panel')).toHaveAttribute('data-open')
 
-        await fireEvent.click(trigger)
-        await waitForAnimationFrame()
+      await fireEvent.click(trigger)
+      await waitForAnimationFrame()
 
-        expect(screen.queryByTestId('panel')).toBe(null)
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      expect(screen.queryByTestId('panel')).toBe(null)
     })
 
     it('preserves inline alignment styles while measuring an opening panel', async () => {
@@ -215,44 +210,38 @@ describe('<Collapsible.Panel />', () => {
     })
 
     it('keeps exit transitions working after a close is interrupted by reopening', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      try {
-        const user = userEvent.setup()
-        render(StyledCollapsible, {
-          open: true,
-          panelClass: 'interruptible-panel',
-          css: `
-            .interruptible-panel {
-              overflow: hidden;
-              height: var(--collapsible-panel-height);
-              transition: height 100ms linear;
-            }
-            .interruptible-panel[data-starting-style],
-            .interruptible-panel[data-ending-style] { height: 0; }
-          `
-        })
+      const user = userEvent.setup()
+      render(StyledCollapsible, {
+        open: true,
+        panelClass: 'interruptible-panel',
+        css: `
+          .interruptible-panel {
+            overflow: hidden;
+            height: var(--collapsible-panel-height);
+            transition: height 100ms linear;
+          }
+          .interruptible-panel[data-starting-style],
+          .interruptible-panel[data-ending-style] { height: 0; }
+        `
+      })
 
-        const trigger = screen.getByRole('button', { name: 'Trigger' })
-        const panel = screen.getByTestId('panel')
+      const trigger = screen.getByRole('button', { name: 'Trigger' })
+      const panel = screen.getByTestId('panel')
 
-        await user.click(trigger)
-        await waitFor(() => expect(panel).toHaveAttribute('data-ending-style'))
+      await user.click(trigger)
+      await waitFor(() => expect(panel).toHaveAttribute('data-ending-style'))
 
-        await user.click(trigger)
-        await waitFor(() => expect(panel).toHaveAttribute('data-open'))
-        await waitFor(() => expect(panel).not.toHaveAttribute('data-starting-style'))
+      await user.click(trigger)
+      await waitFor(() => expect(panel).toHaveAttribute('data-open'))
+      await waitFor(() => expect(panel).not.toHaveAttribute('data-starting-style'))
 
-        await fireEvent.click(trigger)
-        await waitFor(() => expect(panel).toHaveAttribute('data-ending-style'))
-        expect(screen.getByTestId('panel')).toBe(panel)
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await fireEvent.click(trigger)
+      await waitFor(() => expect(panel).toHaveAttribute('data-ending-style'))
+      expect(screen.getByTestId('panel')).toBe(panel)
     })
 
     it('keeps the measured size when an open animation finishes during a close commit', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
       const abortSpy = vi.spyOn(AbortController.prototype, 'abort').mockImplementation(() => {})
       let animationStarted = false
@@ -287,12 +276,10 @@ describe('<Collapsible.Panel />', () => {
       } finally {
         animation.cancel()
         abortSpy.mockRestore()
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
       }
     })
 
     it('does not restart the entrance transition when a close animation finishes after reopening', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
       const abortSpy = vi.spyOn(AbortController.prototype, 'abort').mockImplementation(() => {})
       let closeAnimationStarted = false
@@ -332,7 +319,6 @@ describe('<Collapsible.Panel />', () => {
       } finally {
         closeAnimation.cancel()
         abortSpy.mockRestore()
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
       }
     })
   })
@@ -361,122 +347,107 @@ describe('<Collapsible.Panel />', () => {
     })
 
     it('still animates on close and reopen after being initially open', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      try {
-        const user = userEvent.setup()
-        render(StyledCollapsible, {
-          open: true,
-          keepMounted: true,
-          panelClass: 'animation-test-panel',
-          css: `
-            @keyframes panel-slide-down {
-              from { height: 0; }
-              to { height: var(--collapsible-panel-height); }
-            }
-            @keyframes panel-slide-up {
-              from { height: var(--collapsible-panel-height); }
-              to { height: 0; }
-            }
-            .animation-test-panel[data-open] { overflow: hidden; animation: panel-slide-down 100ms linear; }
-            .animation-test-panel[data-closed] { overflow: hidden; animation: panel-slide-up 100ms linear; }
-          `
-        })
+      const user = userEvent.setup()
+      render(StyledCollapsible, {
+        open: true,
+        keepMounted: true,
+        panelClass: 'animation-test-panel',
+        css: `
+          @keyframes panel-slide-down {
+            from { height: 0; }
+            to { height: var(--collapsible-panel-height); }
+          }
+          @keyframes panel-slide-up {
+            from { height: var(--collapsible-panel-height); }
+            to { height: 0; }
+          }
+          .animation-test-panel[data-open] { overflow: hidden; animation: panel-slide-down 100ms linear; }
+          .animation-test-panel[data-closed] { overflow: hidden; animation: panel-slide-up 100ms linear; }
+        `
+      })
 
-        const trigger = screen.getByRole('button', { name: 'Trigger' })
-        const panel = screen.getByTestId('panel')
+      const trigger = screen.getByRole('button', { name: 'Trigger' })
+      const panel = screen.getByTestId('panel')
 
-        expect(panel.getAnimations().length).toBe(0)
+      expect(panel.getAnimations().length).toBe(0)
 
-        await user.click(trigger)
-        await waitFor(() => {
-          expect(panel).toHaveAttribute('data-closed')
-          expect(panel.getAnimations().length).toBe(1)
-        })
+      await user.click(trigger)
+      await waitFor(() => {
+        expect(panel).toHaveAttribute('data-closed')
+        expect(panel.getAnimations().length).toBe(1)
+      })
 
-        await user.click(trigger)
-        await waitFor(() => {
-          expect(panel).toHaveAttribute('data-open')
-          expect(panel.getAnimations().length).toBe(1)
-        })
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await user.click(trigger)
+      await waitFor(() => {
+        expect(panel).toHaveAttribute('data-open')
+        expect(panel.getAnimations().length).toBe(1)
+      })
     })
 
     it('restores measured dimensions before applying a closing keyframe animation', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      try {
-        const user = userEvent.setup()
-        render(StyledCollapsible, {
-          open: true,
-          panelClass: 'closing-animation-panel',
-          css: `
-            @keyframes panel-slide-up {
-              from { height: var(--collapsible-panel-height); }
-              to { height: 0; }
-            }
-            .closing-animation-panel[data-closed] {
-              overflow: hidden;
-              animation: panel-slide-up 100ms linear;
-            }
-          `
-        })
+      const user = userEvent.setup()
+      render(StyledCollapsible, {
+        open: true,
+        panelClass: 'closing-animation-panel',
+        css: `
+          @keyframes panel-slide-up {
+            from { height: var(--collapsible-panel-height); }
+            to { height: 0; }
+          }
+          .closing-animation-panel[data-closed] {
+            overflow: hidden;
+            animation: panel-slide-up 100ms linear;
+          }
+        `
+      })
 
-        const trigger = screen.getByRole('button', { name: 'Trigger' })
-        const panel = screen.getByTestId('panel')
+      const trigger = screen.getByRole('button', { name: 'Trigger' })
+      const panel = screen.getByTestId('panel')
 
-        await waitFor(() =>
-          expect(panel.style.getPropertyValue('--collapsible-panel-height')).toBe('auto')
-        )
+      await waitFor(() =>
+        expect(panel.style.getPropertyValue('--collapsible-panel-height')).toBe('auto')
+      )
 
-        await user.click(trigger)
+      await user.click(trigger)
 
-        await waitFor(() => expect(panel).toHaveAttribute('data-ending-style'))
-        await waitFor(() =>
-          expect(panel.style.getPropertyValue('--collapsible-panel-height')).toMatch(/px$/)
-        )
-        expect(panel.getAnimations().length).toBe(1)
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await waitFor(() => expect(panel).toHaveAttribute('data-ending-style'))
+      await waitFor(() =>
+        expect(panel.style.getPropertyValue('--collapsible-panel-height')).toMatch(/px$/)
+      )
+      expect(panel.getAnimations().length).toBe(1)
     })
 
     it('still animates on reopen after being initially open when only open keyframes are defined', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      try {
-        const user = userEvent.setup()
-        render(StyledCollapsible, {
-          open: true,
-          keepMounted: true,
-          panelClass: 'animation-test-panel',
-          css: `
-            @keyframes panel-slide-down {
-              from { height: 0; }
-              to { height: var(--collapsible-panel-height); }
-            }
-            .animation-test-panel[data-open] { overflow: hidden; animation: panel-slide-down 100ms linear; }
-          `
-        })
+      const user = userEvent.setup()
+      render(StyledCollapsible, {
+        open: true,
+        keepMounted: true,
+        panelClass: 'animation-test-panel',
+        css: `
+          @keyframes panel-slide-down {
+            from { height: 0; }
+            to { height: var(--collapsible-panel-height); }
+          }
+          .animation-test-panel[data-open] { overflow: hidden; animation: panel-slide-down 100ms linear; }
+        `
+      })
 
-        const trigger = screen.getByRole('button', { name: 'Trigger' })
-        const panel = screen.getByTestId('panel')
+      const trigger = screen.getByRole('button', { name: 'Trigger' })
+      const panel = screen.getByTestId('panel')
 
-        expect(panel.getAnimations().length).toBe(0)
+      expect(panel.getAnimations().length).toBe(0)
 
-        await user.click(trigger)
-        await waitFor(() => expect(panel).toHaveAttribute('data-closed'))
+      await user.click(trigger)
+      await waitFor(() => expect(panel).toHaveAttribute('data-closed'))
 
-        await user.click(trigger)
-        await waitFor(() => {
-          expect(panel).toHaveAttribute('data-open')
-          expect(panel.getAnimations().length).toBe(1)
-        })
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await user.click(trigger)
+      await waitFor(() => {
+        expect(panel).toHaveAttribute('data-open')
+        expect(panel.getAnimations().length).toBe(1)
+      })
     })
   })
 

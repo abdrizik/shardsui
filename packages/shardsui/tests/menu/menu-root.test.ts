@@ -753,15 +753,8 @@ describe('<Menu.Root />', () => {
   })
 
   describe.skipIf(isJSDOM)('prop: onOpenChangeComplete with a real animation', () => {
-    let previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
-
     beforeEach(() => {
-      previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-    })
-
-    afterEach(() => {
-      globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
     })
 
     it('is called on open when the enter animation finishes', async () => {
@@ -1150,15 +1143,8 @@ describe('<Menu.Root />', () => {
   })
 
   describe.skipIf(isJSDOM)('Escape while the closing popup receives mouseleave', () => {
-    let previousAnimationsDisabled = false
-
     beforeEach(() => {
-      previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-    })
-
-    afterEach(() => {
-      globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
     })
 
     it('focuses the trigger after Escape', async () => {

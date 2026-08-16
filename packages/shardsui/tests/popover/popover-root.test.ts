@@ -1128,15 +1128,8 @@ describe('<Popover.Root />', () => {
   })
 
   describe.skipIf(isJSDOM)('hover close transitions', () => {
-    let previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
-
     beforeEach(() => {
-      previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-    })
-
-    afterEach(() => {
-      globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
     })
 
     it('reopens immediately when re-hovering the trigger during a hover close transition', async () => {
@@ -1162,15 +1155,8 @@ describe('<Popover.Root />', () => {
   })
 
   describe.skipIf(isJSDOM)('prop: onOpenChangeComplete with animations', () => {
-    let previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
-
     beforeEach(() => {
-      previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-    })
-
-    afterEach(() => {
-      globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
     })
 
     it('is called with true only after the enter animation finishes', async () => {

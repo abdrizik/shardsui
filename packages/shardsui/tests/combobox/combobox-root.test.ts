@@ -933,48 +933,8 @@ describe('<Combobox.Root />', () => {
     it.skipIf(isJSDOM)(
       'keeps the filtered content stable through the close animation',
       async () => {
-        const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
         globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
-        try {
-          const user = userEvent.setup()
-          render(AnimatedMultipleCombobox, {})
-
-          const trigger = screen.getByTestId('trigger')
-          await user.click(trigger)
-
-          const input = await screen.findByTestId('input')
-          await user.type(input, 'zz')
-
-          await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('No matches'))
-          expect(screen.queryByText('apple')).toBeNull()
-
-          await user.keyboard('{Escape}')
-
-          const popup = screen.getByTestId('popup')
-          await waitFor(() => expect(popup).toHaveAttribute('data-ending-style'))
-
-          expect(screen.getByRole('status')).toHaveTextContent('No matches')
-          expect(screen.queryByText('apple')).toBeNull()
-
-          await waitFor(() => expect(screen.queryByTestId('popup')).toBeNull())
-
-          await user.click(trigger)
-
-          const reopenedInput = await screen.findByTestId('input')
-          expect(reopenedInput).toHaveValue('')
-          expect(screen.getByText('apple')).not.toBeNull()
-        } finally {
-          globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-        }
-      }
-    )
-
-    it.skipIf(isJSDOM)('clears the deferred popup input when reopening mid-close', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
-      globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-
-      try {
         const user = userEvent.setup()
         render(AnimatedMultipleCombobox, {})
 
@@ -985,22 +945,52 @@ describe('<Combobox.Root />', () => {
         await user.type(input, 'zz')
 
         await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('No matches'))
+        expect(screen.queryByText('apple')).toBeNull()
 
         await user.keyboard('{Escape}')
 
         const popup = screen.getByTestId('popup')
         await waitFor(() => expect(popup).toHaveAttribute('data-ending-style'))
 
+        expect(screen.getByRole('status')).toHaveTextContent('No matches')
+        expect(screen.queryByText('apple')).toBeNull()
+
+        await waitFor(() => expect(screen.queryByTestId('popup')).toBeNull())
+
         await user.click(trigger)
 
-        await waitFor(() => expect(popup).not.toHaveAttribute('data-ending-style'))
-
-        expect(screen.getByTestId('input')).toHaveValue('')
+        const reopenedInput = await screen.findByTestId('input')
+        expect(reopenedInput).toHaveValue('')
         expect(screen.getByText('apple')).not.toBeNull()
-        expect(screen.getByText('banana')).not.toBeNull()
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
       }
+    )
+
+    it.skipIf(isJSDOM)('clears the deferred popup input when reopening mid-close', async () => {
+      globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
+
+      const user = userEvent.setup()
+      render(AnimatedMultipleCombobox, {})
+
+      const trigger = screen.getByTestId('trigger')
+      await user.click(trigger)
+
+      const input = await screen.findByTestId('input')
+      await user.type(input, 'zz')
+
+      await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('No matches'))
+
+      await user.keyboard('{Escape}')
+
+      const popup = screen.getByTestId('popup')
+      await waitFor(() => expect(popup).toHaveAttribute('data-ending-style'))
+
+      await user.click(trigger)
+
+      await waitFor(() => expect(popup).not.toHaveAttribute('data-ending-style'))
+
+      expect(screen.getByTestId('input')).toHaveValue('')
+      expect(screen.getByText('apple')).not.toBeNull()
+      expect(screen.getByText('banana')).not.toBeNull()
     })
 
     it('keeps the clicked item highlighted after deselecting every other value', async () => {
@@ -3805,61 +3795,51 @@ describe('<Combobox.Root />', () => {
     it.skipIf(isJSDOM)(
       'clears a single-select query when reopening during the close animation',
       async () => {
-        const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
         globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
-        try {
-          const user = userEvent.setup()
-          render(AnimatedMultipleCombobox, { multiple: false })
+        const user = userEvent.setup()
+        render(AnimatedMultipleCombobox, { multiple: false })
 
-          const trigger = screen.getByTestId('trigger')
-          await user.click(trigger)
-          await user.type(await screen.findByTestId('input'), 'zz')
-          await user.keyboard('{Escape}')
+        const trigger = screen.getByTestId('trigger')
+        await user.click(trigger)
+        await user.type(await screen.findByTestId('input'), 'zz')
+        await user.keyboard('{Escape}')
 
-          const popup = screen.getByTestId('popup')
-          await waitFor(() => expect(popup).toHaveAttribute('data-ending-style'))
+        const popup = screen.getByTestId('popup')
+        await waitFor(() => expect(popup).toHaveAttribute('data-ending-style'))
 
-          await user.click(trigger)
+        await user.click(trigger)
 
-          await waitFor(() => expect(popup).not.toHaveAttribute('data-ending-style'))
-          expect(screen.getByTestId('input')).toHaveValue('')
-          expect(screen.getByRole('option', { name: 'apple' })).not.toBeNull()
-          expect(screen.getByRole('option', { name: 'banana' })).not.toBeNull()
-        } finally {
-          globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-        }
+        await waitFor(() => expect(popup).not.toHaveAttribute('data-ending-style'))
+        expect(screen.getByTestId('input')).toHaveValue('')
+        expect(screen.getByRole('option', { name: 'apple' })).not.toBeNull()
+        expect(screen.getByRole('option', { name: 'banana' })).not.toBeNull()
       }
     )
 
     it.skipIf(isJSDOM)(
       'preserves a typed query when the input reopens the popup during the close animation',
       async () => {
-        const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
         globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
-        try {
-          const user = userEvent.setup()
-          render(AnimatedMultipleCombobox, { multiple: false })
+        const user = userEvent.setup()
+        render(AnimatedMultipleCombobox, { multiple: false })
 
-          await user.click(screen.getByTestId('trigger'))
-          const input = await screen.findByTestId('input')
-          await user.type(input, 'ap')
-          await user.keyboard('{Escape}')
+        await user.click(screen.getByTestId('trigger'))
+        const input = await screen.findByTestId('input')
+        await user.type(input, 'ap')
+        await user.keyboard('{Escape}')
 
-          const popup = screen.getByTestId('popup')
-          await waitFor(() => expect(popup).toHaveAttribute('data-ending-style'))
+        const popup = screen.getByTestId('popup')
+        await waitFor(() => expect(popup).toHaveAttribute('data-ending-style'))
 
-          input.focus()
-          await user.type(input, 'b', { skipClick: true })
+        input.focus()
+        await user.type(input, 'b', { skipClick: true })
 
-          await waitFor(() => expect(popup).not.toHaveAttribute('data-ending-style'))
-          expect(input).toHaveValue('apb')
-          expect(screen.getByRole('status')).toHaveTextContent('No matches')
-          expect(screen.queryByRole('option')).toBeNull()
-        } finally {
-          globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-        }
+        await waitFor(() => expect(popup).not.toHaveAttribute('data-ending-style'))
+        expect(input).toHaveValue('apb')
+        expect(screen.getByRole('status')).toHaveTextContent('No matches')
+        expect(screen.queryByRole('option')).toBeNull()
       }
     )
 

@@ -156,7 +156,6 @@ describe('<Avatar.Fallback />', () => {
       `
       document.head.appendChild(style)
 
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
       try {
         const { rerender } = render(AnimatedFallbackAvatar, { src: undefined })
@@ -171,7 +170,6 @@ describe('<Avatar.Fallback />', () => {
           expect(screen.queryByTestId('fallback')).toBeNull()
         })
       } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
         document.head.removeChild(style)
       }
     })

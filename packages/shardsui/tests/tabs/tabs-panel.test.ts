@@ -64,49 +64,39 @@ describe('<Tabs.Panel />', () => {
 
     it('triggers enter animation via data-starting-style when mounting', async () => {
       const user = userEvent.setup()
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
       let transitionFinished = false
 
-      try {
-        render(AnimatedPanelTabs, {
-          css: TRANSITION_CSS,
-          ontransitionend: () => {
-            transitionFinished = true
-          }
-        })
+      render(AnimatedPanelTabs, {
+        css: TRANSITION_CSS,
+        ontransitionend: () => {
+          transitionFinished = true
+        }
+      })
 
-        expect(screen.queryByTestId('panel-two')).toBeNull()
+      expect(screen.queryByTestId('panel-two')).toBeNull()
 
-        await user.click(screen.getByRole('tab', { name: 'Two' }))
+      await user.click(screen.getByRole('tab', { name: 'Two' }))
 
-        await waitFor(() => expect(transitionFinished).toBe(true))
-        expect(screen.getByTestId('panel-two')).not.toBeNull()
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await waitFor(() => expect(transitionFinished).toBe(true))
+      expect(screen.getByTestId('panel-two')).not.toBeNull()
     })
 
     it('applies data-ending-style before unmount', async () => {
       const user = userEvent.setup()
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
-      try {
-        render(AnimatedPanelTabs, { value: 'two', css: ANIMATION_CSS })
+      render(AnimatedPanelTabs, { value: 'two', css: ANIMATION_CSS })
 
-        await waitFor(() => expect(screen.getByTestId('panel-two')).toBeInTheDocument())
+      await waitFor(() => expect(screen.getByTestId('panel-two')).toBeInTheDocument())
 
-        await user.click(screen.getByRole('tab', { name: 'One' }))
+      await user.click(screen.getByRole('tab', { name: 'One' }))
 
-        await waitFor(() =>
-          expect(screen.getByTestId('panel-two')).toHaveAttribute('data-ending-style')
-        )
-        await waitFor(() => expect(screen.queryByTestId('panel-two')).toBeNull())
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await waitFor(() =>
+        expect(screen.getByTestId('panel-two')).toHaveAttribute('data-ending-style')
+      )
+      await waitFor(() => expect(screen.queryByTestId('panel-two')).toBeNull())
     })
   })
 })

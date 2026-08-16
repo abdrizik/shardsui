@@ -443,7 +443,6 @@ describe('<PreviewCard.Root />', () => {
 
   describe.skipIf(isJSDOM)('detached trigger close-transition timing', () => {
     const injectedStyles: HTMLStyleElement[] = []
-    let previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
 
     function injectPopupCloseAnimation(name: string) {
       const style = document.createElement('style')
@@ -458,12 +457,10 @@ describe('<PreviewCard.Root />', () => {
     }
 
     beforeEach(() => {
-      previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
     })
 
     afterEach(() => {
-      globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
       injectedStyles.forEach((style) => style.remove())
       injectedStyles.length = 0
     })

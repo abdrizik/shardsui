@@ -283,44 +283,39 @@ describe('<Tooltip.Provider />', () => {
     })
 
     it.skipIf(isJSDOM)('drops data-instant again once the adjacent tooltip closes', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      try {
-        const user = userEvent.setup({ delay: null })
-        render(TooltipGroupAnimated)
+      const user = userEvent.setup({ delay: null })
+      render(TooltipGroupAnimated)
 
-        const firstTrigger = screen.getByTestId('trigger-1')
-        const secondTrigger = screen.getByTestId('trigger-2')
+      const firstTrigger = screen.getByTestId('trigger-1')
+      const secondTrigger = screen.getByTestId('trigger-2')
 
-        await user.hover(firstTrigger)
+      await user.hover(firstTrigger)
 
-        const firstPopup = await screen.findByTestId('popup-1')
-        expect(firstPopup.dataset.instant).toBe(undefined)
+      const firstPopup = await screen.findByTestId('popup-1')
+      expect(firstPopup.dataset.instant).toBe(undefined)
 
-        await user.unhover(firstTrigger)
-        await user.hover(secondTrigger)
+      await user.unhover(firstTrigger)
+      await user.hover(secondTrigger)
 
-        const secondPopup = await screen.findByTestId('popup-2')
+      const secondPopup = await screen.findByTestId('popup-2')
 
-        await waitFor(() => {
-          expect(secondPopup.dataset.instant).toBe('delay')
-          expect(secondPopup.getAnimations().length).toBe(0)
-        })
+      await waitFor(() => {
+        expect(secondPopup.dataset.instant).toBe('delay')
+        expect(secondPopup.getAnimations().length).toBe(0)
+      })
 
-        await waitFor(() => {
-          expect(secondPopup.dataset.startingStyle).toBe(undefined)
-        })
+      await waitFor(() => {
+        expect(secondPopup.dataset.startingStyle).toBe(undefined)
+      })
 
-        await user.unhover(secondTrigger)
+      await user.unhover(secondTrigger)
 
-        await waitFor(() => {
-          expect(secondPopup.dataset.endingStyle).toBe('')
-          expect(secondPopup.dataset.instant).toBe(undefined)
-          expect(secondPopup.getAnimations().length).toBe(1)
-        })
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await waitFor(() => {
+        expect(secondPopup.dataset.endingStyle).toBe('')
+        expect(secondPopup.dataset.instant).toBe(undefined)
+        expect(secondPopup.getAnimations().length).toBe(1)
+      })
     })
   })
 })

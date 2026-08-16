@@ -59,35 +59,30 @@ describe('<Tooltip.Viewport />', () => {
 
   describe.skipIf(isJSDOM)('Viewport', () => {
     it('keeps the latest transition active during rapid trigger changes', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      try {
-        render(ViewportRapid)
+      render(ViewportRapid)
 
-        const trigger1 = screen.getByTestId('trigger1')
-        const trigger2 = screen.getByTestId('trigger2')
-        const trigger3 = screen.getByTestId('trigger3')
+      const trigger1 = screen.getByTestId('trigger1')
+      const trigger2 = screen.getByTestId('trigger2')
+      const trigger3 = screen.getByTestId('trigger3')
 
-        trigger1.focus()
-        await waitSingleFrame()
-        trigger2.focus()
+      trigger1.focus()
+      await waitSingleFrame()
+      trigger2.focus()
 
-        await waitFor(() => {
-          const container = screen.getByText('Content 2').closest('[data-current]')
-          expect(container?.getAnimations().length).toBe(1)
-        })
-        await waitSingleFrame()
+      await waitFor(() => {
+        const container = screen.getByText('Content 2').closest('[data-current]')
+        expect(container?.getAnimations().length).toBe(1)
+      })
+      await waitSingleFrame()
 
-        trigger3.focus()
-        await waitSingleFrame()
+      trigger3.focus()
+      await waitSingleFrame()
 
-        const currentContainer = screen.getByText('Content 3').closest('[data-current]')
-        expect(currentContainer?.getAnimations().length).toBe(1)
-        expect(screen.getByTestId('viewport')).toHaveAttribute('data-transitioning')
-        expect(document.querySelector('[data-previous]')).toHaveTextContent('Content 2')
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      const currentContainer = screen.getByText('Content 3').closest('[data-current]')
+      expect(currentContainer?.getAnimations().length).toBe(1)
+      expect(screen.getByTestId('viewport')).toHaveAttribute('data-transitioning')
+      expect(document.querySelector('[data-previous]')).toHaveTextContent('Content 2')
     })
 
     it.each([
@@ -157,39 +152,34 @@ describe('<Tooltip.Viewport />', () => {
 
   describe.skipIf(isJSDOM)('morphing containers', () => {
     it('marks the previous container inert and removes it after the transition', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      try {
-        render(ViewportMorph)
+      render(ViewportMorph)
 
-        const trigger1 = screen.getByTestId('trigger1')
-        const trigger2 = screen.getByTestId('trigger2')
+      const trigger1 = screen.getByTestId('trigger1')
+      const trigger2 = screen.getByTestId('trigger2')
 
-        trigger1.focus()
-        await waitFor(() => expect(screen.getByText('Content 0')).toBeVisible())
+      trigger1.focus()
+      await waitFor(() => expect(screen.getByText('Content 0')).toBeVisible())
 
-        trigger2.focus()
+      trigger2.focus()
 
-        let previousContainer: HTMLElement | null = null
-        await waitFor(() => {
-          previousContainer = document.querySelector('[data-previous]')
-          expect(previousContainer).not.toBeNull()
-        })
+      let previousContainer: HTMLElement | null = null
+      await waitFor(() => {
+        previousContainer = document.querySelector('[data-previous]')
+        expect(previousContainer).not.toBeNull()
+      })
 
-        expect(previousContainer!).toHaveAttribute('inert')
-        expect(previousContainer!.textContent).toBe('Content 0')
+      expect(previousContainer!).toHaveAttribute('inert')
+      expect(previousContainer!.textContent).toBe('Content 0')
 
-        const nextContainer = document.querySelector('[data-current]')
-        expect(nextContainer).not.toBeNull()
-        expect(nextContainer!.textContent).toBe('Content 1')
+      const nextContainer = document.querySelector('[data-current]')
+      expect(nextContainer).not.toBeNull()
+      expect(nextContainer!.textContent).toBe('Content 1')
 
-        await waitFor(() => expect(document.querySelector('[data-previous]')).toBeNull())
+      await waitFor(() => expect(document.querySelector('[data-previous]')).toBeNull())
 
-        expect(document.querySelector('[data-current]')).toBeVisible()
-        expect(await screen.findByText('Content 1')).toBeVisible()
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      expect(document.querySelector('[data-current]')).toBeVisible()
+      expect(await screen.findByText('Content 1')).toBeVisible()
     })
   })
 })

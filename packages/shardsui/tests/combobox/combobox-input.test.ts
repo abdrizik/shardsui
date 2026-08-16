@@ -183,27 +183,22 @@ describe('<Combobox.Input />', () => {
     it.skipIf(isJSDOM)(
       'does not clear the value on Escape while the popup is still mounted',
       async () => {
-        const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
         globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
-        try {
-          const user = userEvent.setup()
-          const handleValueChange = vi.fn()
+        const user = userEvent.setup()
+        const handleValueChange = vi.fn()
 
-          render(EscapeAnimationCombobox, { onValueChange: handleValueChange })
+        render(EscapeAnimationCombobox, { onValueChange: handleValueChange })
 
-          screen.getByTestId('input').focus()
-          await user.keyboard('{Escape}')
+        screen.getByTestId('input').focus()
+        await user.keyboard('{Escape}')
 
-          const popup = screen.getByTestId('popup')
-          await waitFor(() => expect(popup).toHaveAttribute('data-ending-style'))
+        const popup = screen.getByTestId('popup')
+        await waitFor(() => expect(popup).toHaveAttribute('data-ending-style'))
 
-          await user.keyboard('{Escape}')
+        await user.keyboard('{Escape}')
 
-          expect(handleValueChange.mock.calls.length).toBe(0)
-        } finally {
-          globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-        }
+        expect(handleValueChange.mock.calls.length).toBe(0)
       }
     )
 

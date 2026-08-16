@@ -181,7 +181,6 @@ describe('<Combobox.Clear />', () => {
 
   describe.skipIf(isJSDOM)('animations', () => {
     it('runs the enter transition when the button becomes visible', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
       let transitionFinished = false
@@ -189,34 +188,29 @@ describe('<Combobox.Clear />', () => {
         transitionFinished = true
       }
 
-      try {
-        const user = userEvent.setup()
-        render(ClearAnimationCombobox, { ontransitionend: notifyTransitionFinished })
+      const user = userEvent.setup()
+      render(ClearAnimationCombobox, { ontransitionend: notifyTransitionFinished })
 
-        expect(screen.queryByTestId('clear')).toBe(null)
+      expect(screen.queryByTestId('clear')).toBe(null)
 
-        await user.click(screen.getByTestId('input'))
-        await waitFor(() => expect(screen.getByRole('listbox')).toBeInTheDocument())
+      await user.click(screen.getByTestId('input'))
+      await waitFor(() => expect(screen.getByRole('listbox')).toBeInTheDocument())
 
-        await new Promise<void>((resolve) =>
-          requestAnimationFrame(() => {
-            fireEvent.click(screen.getByRole('option', { name: 'a' }))
-            resolve()
-          })
-        )
-
-        await waitFor(() => {
-          expect(transitionFinished).toBe(true)
+      await new Promise<void>((resolve) =>
+        requestAnimationFrame(() => {
+          fireEvent.click(screen.getByRole('option', { name: 'a' }))
+          resolve()
         })
+      )
 
-        expect(screen.getByTestId('clear')).not.toBe(null)
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await waitFor(() => {
+        expect(transitionFinished).toBe(true)
+      })
+
+      expect(screen.getByTestId('clear')).not.toBe(null)
     })
 
     it('runs the exit transition before the button goes away', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
       let transitionFinished = false
@@ -224,25 +218,21 @@ describe('<Combobox.Clear />', () => {
         transitionFinished = true
       }
 
-      try {
-        const user = userEvent.setup()
-        render(ClearAnimationCombobox, {
-          value: 'a',
-          keepMounted: true,
-          ontransitionend: notifyTransitionFinished
-        })
+      const user = userEvent.setup()
+      render(ClearAnimationCombobox, {
+        value: 'a',
+        keepMounted: true,
+        ontransitionend: notifyTransitionFinished
+      })
 
-        const clear = screen.getByTestId('clear')
-        expect(clear).not.toBe(null)
+      const clear = screen.getByTestId('clear')
+      expect(clear).not.toBe(null)
 
-        await user.click(clear)
+      await user.click(clear)
 
-        await waitFor(() => {
-          expect(transitionFinished).toBe(true)
-        })
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await waitFor(() => {
+        expect(transitionFinished).toBe(true)
+      })
     })
   })
 })

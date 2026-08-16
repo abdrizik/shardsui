@@ -77,7 +77,6 @@ describe('<PreviewCard.Viewport />', () => {
 
   describe.skipIf(isJSDOM)('morphing with animations', () => {
     const injectedStyles: HTMLStyleElement[] = []
-    let previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
 
     const morphStyles = `
       [data-transitioning] [data-previous] {
@@ -97,7 +96,6 @@ describe('<PreviewCard.Viewport />', () => {
     `
 
     beforeEach(() => {
-      previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
       const style = document.createElement('style')
@@ -107,7 +105,6 @@ describe('<PreviewCard.Viewport />', () => {
     })
 
     afterEach(() => {
-      globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
       injectedStyles.forEach((style) => style.remove())
       injectedStyles.length = 0
     })

@@ -928,15 +928,8 @@ describe('<Select.Root />', () => {
     })
 
     describe('with a real animation', () => {
-      let previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
-
       beforeEach(() => {
-        previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
         globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      })
-
-      afterEach(() => {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
       })
 
       it('is called on open when the enter animation finishes', async () => {
@@ -1370,7 +1363,6 @@ describe('<Select.Root />', () => {
 
   describe.skipIf(isJSDOM)('interaction type tracking', () => {
     it('keeps touch interaction type when reopening quickly after close', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
       let nextFrameId = 0
@@ -1392,7 +1384,6 @@ describe('<Select.Root />', () => {
       onTestFinished(() => {
         requestAnimationFrameSpy.mockRestore()
         cancelAnimationFrameSpy.mockRestore()
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
       })
 
       render(TouchReopen)
@@ -1453,11 +1444,8 @@ describe('<Select.Root />', () => {
     })
 
     it('keeps the touch open method through the close transition', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      onTestFinished(() => {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      })
+      onTestFinished(() => {})
 
       render(TouchExitArrows)
 
@@ -1524,11 +1512,8 @@ describe('<Select.Root />', () => {
     })
 
     it('recomputes positioning before the popup becomes visible again after touch dismiss', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      onTestFinished(() => {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      })
+      onTestFinished(() => {})
 
       const onOpenChangeComplete = vi.fn()
       render(SelectTouchReposition, { onOpenChangeComplete })
