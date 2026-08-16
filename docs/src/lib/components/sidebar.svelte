@@ -21,7 +21,7 @@
     </h1>
     <p>
       Keyboard interaction, focus management, and ARIA on every part. You compose them and bring the
-      CSS. Inspired by
+      CSS. Adapted from
       <a href="https://base-ui.com" rel="external noopener noreferrer">Base&nbsp;UI</a>.
     </p>
     <div>
