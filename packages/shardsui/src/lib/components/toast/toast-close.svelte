@@ -4,7 +4,11 @@
   import { chain } from '$lib/internal/chain'
   import { ToastProviderContext, ToastContext, type ToastCloseState } from './context'
 
-  type Props = PartProps<[ToastCloseState], 'button'> & {
+  type Props = PartProps<
+    [ToastCloseState],
+    'button',
+    'onblur' | 'onclick' | 'onfocus' | 'onkeydown' | 'onkeyup'
+  > & {
     disabled?: boolean
   }
 

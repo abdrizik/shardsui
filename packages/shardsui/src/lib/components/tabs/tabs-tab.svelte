@@ -9,7 +9,11 @@
   import { TabsListContext, TabsContext, type TabsTabState } from './context'
   import type { TabsValue } from './tabs.svelte'
 
-  type Props = PartProps<[TabsTabState], 'button'> & {
+  type Props = PartProps<
+    [TabsTabState],
+    'button',
+    'onclick' | 'onfocus' | 'onkeydown' | 'onkeyup' | 'onpointerdown'
+  > & {
     value: TabsValue
     disabled?: boolean
   }

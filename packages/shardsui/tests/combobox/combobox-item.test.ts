@@ -199,7 +199,7 @@ describe('<Combobox.Item />', () => {
 
     it('does not select the item when onClick prevents the ShardsUI handler', async () => {
       const handleClick = vi.fn((event) => {
-        ;(event as MouseEvent & { preventShardsUIHandler(): void }).preventShardsUIHandler()
+        event.preventShardsUIHandler()
       })
       const user = userEvent.setup()
       render(ComboboxItemPreventFixture, { onItemClick: handleClick })

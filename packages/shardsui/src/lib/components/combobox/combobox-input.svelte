@@ -11,7 +11,18 @@
   import { ComboboxPositionerContext, ComboboxContext } from './context'
 
   type Props = Omit<
-    PartProps<[], 'input'>,
+    PartProps<
+      [],
+      'input',
+      | 'onblur'
+      | 'onclick'
+      | 'oncompositionend'
+      | 'oncompositionstart'
+      | 'onfocus'
+      | 'oninput'
+      | 'onkeydown'
+      | 'onpointerdown'
+    >,
     'children' | 'placeholder' | 'disabled' | 'autocomplete'
   > & {
     as?: 'input' | 'textarea'

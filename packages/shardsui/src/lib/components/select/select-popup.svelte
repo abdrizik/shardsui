@@ -17,7 +17,11 @@
   import { REASONS } from '$lib/internal/reasons'
   import { mergeStyle } from '$lib/internal/merge-style'
 
-  type Props = PartProps<[SelectPopupState]> & {
+  type Props = PartProps<
+    [SelectPopupState],
+    'div',
+    'onfocusout' | 'onkeydown' | 'onpointermove'
+  > & {
     finalFocus?: FocusTarget
   }
 

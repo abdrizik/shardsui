@@ -10,7 +10,7 @@
     type NavigationMenuLinkState
   } from './context'
 
-  type Props = PartProps<[NavigationMenuLinkState], 'a'> & {
+  type Props = PartProps<[NavigationMenuLinkState], 'a', 'onblur' | 'onclick' | 'onfocus'> & {
     active?: boolean
     closeOnClick?: boolean
   }

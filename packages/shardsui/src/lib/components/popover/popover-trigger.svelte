@@ -15,7 +15,11 @@
   import { PopoverContext, type PopoverTriggerState } from './context'
   import type { PopoverRoot } from './popover.svelte'
 
-  type Props = PartProps<[PopoverTriggerState], 'button'> & {
+  type Props = PartProps<
+    [PopoverTriggerState],
+    'button',
+    'onclick' | 'onkeydown' | 'onkeyup' | 'onpointerdown'
+  > & {
     handle?: PopoverHandle<Payload>
     disabled?: boolean
     openOnHover?: boolean

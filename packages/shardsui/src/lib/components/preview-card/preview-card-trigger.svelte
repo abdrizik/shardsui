@@ -12,7 +12,11 @@
   import { PreviewCardContext, type PreviewCardTriggerState } from './context'
   import { CLOSE_DELAY, OPEN_DELAY, type PreviewCardRoot } from './preview-card.svelte'
 
-  type Props = PartProps<[PreviewCardTriggerState], 'a'> & {
+  type Props = PartProps<
+    [PreviewCardTriggerState],
+    'a',
+    'onblur' | 'onfocus' | 'onmouseenter' | 'onmouseleave' | 'onmousemove'
+  > & {
     delay?: number
     closeDelay?: number
     payload?: Payload

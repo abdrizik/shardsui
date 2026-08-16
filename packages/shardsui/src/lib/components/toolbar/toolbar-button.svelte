@@ -6,7 +6,7 @@
   import type { PartProps } from '$lib/internal/types'
   import { ToolbarGroupContext, ToolbarContext, type ToolbarRootState } from './context'
 
-  type Props = PartProps<[ToolbarRootState], 'button'> & {
+  type Props = PartProps<[ToolbarRootState], 'button', 'onfocus' | 'onkeydown' | 'onkeyup'> & {
     disabled?: boolean
   }
 

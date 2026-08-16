@@ -15,7 +15,18 @@
     type ComboboxItemState
   } from './context'
 
-  type Props = PartProps<[ComboboxItemState]> & {
+  type Props = PartProps<
+    [ComboboxItemState],
+    'div',
+    | 'onclick'
+    | 'onkeydown'
+    | 'onkeyup'
+    | 'onmousedown'
+    | 'onmousemove'
+    | 'onmouseup'
+    | 'onpointerdown'
+    | 'onpointerleave'
+  > & {
     id?: never
     value?: unknown
     index?: number

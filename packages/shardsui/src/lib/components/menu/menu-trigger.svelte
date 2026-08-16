@@ -11,7 +11,17 @@
   import type { MenuRoot } from './menu.svelte'
   import { MenuTrigger } from './trigger.svelte'
 
-  type Props = PartProps<[MenuTriggerState], 'button'> & {
+  type Props = PartProps<
+    [MenuTriggerState],
+    'button',
+    | 'onclick'
+    | 'onfocus'
+    | 'onkeydown'
+    | 'onkeyup'
+    | 'onmousedown'
+    | 'onmousemove'
+    | 'onpointerdown'
+  > & {
     disabled?: boolean
     openOnHover?: boolean
     delay?: number

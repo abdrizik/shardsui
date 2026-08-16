@@ -12,7 +12,7 @@
   import type { PartProps } from '$lib/internal/types'
   import { NavigationMenuPositionerContext, NavigationMenuContext } from './context'
 
-  type Props = PartProps
+  type Props = PartProps<[], 'div', 'onfocusout'>
 
   const uid = $props.id()
 

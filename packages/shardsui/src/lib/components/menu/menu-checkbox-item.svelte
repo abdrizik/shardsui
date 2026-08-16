@@ -6,7 +6,17 @@
   import { MenuCheckboxItemContext, type MenuCheckableItemState } from './context'
   import { MenuItemBase } from './item-base.svelte'
 
-  type Props = PartProps<[MenuCheckableItemState]> & {
+  type Props = PartProps<
+    [MenuCheckableItemState],
+    'div',
+    | 'onclick'
+    | 'onkeydown'
+    | 'onkeyup'
+    | 'onmousemove'
+    | 'onmouseup'
+    | 'onpointerdown'
+    | 'onpointerleave'
+  > & {
     checked?: boolean
     onCheckedChange?: (checked: boolean) => void
     disabled?: boolean

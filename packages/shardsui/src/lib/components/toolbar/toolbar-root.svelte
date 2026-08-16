@@ -5,7 +5,7 @@
   import type { Orientation, PartProps } from '$lib/internal/types'
   import { ToolbarContext, type ToolbarRootState } from './context'
 
-  type Props = PartProps<[ToolbarRootState]> & {
+  type Props = PartProps<[ToolbarRootState], 'div', 'onfocusin' | 'onkeydown'> & {
     disabled?: boolean
     orientation?: Orientation
     loopFocus?: boolean

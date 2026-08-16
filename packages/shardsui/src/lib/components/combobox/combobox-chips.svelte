@@ -6,7 +6,7 @@
   import { ComboboxContext, ComboboxChipsContext } from './context'
   import { focusInputOnPress } from './focus-input-on-press'
 
-  type Props = PartProps
+  type Props = PartProps<[], 'div', 'onmousedown'>
 
   let { as = 'div', ref = $bindable(null), onmousedown, children, ...rest }: Props = $props()
 

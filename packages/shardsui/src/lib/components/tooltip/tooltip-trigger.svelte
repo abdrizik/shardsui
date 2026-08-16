@@ -17,7 +17,17 @@
   import type { TooltipHandle } from './handle.svelte'
   import type { TooltipRoot } from './tooltip.svelte'
 
-  type Props = PartProps<[TooltipTriggerState], 'button'> & {
+  type Props = PartProps<
+    [TooltipTriggerState],
+    'button',
+    | 'onblur'
+    | 'onclick'
+    | 'onfocus'
+    | 'onmouseleave'
+    | 'onmousemove'
+    | 'onpointerdown'
+    | 'onpointerenter'
+  > & {
     handle?: TooltipHandle<Payload>
     disabled?: boolean
     delay?: number

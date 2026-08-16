@@ -15,7 +15,7 @@
   import ComboboxInternalDismissButton from './combobox-internal-dismiss-button.svelte'
   import { ComboboxPositionerContext, ComboboxContext, type ComboboxPopupState } from './context'
 
-  type Props = PartProps<[ComboboxPopupState]> & {
+  type Props = PartProps<[ComboboxPopupState], 'div', 'onfocusin'> & {
     initialFocus?: FocusTarget
     finalFocus?: FocusTarget
   }

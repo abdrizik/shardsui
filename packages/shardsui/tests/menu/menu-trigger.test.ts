@@ -197,7 +197,7 @@ describe('<Menu.Trigger />', () => {
       const user = userEvent.setup()
       render(BasicMenu, {
         triggerOnMouseDown: (event) => {
-          ;(event as MouseEvent & { preventShardsUIHandler(): void }).preventShardsUIHandler()
+          event.preventShardsUIHandler()
         }
       })
 
@@ -210,7 +210,7 @@ describe('<Menu.Trigger />', () => {
       const user = userEvent.setup()
       render(BasicMenu, {
         triggerOnClick: (event) => {
-          ;(event as MouseEvent & { preventShardsUIHandler(): void }).preventShardsUIHandler()
+          event.preventShardsUIHandler()
         }
       })
 

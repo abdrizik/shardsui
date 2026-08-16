@@ -14,7 +14,11 @@
   import { RadioGroupContext, type RadioGroupState } from './context'
   import { RadioGroupRoot } from './radio-group.svelte'
 
-  type Props = PartProps<[RadioGroupState]> & {
+  type Props = PartProps<
+    [RadioGroupState],
+    'div',
+    'onfocusin' | 'onfocusout' | 'onkeydown' | 'onkeydowncapture'
+  > & {
     value?: Value
     disabled?: boolean
     readOnly?: boolean

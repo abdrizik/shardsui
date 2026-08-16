@@ -6,12 +6,16 @@
   import { mergeDescribedBy } from '$lib/internal/labelable.svelte'
   import type { Attachment } from 'svelte/attachments'
   import type { HTMLAttributes, HTMLInputAttributes, HTMLTextareaAttributes } from 'svelte/elements'
+  import type { WithPreventable } from '$lib/internal/types'
   import { FieldContext } from './context'
   import { getFieldAriaInvalid, getFieldStateAttrs } from './field.svelte'
 
   type Control = HTMLInputElement | HTMLTextAreaElement
 
-  type Props = Omit<HTMLAttributes<Control>, 'children' | 'id'> &
+  type Props = Omit<
+    WithPreventable<HTMLAttributes<Control>, 'onfocus' | 'onblur' | 'oninput' | 'onkeydown'>,
+    'children' | 'id'
+  > &
     Omit<HTMLInputAttributes, keyof HTMLAttributes<Control>> &
     Omit<HTMLTextareaAttributes, keyof HTMLAttributes<Control>> & {
       as?: 'input' | 'textarea'

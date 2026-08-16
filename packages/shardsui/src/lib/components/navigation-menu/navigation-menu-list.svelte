@@ -13,7 +13,7 @@
     type NavigationMenuListState
   } from './context'
 
-  type Props = PartProps<[NavigationMenuListState], 'ul'>
+  type Props = PartProps<[NavigationMenuListState], 'ul', 'onkeydown'>
 
   let { as = 'ul', ref = $bindable(null), onkeydown, children, ...rest }: Props = $props()
 

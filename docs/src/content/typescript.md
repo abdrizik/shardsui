@@ -189,6 +189,8 @@ function onsubmit(event: SubmitEvent) {
 }
 ```
 
+On the handlers a part runs its own logic after, the event also carries `preventShardsUIHandler()`. Annotate those with `MouseEvent & PreventableEvent` (or whichever DOM event applies) when the handler lives away from the markup — see [Composition](/svelte/composition#merging-your-own-attributes).
+
 ## Imperative handles
 
 When a trigger and its content can't sit together in the markup, detach them with a handle. `new Dialog.Handle()` constructs one; the type argument makes the handle's own methods generic over the payload you carry:
@@ -295,3 +297,5 @@ A few parts hand you richer objects and export the types to match.
 The toast object your toast content receives carries its `id`, `title`, `description`, `priority`, transition status and your own `data`; it is `ToastObject<Data>`, exported from `@shardsui/svelte/toast` along with `ToastManagerAddOptions`, `ToastManagerUpdateOptions` and `ToastManagerPromiseOptions` for the `Toast.Manager` queue — see [Toast](/svelte/toast).
 
 `Combobox.createFilter` returns a `ComboboxFilter` and takes `ComboboxFilterOptions`, both exported from `@shardsui/svelte/combobox` — see [Combobox](/svelte/combobox).
+
+`PreventableEvent` is exported from `@shardsui/svelte`. Intersect it with a DOM event to type a handler that calls `preventShardsUIHandler()` — see [Composition](/svelte/composition#merging-your-own-attributes).

@@ -21,7 +21,11 @@
   import type { Attachment } from 'svelte/attachments'
   import { CheckboxContext, type CheckboxState } from './context'
 
-  type Props = PartProps<[CheckboxState], 'span'> & {
+  type Props = PartProps<
+    [CheckboxState],
+    'span',
+    'onblur' | 'onclick' | 'onfocus' | 'onkeydown' | 'onkeyup'
+  > & {
     as?: 'span' | 'button'
     checked?: boolean
     disabled?: boolean

@@ -13,7 +13,19 @@
   } from './context'
   import { NavigationMenuTrigger } from './trigger.svelte'
 
-  type Props = PartProps<[NavigationMenuTriggerState], 'button'> & {
+  type Props = PartProps<
+    [NavigationMenuTriggerState],
+    'button',
+    | 'onblur'
+    | 'onclick'
+    | 'onfocus'
+    | 'onkeydown'
+    | 'onkeyup'
+    | 'onmouseenter'
+    | 'onmousemove'
+    | 'onpointerdown'
+    | 'onpointerenter'
+  > & {
     disabled?: boolean
   }
 

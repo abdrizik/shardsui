@@ -8,7 +8,7 @@
   import { FieldItemContext, FieldContext, type FieldRootState } from './context'
   import { getFieldState, getFieldStateAttrs } from './field.svelte'
 
-  type Props = PartProps<[FieldRootState], 'label'>
+  type Props = PartProps<[FieldRootState], 'label', 'onclick' | 'onmousedown' | 'onpointerdown'>
 
   const uid = $props.id()
 

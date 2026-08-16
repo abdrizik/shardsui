@@ -13,7 +13,18 @@
   import { isVirtualPointerEvent } from '$lib/internal/floating/event'
   import { attachElement } from '$lib/internal/attach-element'
 
-  type Props = PartProps<[MenuSubmenuTriggerState]> & {
+  type Props = PartProps<
+    [MenuSubmenuTriggerState],
+    'div',
+    | 'onblur'
+    | 'onclick'
+    | 'onkeydown'
+    | 'onkeyup'
+    | 'onmousedown'
+    | 'onmousemove'
+    | 'onpointerdown'
+    | 'onpointerleave'
+  > & {
     disabled?: boolean
     delay?: number
     closeDelay?: number

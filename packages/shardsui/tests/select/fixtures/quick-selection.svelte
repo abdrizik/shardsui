@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { PreventableEvent } from '$lib'
   import { Select } from '$lib/components/select'
 
   let {
@@ -8,7 +9,7 @@
     oneDisabled = false
   }: {
     highlightItemOnHover?: boolean
-    onItemOneClick?: (event: MouseEvent) => void
+    onItemOneClick?: (event: MouseEvent & PreventableEvent) => void
     onValueChange?: (value: unknown) => void
     oneDisabled?: boolean
   } = $props()

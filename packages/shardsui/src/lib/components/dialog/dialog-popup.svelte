@@ -9,7 +9,7 @@
   import type { PartProps } from '$lib/internal/types'
   import { DialogPortalContext, DialogContext, type DialogPopupState } from './context'
 
-  type Props = PartProps<[DialogPopupState]> & {
+  type Props = PartProps<[DialogPopupState], 'div', 'onkeydown'> & {
     initialFocus?: FocusTarget
     finalFocus?: FocusTarget
   }

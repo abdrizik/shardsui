@@ -30,7 +30,11 @@
   import { TriggerFocusGuards } from '$lib/internal/floating/trigger-focus-guards.svelte'
   import { REASONS } from '$lib/internal/reasons'
 
-  type Props = PartProps<[SelectTriggerState], 'button'> & {
+  type Props = PartProps<
+    [SelectTriggerState],
+    'button',
+    'onblur' | 'onclick' | 'onfocus' | 'onfocusout' | 'onkeydown' | 'onkeyup'
+  > & {
     disabled?: boolean
   }
 

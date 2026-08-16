@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { PreventableEvent } from '$lib'
   import { Combobox } from '$lib/components/combobox'
 
   let {
@@ -8,9 +9,9 @@
     onItemPointerLeave = undefined
   }: {
     open?: boolean
-    onItemClick?: (event: MouseEvent) => void
-    onItemMouseUp?: (event: MouseEvent) => void
-    onItemPointerLeave?: (event: PointerEvent) => void
+    onItemClick?: (event: MouseEvent & PreventableEvent) => void
+    onItemMouseUp?: (event: MouseEvent & PreventableEvent) => void
+    onItemPointerLeave?: (event: PointerEvent & PreventableEvent) => void
   } = $props()
 </script>
 

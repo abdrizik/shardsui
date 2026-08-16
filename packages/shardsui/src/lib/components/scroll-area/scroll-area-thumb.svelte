@@ -9,7 +9,11 @@
     type ScrollAreaThumbState
   } from './context'
 
-  type Props = PartProps<[ScrollAreaThumbState]>
+  type Props = PartProps<
+    [ScrollAreaThumbState],
+    'div',
+    'onpointercancel' | 'onpointerdown' | 'onpointermove' | 'onpointerup'
+  >
 
   let {
     as = 'div',

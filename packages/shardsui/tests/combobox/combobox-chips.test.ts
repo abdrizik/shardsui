@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
 import { expect, vi } from 'vitest'
+import type { PreventableEvent } from '$lib'
 import ChipsCombobox from './fixtures/chips-combobox.svelte'
 import ChipsPopupInputCombobox from './fixtures/chips-popup-input-combobox.svelte'
 import Chips from './fixtures/chips.svelte'
@@ -39,7 +40,7 @@ describe('<Combobox.Chips />', () => {
   })
 
   it('lets onMouseDown prevent the built-in focus and open behavior', () => {
-    const handleMouseDown = vi.fn((event: MouseEvent & { preventShardsUIHandler(): void }) => {
+    const handleMouseDown = vi.fn((event: MouseEvent & PreventableEvent) => {
       event.preventShardsUIHandler()
     })
     render(Chips, { value: ['apple'], chips: ['apple'], onChipsMouseDown: handleMouseDown })

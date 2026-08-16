@@ -6,7 +6,7 @@
   import { REASONS } from '$lib/internal/reasons'
   import { DialogContext, type DialogCloseState } from './context'
 
-  type Props = PartProps<[DialogCloseState], 'button'> & {
+  type Props = PartProps<[DialogCloseState], 'button', 'onclick' | 'onkeydown' | 'onkeyup'> & {
     disabled?: boolean
   }
 

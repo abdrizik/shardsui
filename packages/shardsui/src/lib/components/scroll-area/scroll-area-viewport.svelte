@@ -13,7 +13,11 @@
   import { ScrollAreaContext } from './context'
   import type { ScrollAreaRootState } from './scroll-area.svelte'
 
-  type Props = PartProps<[ScrollAreaRootState]>
+  type Props = PartProps<
+    [ScrollAreaRootState],
+    'div',
+    'onkeydown' | 'onpointerenter' | 'onpointermove' | 'onscroll' | 'onwheel'
+  >
 
   let {
     as = 'div',

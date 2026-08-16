@@ -6,7 +6,17 @@
   import { chain } from '$lib/internal/chain'
   import { MenuItemBase } from './item-base.svelte'
 
-  type Props = PartProps<[MenuLinkItemState], 'a'> & {
+  type Props = PartProps<
+    [MenuLinkItemState],
+    'a',
+    | 'onclick'
+    | 'onkeydown'
+    | 'onkeyup'
+    | 'onmousemove'
+    | 'onmouseup'
+    | 'onpointerdown'
+    | 'onpointerleave'
+  > & {
     closeOnClick?: boolean
   }
 

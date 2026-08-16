@@ -9,7 +9,11 @@
   import { MenuPositionerContext, MenuContext, type MenuPopupState } from './context'
   import { MenuPopup } from './popup.svelte'
 
-  type Props = PartProps<[MenuPopupState]> & {
+  type Props = PartProps<
+    [MenuPopupState],
+    'div',
+    'onclick' | 'onfocusout' | 'onkeydown' | 'onmousemove' | 'onpointermove'
+  > & {
     finalFocus?: FocusTarget
   }
 

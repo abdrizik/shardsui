@@ -9,7 +9,7 @@
   import { DrawerContext, DrawerViewportContext, type DrawerPopupState } from './context'
   import { DrawerPopup } from './popup.svelte'
 
-  type Props = PartProps<[DrawerPopupState]> & {
+  type Props = PartProps<[DrawerPopupState], 'div', 'onkeydown'> & {
     initialFocus?: FocusTarget
     finalFocus?: FocusTarget
   }

@@ -18,7 +18,11 @@
   import { on } from 'svelte/events'
   import { ContextMenuContext, type ContextMenuTriggerState } from './context'
 
-  type Props = PartProps<[ContextMenuTriggerState]>
+  type Props = PartProps<
+    [ContextMenuTriggerState],
+    'div',
+    'oncontextmenu' | 'ontouchcancel' | 'ontouchend' | 'ontouchmove' | 'ontouchstart'
+  >
 
   let {
     as = 'div',

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { PreventableEvent } from '$lib'
   import { Menu } from '$lib/components/menu'
 
   let {
@@ -13,8 +14,8 @@
     open?: boolean
     modal?: boolean
     triggerDisabled?: boolean
-    triggerOnClick?: (event: MouseEvent) => void
-    triggerOnMouseDown?: (event: MouseEvent) => void
+    triggerOnClick?: (event: MouseEvent & PreventableEvent) => void
+    triggerOnMouseDown?: (event: MouseEvent & PreventableEvent) => void
   } = $props()
 </script>
 
