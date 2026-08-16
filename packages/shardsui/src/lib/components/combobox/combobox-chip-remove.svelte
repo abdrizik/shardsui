@@ -5,7 +5,11 @@
   import { dataAttrs } from '$lib/internal/data-attrs'
   import { ComboboxChipContext, ComboboxContext, type ComboboxChipRemoveState } from './context'
 
-  type Props = PartProps<[ComboboxChipRemoveState], 'button'> & {
+  type Props = PartProps<
+    [ComboboxChipRemoveState],
+    'button',
+    'onclick' | 'onkeydown' | 'onkeyup' | 'onmousedown'
+  > & {
     disabled?: boolean
   }
 

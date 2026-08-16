@@ -9,7 +9,11 @@
   import { REASONS } from '$lib/internal/reasons'
   import { ComboboxContext, type ComboboxClearState } from './context'
 
-  type Props = PartProps<[ComboboxClearState], 'button'> & {
+  type Props = PartProps<
+    [ComboboxClearState],
+    'button',
+    'onclick' | 'onkeydown' | 'onkeyup' | 'onmousedown'
+  > & {
     disabled?: boolean
     keepMounted?: boolean
   }

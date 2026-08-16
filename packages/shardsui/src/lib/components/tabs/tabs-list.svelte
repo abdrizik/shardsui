@@ -5,7 +5,7 @@
   import { TabsList } from './list.svelte'
   import type { TabsState } from './tabs.svelte'
 
-  type Props = PartProps<[TabsState]> & {
+  type Props = PartProps<[TabsState], 'div', 'onkeydown'> & {
     activateOnFocus?: boolean
     loopFocus?: boolean
   }

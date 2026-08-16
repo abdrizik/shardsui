@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { PreventableEvent } from '$lib'
   import { Button } from '$lib/internal/button.svelte'
 
   type Props = {
@@ -11,8 +12,8 @@
     href?: string
     type?: 'button' | 'submit' | 'reset'
     onclick?: (e: MouseEvent) => void
-    onkeydown?: (e: KeyboardEvent & { preventShardsUIHandler(): void }) => void
-    onkeyup?: (e: KeyboardEvent & { preventShardsUIHandler(): void }) => void
+    onkeydown?: (e: KeyboardEvent & PreventableEvent) => void
+    onkeyup?: (e: KeyboardEvent & PreventableEvent) => void
     onfocus?: (e: FocusEvent) => void
     onblur?: (e: FocusEvent) => void
   }

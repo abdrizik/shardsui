@@ -5,7 +5,7 @@
   import type { PartProps } from '$lib/internal/types'
   import { ToolbarContext, type ToolbarLinkState } from './context'
 
-  type Props = PartProps<[ToolbarLinkState], 'a'>
+  type Props = PartProps<[ToolbarLinkState], 'a', 'onfocus'>
 
   let { as = 'a', ref = $bindable(null), onfocus, children, ...rest }: Props = $props()
 

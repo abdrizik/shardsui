@@ -20,7 +20,7 @@
   import { REASONS } from '$lib/internal/reasons'
   import { mergeStyle } from '$lib/internal/merge-style'
 
-  type Props = PartProps<[PopoverPopupState]> & {
+  type Props = PartProps<[PopoverPopupState], 'div', 'onkeydown'> & {
     initialFocus?: FocusTarget
     finalFocus?: FocusTarget
   }

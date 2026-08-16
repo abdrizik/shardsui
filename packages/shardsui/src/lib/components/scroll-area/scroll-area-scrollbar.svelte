@@ -16,7 +16,11 @@
     type ScrollAreaScrollbarState
   } from './context'
 
-  type Props = PartProps<[ScrollAreaScrollbarState]> & {
+  type Props = PartProps<
+    [ScrollAreaScrollbarState],
+    'div',
+    'onpointercancel' | 'onpointerdown' | 'onpointerup'
+  > & {
     orientation?: Orientation
     keepMounted?: boolean
   }

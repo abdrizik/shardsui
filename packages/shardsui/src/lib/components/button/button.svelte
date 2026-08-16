@@ -3,7 +3,7 @@
   import { dataAttrs } from '$lib/internal/data-attrs'
   import type { PartProps } from '$lib/internal/types'
 
-  type Props = PartProps<[{ disabled: boolean }], 'button'> & {
+  type Props = PartProps<[{ disabled: boolean }], 'button', 'onkeydown' | 'onkeyup'> & {
     disabled?: boolean
   }
 

@@ -11,7 +11,20 @@
   import { Timeout } from '$lib/internal/timeout'
   import { on } from 'svelte/events'
 
-  type Props = PartProps<[ToastViewportState]>
+  type Props = PartProps<
+    [ToastViewportState],
+    'div',
+    | 'onclick'
+    | 'onfocusin'
+    | 'onfocusout'
+    | 'onkeydown'
+    | 'onmouseenter'
+    | 'onmouseleave'
+    | 'onmousemove'
+    | 'onpointercancel'
+    | 'onpointerdown'
+    | 'onpointerup'
+  >
 
   let {
     as = 'div',

@@ -6,7 +6,17 @@
   import { dataAttrs } from '$lib/internal/data-attrs'
   import { MenuItemBase } from './item-base.svelte'
 
-  type Props = PartProps<[MenuItemState]> & {
+  type Props = PartProps<
+    [MenuItemState],
+    'div',
+    | 'onclick'
+    | 'onkeydown'
+    | 'onkeyup'
+    | 'onmousemove'
+    | 'onmouseup'
+    | 'onpointerdown'
+    | 'onpointerleave'
+  > & {
     disabled?: boolean
     closeOnClick?: boolean
   }

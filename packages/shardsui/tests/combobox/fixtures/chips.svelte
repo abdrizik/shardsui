@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { PreventableEvent } from '$lib'
   import { Combobox } from '$lib/components/combobox'
   import { DirectionProvider } from '$lib/components/direction-provider'
   import { Field } from '$lib/components/field'
@@ -12,9 +13,7 @@
     readOnly = false,
     direction = 'ltr' as 'ltr' | 'rtl',
     chips = ['apple', 'banana'] as string[],
-    onChipsMouseDown = undefined as
-      | ((event: MouseEvent & { preventShardsUIHandler(): void }) => void)
-      | undefined,
+    onChipsMouseDown = undefined as ((event: MouseEvent & PreventableEvent) => void) | undefined,
     withRemove = false,
     withPopup = true,
     inputFirst = false,

@@ -6,7 +6,7 @@
   import type { CollapsibleState } from './collapsible.svelte'
   import { CollapsibleContext } from './context'
 
-  type Props = PartProps<[CollapsibleState], 'button'> & {
+  type Props = PartProps<[CollapsibleState], 'button', 'onclick' | 'onkeydown' | 'onkeyup'> & {
     disabled?: boolean
   }
 

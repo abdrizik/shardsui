@@ -6,7 +6,7 @@
   import { DirectionContext } from '$lib/internal/direction-context'
   import { dataAttrs } from '$lib/internal/data-attrs'
 
-  type Props = PartProps<[ComboboxListState]>
+  type Props = PartProps<[ComboboxListState], 'div', 'onkeydown'>
 
   const uid = $props.id()
 

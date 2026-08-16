@@ -61,7 +61,7 @@
   import { mergeStyle } from '$lib/internal/merge-style'
   import { SelectPositionerContext, SelectContext, type SelectScrollArrowState } from './context'
 
-  type Props = PartProps<[SelectScrollArrowState]> & {
+  type Props = PartProps<[SelectScrollArrowState], 'div', 'onmouseleave' | 'onmousemove'> & {
     direction: 'up' | 'down'
     keepMounted?: boolean
   }

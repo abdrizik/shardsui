@@ -13,7 +13,11 @@
   import type { SwipeDirection } from '$lib/internal/swipe-dismiss.svelte'
   import type { ToastObject } from './types'
 
-  type Props = PartProps<[ToastRootState]> & {
+  type Props = PartProps<
+    [ToastRootState],
+    'div',
+    'onkeydown' | 'onpointercancel' | 'onpointerdown' | 'onpointermove' | 'onpointerup'
+  > & {
     toast: ToastObject
     swipeDirection?: 'up' | 'down' | 'left' | 'right' | ('up' | 'down' | 'left' | 'right')[]
   }

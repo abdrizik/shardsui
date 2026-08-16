@@ -6,7 +6,7 @@
   import type { Orientation, PartProps } from '$lib/internal/types'
   import { ToggleGroupContext, type ToggleGroupState } from './context'
 
-  type Props = PartProps<[ToggleGroupState]> & {
+  type Props = PartProps<[ToggleGroupState], 'div', 'onkeydown'> & {
     value?: readonly Value[]
     disabled?: boolean
     multiple?: boolean

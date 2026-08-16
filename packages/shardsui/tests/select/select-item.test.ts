@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import type { PreventableEvent } from '$lib'
 import { isJSDOM } from '../test-utils'
 import BasicSelect from './fixtures/basic-select.svelte'
 import GroupedReorderSelect from './fixtures/grouped-reorder-select.svelte'
@@ -334,8 +335,8 @@ describe('<Select.Item />', () => {
     })
 
     it('does not select an item when onClick cancels during drag-to-select', async () => {
-      const onItemOneClick = vi.fn((event: MouseEvent & { preventShardsUIHandler?: () => void }) =>
-        event.preventShardsUIHandler?.()
+      const onItemOneClick = vi.fn((event: MouseEvent & PreventableEvent) =>
+        event.preventShardsUIHandler()
       )
       render(QuickSelection, { onItemOneClick })
 

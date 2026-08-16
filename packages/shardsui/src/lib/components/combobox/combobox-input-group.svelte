@@ -9,7 +9,7 @@
   import { ComboboxContext, type ComboboxInputGroupState } from './context'
   import { focusInputOnPress } from './focus-input-on-press'
 
-  type Props = PartProps<[ComboboxInputGroupState]>
+  type Props = PartProps<[ComboboxInputGroupState], 'div', 'onmousedown'>
 
   let { as = 'div', ref = $bindable(null), onmousedown, children, ...rest }: Props = $props()
 

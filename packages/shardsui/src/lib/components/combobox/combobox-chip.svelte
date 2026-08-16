@@ -15,7 +15,7 @@
     type ComboboxChipState
   } from './context'
 
-  type Props = PartProps<[ComboboxChipState]>
+  type Props = PartProps<[ComboboxChipState], 'div', 'onkeydown'>
 
   let { as = 'div', ref = $bindable(null), onkeydown, children, ...rest }: Props = $props()
 

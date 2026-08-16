@@ -3,9 +3,13 @@
   import { dataAttrs } from '$lib/internal/data-attrs'
   import { CompositeItem } from '$lib/internal/floating/composite.svelte'
   import type { HTMLInputAttributes } from 'svelte/elements'
+  import type { WithPreventable } from '$lib/internal/types'
   import { ToolbarGroupContext, ToolbarContext } from './context'
 
-  type Props = Omit<HTMLInputAttributes, 'children' | 'disabled'> & {
+  type Props = Omit<
+    WithPreventable<HTMLInputAttributes, 'onclick' | 'onkeydown' | 'onpointerdown' | 'onfocus'>,
+    'children' | 'disabled'
+  > & {
     ref?: HTMLInputElement | null
     disabled?: boolean
   }

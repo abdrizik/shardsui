@@ -19,7 +19,11 @@
   import type { Attachment } from 'svelte/attachments'
   import { SwitchContext, type SwitchState } from './context'
 
-  type Props = PartProps<[SwitchState], 'span'> & {
+  type Props = PartProps<
+    [SwitchState],
+    'span',
+    'onblur' | 'onclick' | 'onfocus' | 'onkeydown' | 'onkeyup'
+  > & {
     as?: 'span' | 'button'
     checked?: boolean
     disabled?: boolean

@@ -125,6 +125,22 @@ When you need the part to stand down for one event, call `preventShardsUIHandler
 </Menu.Item>
 ```
 
+A part offers it only on the events it acts on after your handler returns — `Menu.Item`'s `onclick` has it, its `onmousedown` doesn't, because nothing of the part's follows yours there. TypeScript knows the difference, so reaching for it where it isn't offered is a type error rather than a crash.
+
+To annotate a handler declared outside the markup, intersect the event with `PreventableEvent`:
+
+```svelte title="Typing a standalone handler"
+<script lang="ts">
+  import type { PreventableEvent } from '@shardsui/svelte'
+
+  function selectBilling(event: MouseEvent & PreventableEvent) {
+    if (!ready) event.preventShardsUIHandler()
+  }
+</script>
+
+<Menu.Item onclick={selectBilling}>Billing</Menu.Item>
+```
+
 ## Getting the DOM node
 
 Bind the underlying element with `bind:ref`. It's populated after the element mounts, so read it from an effect or an event handler, never during render:

@@ -10,7 +10,17 @@
   } from './context'
   import { MenuItemBase } from './item-base.svelte'
 
-  type Props = PartProps<[MenuCheckableItemState]> & {
+  type Props = PartProps<
+    [MenuCheckableItemState],
+    'div',
+    | 'onclick'
+    | 'onkeydown'
+    | 'onkeyup'
+    | 'onmousemove'
+    | 'onmouseup'
+    | 'onpointerdown'
+    | 'onpointerleave'
+  > & {
     value: unknown
     disabled?: boolean
     closeOnClick?: boolean

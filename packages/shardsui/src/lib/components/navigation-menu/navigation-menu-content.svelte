@@ -20,7 +20,11 @@
   } from './context'
   import type { ContentStatus } from './navigation-menu.svelte'
 
-  type Props = PartProps<[NavigationMenuContentState]> & {
+  type Props = PartProps<
+    [NavigationMenuContentState],
+    'div',
+    'onfocusin' | 'onfocusout' | 'onkeydown'
+  > & {
     keepMounted?: boolean
   }
 
@@ -133,8 +137,8 @@
     hidden
     {style}
     onkeydown={chain(onkeydown, composite.onkeydown)}
-    {onfocusin}
-    {onfocusout}
+    onfocusin={chain(onfocusin)}
+    onfocusout={chain(onfocusout)}
     {...rest}
   >
     {@render children?.(navigationMenuState)}
@@ -162,9 +166,9 @@
     {@attach portalTo(portalContainer)}
     hidden
     {style}
-    {onkeydown}
-    {onfocusin}
-    {onfocusout}
+    onkeydown={chain(onkeydown)}
+    onfocusin={chain(onfocusin)}
+    onfocusout={chain(onfocusout)}
     {...rest}
   >
     {@render children?.(navigationMenuState)}

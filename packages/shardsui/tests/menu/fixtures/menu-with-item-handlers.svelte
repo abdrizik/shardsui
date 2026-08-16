@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { PreventableEvent } from '$lib'
   import { Menu } from '$lib/components/menu'
 
   let {
@@ -7,6 +8,12 @@
     onOpenChange = undefined,
     closeOnClick = true,
     open = undefined
+  }: {
+    onItem1Click?: (event: MouseEvent & PreventableEvent) => void
+    onItem2Click?: (event: MouseEvent & PreventableEvent) => void
+    onOpenChange?: (open: boolean) => void
+    closeOnClick?: boolean
+    open?: boolean
   } = $props()
 </script>
 

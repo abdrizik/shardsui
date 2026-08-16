@@ -6,7 +6,7 @@
   import type { AccordionItemState } from './accordion.svelte'
   import { AccordionItemContext } from './context'
 
-  type Props = PartProps<[AccordionItemState], 'button'> & {
+  type Props = PartProps<[AccordionItemState], 'button', 'onclick' | 'onkeydown' | 'onkeyup'> & {
     disabled?: boolean
   }
 

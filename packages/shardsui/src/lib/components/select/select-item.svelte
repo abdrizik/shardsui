@@ -11,7 +11,19 @@
   import { REASONS } from '$lib/internal/reasons'
   import { SelectContext, SelectItemContext, type SelectItemState } from './context'
 
-  type Props = PartProps<[SelectItemState]> & {
+  type Props = PartProps<
+    [SelectItemState],
+    'div',
+    | 'onclick'
+    | 'onkeydown'
+    | 'onkeyup'
+    | 'onmousemove'
+    | 'onmouseup'
+    | 'onpointerdown'
+    | 'onpointerenter'
+    | 'onpointerleave'
+    | 'onpointermove'
+  > & {
     id?: never
     value?: unknown
     disabled?: boolean

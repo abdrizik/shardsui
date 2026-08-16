@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
 import { afterEach, expect, vi } from 'vitest'
+import type { PreventableEvent } from '$lib'
 import { createTouch, fireTouch, isJSDOM } from '../test-utils'
 import BackdropContextMenu from './fixtures/backdrop-context-menu.svelte'
 import BasicContextMenu from './fixtures/basic-context-menu.svelte'
@@ -86,8 +87,8 @@ describe('<ContextMenu.Trigger />', () => {
   })
 
   it('blocks the native context menu but does not open when an oncontextmenu handler prevents the ShardsUI handler', async () => {
-    const oncontextmenu = vi.fn((event: Event) => {
-      ;(event as Event & { preventShardsUIHandler(): void }).preventShardsUIHandler()
+    const oncontextmenu = vi.fn((event: Event & PreventableEvent) => {
+      event.preventShardsUIHandler()
     })
     render(BasicContextMenu, { oncontextmenu })
 

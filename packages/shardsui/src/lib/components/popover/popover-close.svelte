@@ -6,7 +6,7 @@
   import { REASONS } from '$lib/internal/reasons'
   import { PopoverClosePartContext, PopoverContext } from './context'
 
-  type Props = PartProps<[], 'button'> & {
+  type Props = PartProps<[], 'button', 'onclick' | 'onkeydown' | 'onkeyup'> & {
     disabled?: boolean
   }
 

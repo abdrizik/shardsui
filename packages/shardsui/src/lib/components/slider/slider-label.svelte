@@ -7,7 +7,7 @@
   import type { SliderState } from './slider.svelte'
   import { SliderContext } from './context'
 
-  type Props = PartProps<[SliderState]>
+  type Props = PartProps<[SliderState], 'div', 'onclick' | 'onpointerdown'>
 
   let {
     as = 'div',

@@ -8,7 +8,11 @@
   import { error } from '$lib/internal/log'
   import type { PartProps } from '$lib/internal/types'
 
-  type Props = PartProps<[{ pressed: boolean; disabled: boolean }], 'button'> & {
+  type Props = PartProps<
+    [{ pressed: boolean; disabled: boolean }],
+    'button',
+    'onclick' | 'onfocus' | 'onkeydown' | 'onkeyup'
+  > & {
     pressed?: boolean
     disabled?: boolean
     value?: string

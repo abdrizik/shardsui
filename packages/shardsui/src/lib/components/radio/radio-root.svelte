@@ -20,7 +20,7 @@
   import type { Attachment } from 'svelte/attachments'
   import { RadioContext, type RadioState } from './context'
 
-  type Props = PartProps<[RadioState], 'span'> & {
+  type Props = PartProps<[RadioState], 'span', 'onclick' | 'onfocus' | 'onkeydown' | 'onkeyup'> & {
     as?: 'span' | 'button'
     value: unknown
     disabled?: boolean

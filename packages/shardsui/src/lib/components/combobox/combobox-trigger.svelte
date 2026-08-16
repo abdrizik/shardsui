@@ -19,7 +19,19 @@
   import { isMouseWithinBounds } from '$lib/internal/pseudo-element-bounds'
   import { on } from 'svelte/events'
 
-  type Props = PartProps<[ComboboxTriggerState], 'button'> & {
+  type Props = PartProps<
+    [ComboboxTriggerState],
+    'button',
+    | 'onblur'
+    | 'onclick'
+    | 'onfocus'
+    | 'onfocusout'
+    | 'onkeydown'
+    | 'onkeyup'
+    | 'onmousedown'
+    | 'onpointerdown'
+    | 'onpointerenter'
+  > & {
     disabled?: boolean
   }
 

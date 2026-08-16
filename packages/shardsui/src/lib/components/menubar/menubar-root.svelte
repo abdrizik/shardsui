@@ -13,7 +13,7 @@
     hasSubmenuOpen: boolean
   }
 
-  type Props = PartProps<[MenubarState]> & {
+  type Props = PartProps<[MenubarState], 'div', 'onkeydown'> & {
     modal?: boolean
     disabled?: boolean
     orientation?: Orientation

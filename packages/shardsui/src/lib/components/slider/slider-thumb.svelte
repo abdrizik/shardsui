@@ -14,7 +14,7 @@
   import { SliderContext } from './context'
   import { SliderThumb } from './thumb.svelte'
 
-  type Props = PartProps<[SliderState]> & {
+  type Props = PartProps<[SliderState], 'div', 'onkeydown'> & {
     index?: number
     disabled?: boolean
   }

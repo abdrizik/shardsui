@@ -9,7 +9,7 @@
   import { registerLabelId } from '$lib/internal/register-label-id'
   import { ComboboxContext } from './context'
 
-  type Props = PartProps<[FieldRootState]>
+  type Props = PartProps<[FieldRootState], 'div', 'onclick' | 'onpointerdown'>
 
   let {
     as = 'div',

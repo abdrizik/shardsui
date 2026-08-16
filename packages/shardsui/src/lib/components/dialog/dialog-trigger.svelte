@@ -9,7 +9,11 @@
   import type { DialogHandle } from './handle.svelte'
   import type { DialogRoot } from './dialog.svelte'
 
-  type Props = PartProps<[DialogTriggerState], 'button'> & {
+  type Props = PartProps<
+    [DialogTriggerState],
+    'button',
+    'onclick' | 'onkeydown' | 'onkeyup' | 'onpointerdown'
+  > & {
     disabled?: boolean
     handle?: DialogHandle<Payload>
     payload?: Payload

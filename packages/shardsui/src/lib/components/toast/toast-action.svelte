@@ -4,7 +4,7 @@
   import { chain } from '$lib/internal/chain'
   import { ToastContext, type ToastActionState } from './context'
 
-  type Props = PartProps<[ToastActionState], 'button'> & {
+  type Props = PartProps<[ToastActionState], 'button', 'onkeydown' | 'onkeyup'> & {
     disabled?: boolean
   }
 

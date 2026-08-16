@@ -5,7 +5,7 @@
   import { createSliderControl } from './control.svelte'
   import type { SliderState } from './slider.svelte'
 
-  type Props = PartProps<[SliderState]>
+  type Props = PartProps<[SliderState], 'div', 'onpointerdown'>
 
   let { as = 'div', ref = $bindable(null), onpointerdown, children, ...rest }: Props = $props()
 

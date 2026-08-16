@@ -10,7 +10,11 @@
   } from './scroll-area.svelte'
   import { ScrollAreaContext } from './context'
 
-  type Props = PartProps<[ScrollAreaRootState]> & {
+  type Props = PartProps<
+    [ScrollAreaRootState],
+    'div',
+    'onpointerdown' | 'onpointerenter' | 'onpointerleave' | 'onpointermove'
+  > & {
     overflowEdgeThreshold?: number | Partial<OverflowEdgeThreshold>
   }
 

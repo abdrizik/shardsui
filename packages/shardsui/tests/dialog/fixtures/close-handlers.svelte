@@ -1,11 +1,12 @@
 <script lang="ts">
+  import type { PreventableEvent } from '$lib'
   import { Dialog } from '$lib/components/dialog'
 
   type Props = {
     open?: boolean
     keepMounted?: boolean
     onOpenChange?: (open: boolean) => void
-    onclick?: (event: MouseEvent) => void
+    onclick?: (event: MouseEvent & PreventableEvent) => void
     preventCloseHandler?: boolean
   }
 
@@ -17,9 +18,9 @@
     preventCloseHandler = false
   }: Props = $props()
 
-  function handleClick(event: MouseEvent & { preventShardsUIHandler?(): void }) {
+  function handleClick(event: MouseEvent & PreventableEvent) {
     onclick?.(event)
-    if (preventCloseHandler) event.preventShardsUIHandler!()
+    if (preventCloseHandler) event.preventShardsUIHandler()
   }
 </script>
 
