@@ -1,15 +1,16 @@
 <script lang="ts">
-  import { env } from '$env/dynamic/public'
+  import { github } from '$lib/data/site'
 </script>
 
-{#if env.PUBLIC_BANNER}
-  <div role="status">
-    <p>
-      {@render flaskIcon()}
-      ShardsUI is in beta. APIs may change before 1.0.
-    </p>
-  </div>
-{/if}
+<div role="status">
+  <p>
+    {@render flaskIcon()}
+    <span>
+      Beta, expect API change, and bugs. Hit one?
+      <a href="{github}/issues/new" rel="external noopener noreferrer">Tell us</a>.
+    </span>
+  </p>
+</div>
 
 {#snippet flaskIcon()}
   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -76,6 +77,17 @@
       flex-shrink: 0;
       inline-size: calc(var(--spacing) * 4);
       block-size: calc(var(--spacing) * 4);
+    }
+
+    a {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      text-decoration-color: color-mix(in oklab, currentcolor 50%, transparent);
+      transition: text-decoration-color 150ms ease-out;
+    }
+
+    a:hover {
+      text-decoration-color: currentcolor;
     }
   }
 </style>
