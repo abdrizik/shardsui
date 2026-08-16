@@ -19,11 +19,13 @@ function browserInstances() {
   return null
 }
 
-// Chromium renders on the GPU by default; on Apple silicon a parallel run saturates it and the
-// display flickers. Software rendering keeps the suite on the CPU.
-const CHROMIUM_ARGS = ['--disable-gpu']
+const CHROMIUM_ARGS = [
+  '--disable-background-timer-throttling',
+  '--disable-backgrounding-occluded-windows',
+  '--disable-renderer-backgrounding'
+]
 
-const MAX_WORKERS = Math.max(1, Math.floor(os.availableParallelism() / 2))
+const MAX_WORKERS = process.env.CI ? 1 : Math.max(1, Math.floor(os.availableParallelism() / 2))
 
 const instances = browserInstances()?.map((instance) =>
   instance.browser === 'chromium' ? { ...instance, launch: { args: CHROMIUM_ARGS } } : instance
