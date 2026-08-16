@@ -9,9 +9,6 @@ declare global {
     }
     // interface PageState {}
     // interface Platform {}
-    interface PublicEnv {
-      PUBLIC_BANNER?: string
-    }
   }
 }
 
