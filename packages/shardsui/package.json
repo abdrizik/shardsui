@@ -4,7 +4,7 @@
   "description": "Headless, accessible UI components for Svelte 5.",
   "license": "MIT",
   "author": "abdrizik",
-  "homepage": "https://github.com/abdrizik/shardsui#readme",
+  "homepage": "https://shardsui.com",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/abdrizik/shardsui.git",
