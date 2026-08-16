@@ -18,11 +18,7 @@ ShardsUI requires Svelte 5.40 or later. It ships as one package, and each compon
 
 ### Browser support
 
-| Browser               | Minimum version |
-| --------------------- | --------------- |
-| Chrome, Edge          | 121             |
-| Firefox               | 97              |
-| Safari, Safari on iOS | 18.2            |
+ShardsUI supports Chrome and Edge 121, Firefox 97, and Safari 18.2 — on desktop and iOS — or later.
 
 ## Set up
 
