@@ -6,7 +6,7 @@ Each part keeps its behavior — ARIA, keyboard, focus, and `data-*` state — a
 
 ## Nesting is the API
 
-Parts talk to each other through Svelte context, not props. A `<Menu.Root>` publishes its state to context; `<Menu.Trigger>`, `<Menu.Positioner>`, and `<Menu.Item>` read it back. That's why you nest them instead of wiring `open`/`onOpenChange` between siblings by hand — the shared state never appears in your markup at all.
+Parts talk to each other through Svelte context, not props. A `<Menu.Root>` publishes its state to context; `<Menu.Trigger>`, `<Menu.Positioner>`, and `<Menu.Item>` read it back. That's why you nest them instead of wiring `open`/`onOpenChange` between siblings by hand. The shared state never appears in your markup at all.
 
 ```svelte title="Parts read state through context"
 <script>
@@ -25,11 +25,11 @@ Parts talk to each other through Svelte context, not props. A `<Menu.Root>` publ
 </Menu.Root>
 ```
 
-The only rule this imposes: a part must be a descendant of its Root. Depth and intervening markup don't matter — context reaches any descendant — so you're free to wrap parts in your own layout elements. When the nesting genuinely can't hold (a trigger that lives in a header, a popup that lives in a route), reach for a [handle](#detaching-parts-with-a-handle) instead.
+The only rule this imposes: a part must be a descendant of its Root. Depth and intervening markup don't matter, so wrap parts in your own layout elements as you like. When the nesting genuinely can't hold (a trigger that lives in a header, a popup that lives in a route), reach for a [handle](#detaching-parts-with-a-handle) instead.
 
 ## Content is a snippet
 
-Whatever you put between a part's tags is its `children` snippet, rendered wherever the part decides its content belongs. Write markup, drop in icons, nest more parts — it's yours:
+Whatever you put between a part's tags is its `children` snippet, rendered wherever the part decides its content belongs:
 
 ```svelte title="Children"
 <Switch.Root bind:checked>
@@ -59,7 +59,7 @@ Most parts hand their own state _back_ through that snippet. Write it in the nam
 </Switch.Root>
 ```
 
-The named form is otherwise identical to markup between the tags — it just lets you name the parameters. What a part passes is listed in its `children` row in the API reference. The same values are also emitted as `data-*` attributes, so reach for the snippet when you need different markup; for styling alone, `data-*` in CSS is simpler.
+The named form is otherwise identical to markup between the tags. It lets you name the parameters. What a part passes is listed in its `children` row in the API reference. The same values are also emitted as `data-*` attributes, so reach for the snippet when you need different markup; for styling alone, `data-*` in CSS is simpler.
 
 `<Dialog.Root>` passes something other than its own state: the `payload` of whichever trigger opened it.
 
@@ -92,7 +92,7 @@ Every part picks the element that's correct for its role, and the `as` prop swap
 <Menu.Item as="a" href="https://example.com">Add to Library</Menu.Item>
 ```
 
-`as` takes an HTML tag name — `'a'`, `'button'`, `'span'`, and so on — not a component. The default is already the fitting element for the part, so reach for `as` only when a specific case, like the anchor above, calls for a different tag.
+`as` takes an HTML tag name — `'a'`, `'button'`, `'span'`, and so on — not a component. Reach for it only when a case like the anchor above calls for a different tag.
 
 In SvelteKit a plain `<a href>` routes on the client, so an anchor like that one navigates with no link wrapper around it. `<NavigationMenu.Link>` renders an `<a>` to begin with:
 
@@ -112,7 +112,7 @@ Any attribute that isn't one of a part's own props is forwarded straight to the 
 
 A handler doesn't replace the part's: for every event a part handles, yours runs first and the part's runs after, so its ARIA, keyboard handling, and `data-*` state all survive.
 
-When you need the part to stand down for one event, call `preventShardsUIHandler()` on it — an escape hatch for cases no prop covers yet:
+When you need the part to stand down for one event, call `preventShardsUIHandler()` on it, an escape hatch for cases no prop covers yet:
 
 ```svelte title="Suppressing the part's handler"
 <!-- [!code word:preventShardsUIHandler] -->
@@ -150,7 +150,7 @@ Every part that renders its own element exposes `ref`. Pure providers like `Dial
 
 ## Wrapping a part in your own component
 
-There's no render prop: to build a styled component out of a part, render the part and spread the rest of your props onto it. Destructure `ref` first if callers should be able to bind it — a spread passes values, not bindings.
+There's no render prop: to build a styled component out of a part, render the part and spread the rest of your props onto it. Destructure `ref` first if callers should be able to bind it. A spread passes values, not bindings.
 
 ```svelte title="MenuLink.svelte"
 <script lang="ts">
@@ -183,7 +183,7 @@ When a trigger and the thing it opens can't sit together in the markup — a too
 <Dialog.Root handle={settings}>...</Dialog.Root>
 ```
 
-A handle also drives the component from your own code, no trigger required: `settings.open(triggerId)`, `settings.close()`, and a readonly `settings.isOpen`. `open` takes the `id` of a registered detached trigger so the popup knows what it was opened from — Popover, Menu, Tooltip, and Preview Card throw if no trigger with that id is registered, while Dialog, Alert Dialog, and Drawer also accept `null` for "no trigger" and add `openWithPayload(payload)`. `new Dialog.Handle<Payload>()` types the payload that flows through the trigger and into the root's `children` snippet — see [TypeScript](/svelte/typescript) for the details.
+A handle also drives the component from your own code, no trigger required: `settings.open(triggerId)`, `settings.close()`, and a readonly `settings.isOpen`. `open` takes the `id` of a registered detached trigger so the popup knows what it was opened from. Popover, Menu, Tooltip, and Preview Card throw if no trigger with that id is registered, while Dialog, Alert Dialog, and Drawer also accept `null` for "no trigger" and add `openWithPayload(payload)`. `new Dialog.Handle<Payload>()` types the payload that flows through the trigger and into the root's `children` snippet. See [TypeScript](/svelte/typescript) for the details.
 
 Handles are available on the overlay components where a detached trigger makes sense: `Dialog`, `AlertDialog`, `Drawer`, `Popover`, `Menu`, `Tooltip`, and `PreviewCard`.
 
@@ -201,6 +201,6 @@ A provider renders no element of its own — it only publishes context to everyt
 </DirectionProvider>
 ```
 
-It changes component behavior only, never the DOM's own text direction — see [Reading direction](/svelte/state#reading-direction) for what that leaves you to do.
+It changes component behavior only, never the DOM's own text direction. See [Reading direction](/svelte/state#reading-direction) for what that leaves you to do.
 
 Three components ship a provider of their own: `<Tooltip.Provider>` shares one delay across the tooltips inside it, so the next one opens instantly; `<Toast.Provider>` holds the toast queue; and `<Drawer.Provider>` tracks which drawers are open, driving `<Drawer.Indent>` and `<Drawer.IndentBackground>`.

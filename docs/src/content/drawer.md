@@ -40,7 +40,7 @@ In Chromium on Android, the system back gesture closes the topmost open drawer.
 
 ## Usage guidelines
 
-- **Drawer extends [Dialog](/svelte/dialog)**: it adds gesture support, snap points, and indent effects. If you don't need these, a slide-in panel is just a positioned Dialog — use Dialog instead.
+- **Drawer extends [Dialog](/svelte/dialog)**: it adds gesture support, snap points, and indent effects. If you don't need these, a slide-in panel is just a positioned Dialog, so use Dialog instead.
 
 ## Examples
 
@@ -98,7 +98,7 @@ Positioning is handled by your styles. `swipeDirection` defaults to `"down"` for
 
 ### Nested drawers
 
-Use the `[data-nested-drawer-open]` selector and the `--nested-drawers` CSS variable to style drawers when a nested drawer is open. This demo stacks nested drawers with a constant peek: the frontmost drawer stays anchored to the bottom while the ones behind are scaled down and lifted, using the `--drawer-height` and `--drawer-frontmost-height` CSS variables to handle varying heights.
+Use the `[data-nested-drawer-open]` selector and the `--nested-drawers` CSS variable to style drawers when a nested drawer is open. The demo stacks them with a constant peek: the frontmost drawer stays anchored to the bottom while the ones behind are scaled down and lifted.
 
 :demo{name="drawer/nested"}
 
@@ -179,7 +179,7 @@ An action sheet pairing a grouped list of actions with a separate, destructive a
 
 ### Detached triggers
 
-For a simple one-off, keep `<Drawer.Trigger>` inside `<Drawer.Root>`. When the content can't sit beside its trigger, detach it: create a handle with `new Drawer.Handle()` and pass it to both `<Drawer.Trigger handle={...}>` and `<Drawer.Root handle={...}>`. They stay linked no matter where each lives in the tree.
+For a one-off, keep `<Drawer.Trigger>` inside `<Drawer.Root>`. When the content can't sit beside its trigger, detach it: create a handle with `new Drawer.Handle()` and pass it to both `<Drawer.Trigger handle={...}>` and `<Drawer.Root handle={...}>`. They stay linked no matter where each lives in the tree.
 
 ```svelte title="Detached triggers"
 <!-- [!code word:handle={demoDrawer}] -->
@@ -243,8 +243,6 @@ To show different content depending on which trigger opened the drawer, pass a `
 
 ### Stacking and animations
 
-Use CSS transitions or animations to animate drawer opening, closing, swipe interactions, and nested stacking. `data-starting-style` is applied when a drawer starts to open, `data-ending-style` when it starts to close.
-
 The `--nested-drawers` CSS variable gives the stack depth; the frontmost drawer has index `0`.
 
 ```css title="Stack depth"
@@ -273,7 +271,7 @@ When stacked drawers have varying heights, use `--drawer-height` and `--drawer-f
 }
 ```
 
-The `data-nested-drawer-open` attribute marks drawers behind the frontmost drawer. Use it with `data-nested-drawer-swiping` to fade parent drawer content to zero opacity, so it stays mounted and laid out during nested swipe interactions.
+Use `data-nested-drawer-open` with `data-nested-drawer-swiping` to fade parent drawer content to zero opacity, so it stays mounted and laid out during nested swipe interactions.
 
 ```css title="Nested content visibility"
 /* [!code word:data-nested-drawer-open] */

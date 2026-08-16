@@ -26,7 +26,7 @@ A focus-trapping overlay.
 </Dialog.Root>
 ```
 
-`Dialog.Viewport` is optional — it provides a scrollable positioning container for the popup. When not needed, use `Dialog.Popup` directly with fixed positioning.
+`Dialog.Viewport` is optional. It provides a scrollable positioning container for the popup. When not needed, use `Dialog.Popup` directly with fixed positioning.
 
 ## Usage guidelines
 
@@ -36,7 +36,7 @@ A focus-trapping overlay.
 
 ### State
 
-By default, Dialog manages its own open state — no props required.
+By default, Dialog manages its own open state, and no props are required.
 
 ```svelte title="Uncontrolled dialog"
 <Dialog.Root>
@@ -75,7 +75,7 @@ Drive open with `open` / `onOpenChange`, or `bind:open`.
 </Dialog.Root>
 ```
 
-`onOpenChange` is also the place to run side effects when the dialog opens or closes — prefer it over `$effect`.
+`onOpenChange` is also the place to run side effects when the dialog opens or closes. Prefer it over `$effect`.
 
 ```svelte title="Running code when dialog state changes"
 <Dialog.Root
@@ -131,7 +131,7 @@ To open a dialog from a menu, keep the dialog controlled and flip its state from
 
 ### Nested dialogs
 
-Dialogs can be nested. Style the parent through the `[data-nested-dialog-open]` selector and the `var(--nested-dialogs)` CSS variable. Child dialogs render their own backdrop, marked with `data-nested` — hide it with `[data-nested] { opacity: 0 }` to keep the parent visible behind the one on top.
+Dialogs can be nested. Style the parent through the `[data-nested-dialog-open]` selector and the `var(--nested-dialogs)` CSS variable. Child dialogs render their own backdrop, marked with `data-nested`. Hide it with `[data-nested] { opacity: 0 }` to keep the parent visible behind the one on top.
 
 :demo{name="dialog/nested"}
 
@@ -159,8 +159,6 @@ Veto the close with a [function binding](https://svelte.dev/docs/svelte/bind#Fun
 
 Control where focus goes when the dialog opens and closes with the `initialFocus` and `finalFocus` props on `<Dialog.Popup>`.
 
-Set either to `false` to leave focus where it is, or to a function that returns the element to focus based on the interaction type.
-
 :demo{name="dialog/focus-management"}
 
 ### Outside scroll dialog
@@ -185,7 +183,7 @@ To place elements "outside" the colored popup area, still render them inside `<D
 
 ### Detached triggers
 
-For a simple one-off, keep `<Dialog.Trigger>` inside the root, as in the example at the top of this page. When the trigger and the dialog's content can't sit together in the markup, detach them: connect the trigger to a `<Dialog.Root>` with a shared `handle` from `new Dialog.Handle()` — no shared `open` state needed.
+Keep `<Dialog.Trigger>` inside the root, as in the example at the top of this page. When the trigger and the dialog's content can't sit together in the markup, detach them: connect the trigger to a `<Dialog.Root>` with a shared `handle` from `new Dialog.Handle()`, with no shared `open` state needed.
 
 ```svelte title="Detached triggers"
 <!-- [!code word:handle={myDialog}] -->
@@ -259,7 +257,7 @@ To show different content depending on which trigger opened the dialog, pass a `
 
 ### Controlled mode with multiple triggers
 
-When the dialog's visibility depends on your app's state, drive it with the `open` and `onOpenChange` props on `<Dialog.Root>`. With multiple triggers, track the active one with `bind:triggerId` on `<Dialog.Root>` and the `id` prop on each `<Dialog.Trigger>`: give each trigger an `id`, and the dialog writes back the one that opened it.
+With multiple triggers, track the active one with `bind:triggerId` on `<Dialog.Root>` and the `id` prop on each `<Dialog.Trigger>`. The dialog writes back the `id` of the trigger that opened it.
 
 :demo{name="dialog/detached-triggers-controlled"}
 

@@ -33,7 +33,7 @@ A floating anchored panel.
 
 ### Opening on hover
 
-Set `openOnHover` on the trigger to open the popover on hover as well as on click. Tune the timing with `delay` (how long the pointer must rest before it opens) and `closeDelay` (how long it lingers after the pointer leaves), both in milliseconds.
+Set `openOnHover` on the trigger to open the popover on hover as well as on click. Tune the timing with `delay` and `closeDelay`, both in milliseconds.
 
 :demo{name="popover/open-on-hover"}
 
@@ -41,7 +41,7 @@ Set `openOnHover` on the trigger to open the popover on hover as well as on clic
 
 By default the trigger sits inside `<Popover.Root>`, right beside the content it opens, as at the top of this page.
 
-When the two can't live together in the markup (say the button belongs in a toolbar but the panel elsewhere), detach them: render `<Popover.Trigger>` wherever it makes sense and connect it to the root with a shared `handle` from `new Popover.Handle()`.
+When the two can't live together in the markup, detach them: render `<Popover.Trigger>` wherever it makes sense and connect it to the root with a shared `handle` from `new Popover.Handle()`.
 
 ```svelte title="Detached triggers"
 <!-- [!code word:handle={demoPopover}] -->
@@ -121,13 +121,13 @@ When triggers share a popover, each one can hand the root its own data through t
 
 ### Controlled mode with multiple triggers
 
-To drive the popover from your own state — a button elsewhere on the page, a keyboard shortcut — bind `open` and handle `onOpenChange` on `<Popover.Root>`. With several triggers, give each one an `id` and add `bind:triggerId` to `<Popover.Root>`: each trigger publishes its own `id` when it opens the popover, and setting `triggerId` yourself anchors the popover to that trigger.
+To drive the popover from your own state, bind `open` and handle `onOpenChange` on `<Popover.Root>`. With several triggers, give each one an `id` and add `bind:triggerId` to `<Popover.Root>`: each trigger publishes its own `id` when it opens the popover, and setting `triggerId` yourself anchors the popover to that trigger.
 
 :demo{name="popover/detached-triggers-controlled"}
 
 ### Animating the Popover
 
-When one popover serves several triggers, it can glide from one to the next instead of snapping. Three things animate independently: its position, its size, and its contents.
+When one popover serves several triggers, it can glide from one to the next instead of snapping. Its position, its size, and its contents animate independently.
 
 #### Position and Size
 
@@ -135,14 +135,12 @@ Position lives on the **Positioner**, so transition its `left`, `right`, `top`, 
 
 #### Content
 
-The content itself can cross-fade when the active trigger changes. Wrap it in `<Popover.Viewport>`, which notices the switch and exposes a `data-activation-direction` attribute so the animation can lean toward the new trigger. Its value is a space-separated set of up to two tokens, one per axis — `left` or `right` for the horizontal axis, `up` or `down` for the vertical one (for example, `right down`). Match a single token with the `~=` attribute selector, such as `[data-activation-direction~='right']`.
+The content itself can cross-fade when the active trigger changes. Wrap it in `<Popover.Viewport>`, which notices the switch and exposes a `data-activation-direction` attribute — a space-separated horizontal and vertical pair such as `right down` — so the animation can lean toward the new trigger. Match a single token with the `~=` attribute selector, such as `[data-activation-direction~='right']`.
 
 During a transition the viewport keeps both the incoming and outgoing content mounted, each in its own wrapper:
 
-- `data-current` — the content coming in, or the only content when nothing is transitioning. It also carries `data-starting-style` while it animates in.
-- `data-previous` — the content on its way out. It also carries `data-ending-style` while it animates out.
-
-Target these to write the enter and exit animations.
+- `data-current`: the entering content, or the sole content when nothing is transitioning.
+- `data-previous`: the leaving content during a transition.
 
 :demo{name="popover/detached-triggers-full"}
 
@@ -423,7 +421,7 @@ Renders a `<div>` element.
 | `--popup-width`  | Width of the outgoing popup content, set on the `data-previous` container. Use it to freeze the popup size while the content morphs. |
 | `--popup-height` | Height of the outgoing popup content, set on the `data-previous` container.                                                          |
 
-The Viewport is optional — reach for it only when a single popup is opened by multiple triggers, its content differs per trigger, and the switch between them is animated. When used, set `width: var(--positioner-width)` and `height: var(--positioner-height)` on the Positioner so its box is frozen to the measured size during the transition; otherwise content-driven resizing can make the popup thrash or flip to another side.
+When using the Viewport, set `width: var(--positioner-width)` and `height: var(--positioner-height)` on the Positioner so its box is frozen to the measured size during the transition; otherwise content-driven resizing can make the popup thrash or flip to another side.
 
 ## Handle
 

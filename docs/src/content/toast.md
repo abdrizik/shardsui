@@ -78,7 +78,7 @@ Read `--toast-index` to set each toast's stacking order; index 0 sits at the fro
 }
 ```
 
-`--toast-offset-y` gives each toast its vertical offset when toasts are positioned absolutely and translated apart. Pair it with the `data-expanded` attribute (present while the viewport is hovered or focused) to spread the stack open.
+`--toast-offset-y` gives each toast its vertical offset when toasts are positioned absolutely and translated apart. Pair it with the `data-expanded` attribute to spread the stack open.
 
 ```css title="Expanded offset"
 .toast[data-expanded] {
@@ -86,7 +86,7 @@ Read `--toast-index` to set each toast's stacking order; index 0 sits at the fro
 }
 ```
 
-While the stack is collapsed, clamp every toast's height to the frontmost toast with `--toast-frontmost-height`, and let `<Toast.Content>` hide the content of the toasts behind it. The `data-behind` attribute flags content behind the frontmost toast; combine it with `data-expanded` so it fades back in when the viewport expands:
+While the stack is collapsed, clamp every toast's height to the frontmost toast with `--toast-frontmost-height`, and let `<Toast.Content>` hide the content of the toasts behind it. Combine `data-behind` with `data-expanded` so it fades back in when the viewport expands:
 
 ```css title="Collapsed content"
 /* [!code word:data-behind] */
@@ -120,7 +120,7 @@ While the stack is collapsed, clamp every toast's height to the frontmost toast 
 }
 ```
 
-On dismissal, the `data-swipe-direction` attribute reports which way the toast was swiped; use it to fling the toast off-screen in the same direction.
+On dismissal, use `data-swipe-direction` to fling the toast off-screen in the direction it was swiped.
 
 ```css title="Swipe direction"
 /* [!code word:data-swipe-direction] */
@@ -143,9 +143,9 @@ On dismissal, the `data-swipe-direction` attribute reports which way the toast w
 }
 ```
 
-The `data-limited` attribute marks a toast that exceeded the `limit` option. Limited toasts stay mounted with the HTML `inert` attribute, so you can hide them outright or animate them differently from the visible stack.
+A toast that exceeds the `limit` option gets `data-limited` and stays mounted with the HTML `inert` attribute, so you can hide it outright or animate it differently from the visible stack.
 
-`updateKey` increments every time a toast is updated or upserted; key an animation off it to replay an attention-grabbing effect. When a remount is acceptable, wrap the toast markup in a `{#key}` block keyed on it instead.
+`updateKey` increments every time a toast is updated or upserted; key an animation off it to replay an effect. When a remount is acceptable, wrap the toast markup in a `{#key}` block keyed on it instead.
 
 ## Examples
 
@@ -216,7 +216,7 @@ Your CSS decides where toasts sit: adjust the Viewport and Root styles to move t
 
 ### Undo action
 
-Pass the `actionProps` option when adding a toast to configure an action button inside it, such as an Undo button.
+Pass the `actionProps` option when adding a toast to configure an action button inside it.
 
 :demo{name="toast/undo"}
 
@@ -240,7 +240,7 @@ Upserting a toast by the same `id` bumps its `updateKey`, letting a custom rende
 
 ### Varying heights
 
-To stack toasts of different heights cleanly, clamp every toast's height to the frontmost one at index 0 with the `--toast-frontmost-height` CSS variable, while the `data-behind` attribute hides the content of the toasts behind it. Avoid sizing `<Toast.Content>` to the root's height (such as `height: 100%`) — resizing it alongside the root cancels the root's height transition.
+Avoid sizing `<Toast.Content>` to the root's height (such as `height: 100%`). Resizing it alongside the root cancels the root's height transition.
 
 :demo{name="toast/varying-heights"}
 

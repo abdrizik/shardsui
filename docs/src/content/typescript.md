@@ -2,7 +2,7 @@
 
 Inferring props, refs, and value types.
 
-ShardsUI is written in TypeScript, so types flow through `bind:`, callback parameters, and snippets with no annotations. This page covers the cases where you do name a type.
+ShardsUI is written in TypeScript, so types flow through `bind:`, callback parameters, and snippets with no annotations. The cases below are the ones where you do name a type.
 
 ## Inferring a component's props
 
@@ -19,7 +19,7 @@ Each part declares its props inline, so there's no props interface to import. Wh
 <Tooltip.Root {...props} />
 ```
 
-`ComponentProps<typeof X>` resolves to the full prop surface of `X` — `class`, `style`, `as`, `ref`, the `children` snippet, and every part-specific prop. Index into it to reuse or narrow one of them:
+`ComponentProps<typeof X>` resolves to the full prop surface of `X`: `class`, `style`, `as`, `ref`, the `children` snippet, and every part-specific prop. Index into it to reuse or narrow one of them:
 
 ```ts title="Reusing one prop's type"
 import type { ComponentProps } from 'svelte'
@@ -42,7 +42,7 @@ A stateful prop does double duty: pass a value without `bind:` and the part owns
 <Switch.Root bind:checked />
 ```
 
-The rune's inferred type is usually enough — `$state(false)` is already `boolean`. Annotate it when the value is a union, so an invalid value is caught at the binding site instead of at runtime:
+The rune's inferred type is usually enough. `$state(false)` is already `boolean`. Annotate it when the value is a union, so an invalid value is caught at the binding site instead of at runtime:
 
 ```svelte title="Controlled select value"
 <script lang="ts">
@@ -58,7 +58,7 @@ The rune's inferred type is usually enough — `$state(false)` is already `boole
 
 ## Value types for generic parts
 
-`Select.Root` and `Combobox.Root` are generic over the item they hold and over whether selection is single or multiple, but `items` never infers it: Combobox types it `readonly NoInfer<Value>[]` and Select's entries are `unknown`. Annotate the bound `value` instead — the item type flows from there into `onValueChange`, `itemToStringLabel`, the item snippets, and Combobox's `onItemHighlighted`, with no casts. Without an annotated `value`, the type has to come from a typed wrapper (see below).
+`Select.Root` and `Combobox.Root` are generic over the item they hold and over whether selection is single or multiple, but `items` never infers it: Combobox types it `readonly NoInfer<Value>[]` and Select's entries are `unknown`. Annotate the bound `value` instead. The item type flows from there into `onValueChange`, `itemToStringLabel`, the item snippets, and Combobox's `onItemHighlighted`, with no casts. Without an annotated `value`, the type has to come from a typed wrapper (see below).
 
 In single mode (the default) the value is the item, or `null` when nothing is chosen:
 
@@ -108,7 +108,7 @@ Add `multiple` and the value type flips to an array of items:
 </Combobox.Root>
 ```
 
-`Autocomplete.Root` is generic over its item too, but only for `items`, `filter` and the item snippets — its `value` is the input's text, so it is always a `string`.
+`Autocomplete.Root` is generic over its item too, but only for `items`, `filter` and the item snippets. Its `value` is the input's text, so it is always a `string`.
 
 To wrap a generic part, forward its type parameter with `<script generics="…">` so the item type keeps flowing from your call site through the wrapper into the part:
 
@@ -217,7 +217,7 @@ When a trigger and its content can't sit together in the markup, detach them wit
 
 The handle drives the dialog from your own code — `dialog.open(triggerId)`, `dialog.close()`, `dialog.openWithPayload(payload)`, and the readonly `dialog.isOpen` — with `openWithPayload` typed against the `{ text: string }` you declared. `open` takes the `id` of a registered detached trigger, or `null` to open with no trigger at all; `Dialog`, `AlertDialog` and `Drawer` accept `null` and carry `openWithPayload`, while the `Popover`, `Menu`, `Tooltip` and `PreviewCard` handles require an id.
 
-The same type argument flows through `<Dialog.Trigger>`'s `payload` prop and into the `children` snippet, where `payload` arrives as `{ text: string } | undefined` — guard the `undefined`, which means no trigger has opened the dialog yet. To pass a handle across module boundaries, annotate it with the `Dialog.Handle` type:
+The same type argument flows through `<Dialog.Trigger>`'s `payload` prop and into the `children` snippet, where `payload` arrives as `{ text: string } | undefined`. Guard the `undefined`, which means no trigger has opened the dialog yet. To pass a handle across module boundaries, annotate it with the `Dialog.Handle` type:
 
 ```ts title="Annotating a handle"
 import { Dialog } from '@shardsui/svelte/dialog'
@@ -227,7 +227,7 @@ let dialog: Dialog.Handle<{ text: string }>
 
 ## Refs and `bind:this`
 
-Parts that render an element expose a bindable `ref`, typed `HTMLElement | null` — `as` makes the tag a runtime value, so the type can't narrow to a concrete element. Type the backing rune the same way; narrow with an `instanceof` check where you need a tag-specific API. Keep `| null` — the ref is empty until the element mounts, so a prop that wants a non-null element, like `initialFocus`, takes a getter instead:
+Parts that render an element expose a bindable `ref`, typed `HTMLElement | null`: `as` makes the tag a runtime value, so the type can't narrow to a concrete element. Type the backing rune the same way; narrow with an `instanceof` check where you need a tag-specific API. Keep `| null`. The ref is empty until the element mounts, so a prop that wants a non-null element, like `initialFocus`, takes a getter instead:
 
 ```svelte title="Typing bind:ref"
 <script lang="ts">
@@ -246,7 +246,7 @@ Parts that render an element expose a bindable `ref`, typed `HTMLElement | null`
 </Dialog.Root>
 ```
 
-`bind:this` follows the same rule — typed to the component on a component instance, to the element on a plain element:
+`bind:this` follows the same rule: typed to the component on a component instance, to the element on a plain element:
 
 ```svelte title="Typing bind:this on an element"
 <script lang="ts">
@@ -258,7 +258,7 @@ Parts that render an element expose a bindable `ref`, typed `HTMLElement | null`
 
 ## Snippets
 
-Snippets are fully typed. When a part hands its `children` snippet its state, destructure it — the parameter type comes from the part, so there is nothing to annotate:
+When a part hands its `children` snippet its state, destructure it. The parameter type comes from the part:
 
 ```svelte title="Snippet payload"
 <script lang="ts">
@@ -290,8 +290,6 @@ A snippet that takes nothing is just `Snippet`; one that receives a payload obje
 
 ## Other exported types
 
-A few parts hand you richer objects and export the types to match.
+The toast object your toast content receives carries its `id`, `title`, `description`, `priority`, transition status and your own `data`; it is `ToastObject<Data>`, exported from `@shardsui/svelte/toast` along with `ToastManagerAddOptions`, `ToastManagerUpdateOptions` and `ToastManagerPromiseOptions` for the `Toast.Manager` queue. See [Toast](/svelte/toast).
 
-The toast object your toast content receives carries its `id`, `title`, `description`, `priority`, transition status and your own `data`; it is `ToastObject<Data>`, exported from `@shardsui/svelte/toast` along with `ToastManagerAddOptions`, `ToastManagerUpdateOptions` and `ToastManagerPromiseOptions` for the `Toast.Manager` queue — see [Toast](/svelte/toast).
-
-`Combobox.createFilter` returns a `ComboboxFilter` and takes `ComboboxFilterOptions`, both exported from `@shardsui/svelte/combobox` — see [Combobox](/svelte/combobox).
+`Combobox.createFilter` returns a `ComboboxFilter` and takes `ComboboxFilterOptions`, both exported from `@shardsui/svelte/combobox`. See [Combobox](/svelte/combobox).

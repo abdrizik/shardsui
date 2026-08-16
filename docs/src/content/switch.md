@@ -70,7 +70,7 @@ When you point a separate label at the switch with `for`/`id` instead of wrappin
 </Form>
 ```
 
-When wrapped in `Field.Root`, the switch takes the field's `name` and `disabled`, and toggling it runs the field's validation.
+When wrapped in `Field.Root`, toggling the switch runs the field's validation.
 
 ## API reference
 

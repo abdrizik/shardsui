@@ -17,13 +17,13 @@ An action trigger.
 ## Usage guidelines
 
 - **Submit buttons**: unlike the native button element, `type="submit"` must be specified on Button for it to act as a submit button.
-- **Links**: the Button component enforces button semantics (`role="button"`, keyboard interaction, disabled state). It should not be used for links. See [Rendering links as buttons](#examples-rendering-links-as-buttons) below.
+- **Links**: the Button component enforces button semantics (`role="button"`, keyboard interaction, disabled state). It should not be used for links. See [Rendering links as buttons](#examples-rendering-links-as-buttons).
 
 ## Examples
 
 ### Rendering as another tag
 
-Render the button as another tag, such as a `<div>`. Non-button tags get `role="button"` and keyboard handlers automatically.
+Non-button tags get `role="button"` and keyboard handlers automatically.
 
 ```svelte title="Custom tag button"
 <script>

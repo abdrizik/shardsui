@@ -55,14 +55,14 @@ An input with a filterable list.
 ## Usage guidelines
 
 - **Combobox is a filterable Select**: use it when the value is restricted to a predefined set of items (like [Select](/svelte/select)) and you want to narrow that set by typing.
-- **Not for free-form text**: typing only filters the list — the value is always one of the items. For a search widget that accepts arbitrary text, use [Autocomplete](/svelte/autocomplete).
-- **Not without an input**: if you aren't rendering a text input at all, use [Select](/svelte/select) — it carries the accessibility semantics for a listbox that has no input.
-- **Provide an accessible name**: when `<Combobox.Input>` is the form control, label it with a native `<label>` or `<Field.Label>`, or an `aria-label` when no visible label is rendered. `<Combobox.Label>` labels the trigger, not the input — it belongs to the [input-inside-popup](#examples-input-inside-popup) pattern. See the [forms guide](/svelte/forms).
-- **Pass `items` for built-in filtering**: the combobox filters the `items` prop internally as the user types; render matches with `<Combobox.Collection>` inside `<Combobox.List>`. For async or custom filtering, pass a dynamic `items` array or the `filteredItems` / `filter` props — see [Filtering](#filtering).
+- **Not for free-form text**: typing only filters the list. The value is always one of the items. For a search widget that accepts arbitrary text, use [Autocomplete](/svelte/autocomplete).
+- **Not without an input**: if you aren't rendering a text input at all, use [Select](/svelte/select). It carries the accessibility semantics for a listbox that has no input.
+- **Provide an accessible name**: when `<Combobox.Input>` is the form control, label it with a native `<label>` or `<Field.Label>`, or an `aria-label` when no visible label is rendered. `<Combobox.Label>` labels the trigger, not the input. It belongs to the [input-inside-popup](#examples-input-inside-popup) pattern. See the [forms guide](/svelte/forms).
+- **Pass `items` for built-in filtering**: the combobox filters the `items` prop internally as the user types; render matches with `<Combobox.Collection>` inside `<Combobox.List>`. For async or custom filtering, pass a dynamic `items` array or the `filteredItems` / `filter` props. See [Filtering](#filtering).
 
 ## TypeScript
 
-`<Combobox.Root>` infers its item type from the `value` prop, and each entry in the `items` array must share that type. `<Combobox.Item>` is not generic — its `value` is `unknown`.
+`<Combobox.Root>` infers its item type from the `value` prop, and each entry in the `items` array must share that type. `<Combobox.Item>` is not generic. Its `value` is `unknown`.
 
 See the [TypeScript guide](/svelte/typescript#value-types-for-generic-parts) for generic roots, typed wrappers, and `bind:ref` patterns.
 
@@ -237,7 +237,7 @@ Doesn't render its own HTML element, but renders a hidden `<input>` beside — o
 | `form`                 | `string`                                                                                          | —           | Associates the hidden inputs with a form by its `id` (use when the combobox is rendered outside the form).                                                                                                                                                                                                                                                                                                    |
 | `grid`                 | `boolean`                                                                                         | `false`     | Whether the items are arranged in a grid, enabling two-dimensional arrow-key navigation.                                                                                                                                                                                                                                                                                                                      |
 | `inline`               | `boolean`                                                                                         | `false`     | Whether the list is rendered inline without using the component's own popup. Specify `open` unconditionally in conjunction with this prop so the list is considered visible: `<Combobox.Root inline open>`.                                                                                                                                                                                                   |
-| `isItemEqualToValue`   | `(item: unknown, value: unknown) => boolean`                                                      | `Object.is` | Custom comparison logic used to determine if a combobox item value matches the current selected value. Defaults to `Object.is` comparison.                                                                                                                                                                                                                                                                    |
+| `isItemEqualToValue`   | `(item: unknown, value: unknown) => boolean`                                                      | `Object.is` | Custom comparison logic used to determine if a combobox item value matches the current selected value.                                                                                                                                                                                                                                                                                                        |
 | `itemToStringLabel`    | `(item: unknown) => string`                                                                       | —           | When the item values are objects, this function converts the object value to a string representation for display in the input. If the shape of the object is `{ value, label }`, the label will be used automatically without needing to specify this prop.                                                                                                                                                   |
 | `itemToStringValue`    | `(item: unknown) => string`                                                                       | —           | When the item values are objects, this function converts the object value to a string representation for form submission. If the shape of the object is `{ value, label }`, the value will be used automatically without needing to specify this prop.                                                                                                                                                        |
 | `items`                | `readonly Value[] \| readonly { items: Value[] }[]`                                               | —           | The items to display. When provided, `Combobox.Value` and `<Combobox.Collection>` resolve labels from this list.                                                                                                                                                                                                                                                                                              |
@@ -411,7 +411,7 @@ Renders a `<button>` element.
 
 ### Icon
 
-An icon that indicates that the trigger button opens the popup.
+An icon indicating that the trigger opens the popup.
 Renders a `<span>` element.
 
 ::table{columns="Prop,Type,Default"}
@@ -633,7 +633,7 @@ Renders filtered list items.
 Doesn't render its own HTML element.
 Grouped `items` need a nested pass: an outer `<Combobox.Collection>` over the groups, and another one inside each `<Combobox.Group>` for its `items`.
 
-The `children` snippet receives `(item, index)` for each item to render.
+The `children` snippet receives `(item, index)`.
 
 ### Item
 
@@ -704,10 +704,9 @@ Renders a `<span>` element.
 
 Renders its children only when the list is empty — with or without the `items` prop.
 Announces changes politely to screen readers.
-This component's root element must remain mounted in the DOM to announce
-changes consistently across screen readers. Avoid hiding or removing the
-component itself with `display: none`, `hidden`, `aria-hidden`, or conditional
-rendering. Prefer updating or conditionally rendering its children instead.
+Its root element must stay mounted for announcements to work consistently across screen
+readers: don't hide or remove it with `display: none`, `hidden`, `aria-hidden`, or
+conditional rendering — update or conditionally render its children instead.
 Renders a `<div>` element.
 
 ::table{columns="Prop,Type,Default"}
@@ -724,10 +723,9 @@ Renders a `<div>` element.
 
 Displays a status message whose content changes are announced politely to screen readers.
 Useful for conveying the status of an asynchronously loaded list.
-This component's root element must remain mounted in the DOM to announce
-changes consistently across screen readers. Avoid hiding or removing the
-component itself with `display: none`, `hidden`, `aria-hidden`, or conditional
-rendering. Prefer updating or conditionally rendering its children instead.
+Its root element must stay mounted for announcements to work consistently across screen
+readers: don't hide or remove it with `display: none`, `hidden`, `aria-hidden`, or
+conditional rendering — update or conditionally render its children instead.
 Renders a `<div>` element.
 
 ::table{columns="Prop,Type,Default"}

@@ -26,9 +26,9 @@ A field is a control plus everything that describes it. `<Field.Root>` groups th
 </Form>
 ```
 
-The `name` on `<Field.Root>` identifies the value on submit — it takes precedence over a `name` on the control itself, so put it on the root and let it cascade. That same `name` is the key the `errors` prop and schema validators match against later.
+The `name` on `<Field.Root>` identifies the value on submit. It takes precedence over a `name` on the control itself, so put it on the root and let it cascade. That same `name` is the key the `errors` prop and schema validators match against later.
 
-As the field moves through its lifecycle it reflects state onto every part as `data-*` attributes — `data-invalid`, `data-valid`, `data-touched`, `data-dirty`, `data-filled`, `data-focused`, `data-disabled`. Style against those instead of tracking validity in your own `$state`:
+As the field moves through its lifecycle it reflects state onto every part as `data-*` attributes: `data-invalid`, `data-valid`, `data-touched`, `data-dirty`, `data-filled`, `data-focused`, `data-disabled`. Style against those instead of tracking validity in your own `$state`:
 
 ```svelte title="Styling from field state"
 <Field.Control class="border-gray-200 data-focused:outline-2 data-invalid:border-red-600" />
@@ -36,7 +36,7 @@ As the field moves through its lifecycle it reflects state onto every part as `d
 
 ## Giving every control a name
 
-A control with no accessible name is invisible to a screen reader. How you supply the name depends on what the control is.
+A control with no accessible name is invisible to a screen reader. How you supply it depends on the control.
 
 **Plain inputs** — `Input`, `Autocomplete`, the input half of `Combobox`, and the checkable controls `Checkbox` / `Radio` / `Switch` — take `<Field.Label>`. The control can sit _inside_ its label:
 
@@ -65,7 +65,7 @@ A control with no accessible name is invisible to a screen reader. How you suppl
 
 **No visible label at all?** Put `aria-label` directly on the control.
 
-`<Field.Description>` needs no wiring either — it's registered as the control's accessible description automatically:
+`<Field.Description>` is registered as the control's accessible description automatically:
 
 ```svelte title="Labeling a select and a slider"
 <script>
@@ -177,16 +177,16 @@ When each option in a checkbox or radio group needs its _own_ label and descript
 </Field.Root>
 ```
 
-Non-native controls (Select, Slider, a checkbox or radio group) submit through a hidden input whose `name` comes from the surrounding `<Field.Root>` — naming the root is all it takes for their values to ride along in a `FormData` submission.
+Non-native controls (Select, Slider, a checkbox or radio group) submit through a hidden input whose `name` comes from the surrounding `<Field.Root>`.
 
 ## Native constraint validation
 
 `<Field.Control>` forwards standard HTML validation attributes, and the field reads their result straight from the constraint validation API:
 
-- `required` — the field must have a value.
-- `minlength` / `maxlength` — bounds on text length.
-- `pattern` — a regular expression the value must match.
-- `step` — a numeric increment the value must be a multiple of.
+- `required`: the field must have a value.
+- `minlength` / `maxlength`: bounds on text length.
+- `pattern`: a regular expression the value must match.
+- `step`: a numeric increment the value must be a multiple of.
 
 ```svelte title="Constraints on a URL field"
 <script>
@@ -199,19 +199,19 @@ Non-native controls (Select, Slider, a checkbox or radio group) submit through a
 </Field.Root>
 ```
 
-An empty `<Field.Error>` renders the browser's own message for whichever constraint failed — no copy to write until you want your own.
+An empty `<Field.Error>` renders the browser's own message for whichever constraint failed.
 
 ## Custom validation
 
-Hand `<Field.Root>` a `validate` function for logic the native attributes can't express. It receives the field's value and the full form values, and returns an error string, an array of strings, or `null` when valid. It's allowed to be async — a uniqueness check against your API, say — but an async result never holds up a submission: the form submits before a pending `validate` resolves. Checks that must gate the submit belong on the server, fed back through [`errors`](#server-returned-errors).
+Hand `<Field.Root>` a `validate` function for logic the native attributes can't express. It receives the field's value and the full form values, and returns an error string, an array of strings, or `null` when valid. It's allowed to be async, but an async result never holds up a submission: the form submits before a pending `validate` resolves. Checks that must gate the submit belong on the server, fed back through [`errors`](#server-returned-errors).
 
 `validationMode` decides _when_ it fires:
 
-- `onSubmit` (default) — validate every field when the `<Form>` submits; after that first attempt, each field revalidates as its value changes.
-- `onBlur` — validate when focus leaves the field.
-- `onChange` — validate on every value change, e.g. each keystroke.
+- `onSubmit` (default): validate every field when the `<Form>` submits; after that first attempt, each field revalidates as its value changes.
+- `onBlur`: validate when focus leaves the field.
+- `onChange`: validate on every value change, e.g. each keystroke.
 
-For `onChange` against a network call, `validationDebounceTime` (milliseconds) debounces the callback so you don't fire a request per keypress.
+For `onChange` against a network call, `validationDebounceTime` (milliseconds) debounces the callback.
 
 ```svelte title="Async username check, debounced per keystroke"
 <script>
@@ -243,13 +243,13 @@ For `onChange` against a network call, `validationDebounceTime` (milliseconds) d
 </Field.Root>
 ```
 
-`validationMode` set on a field wins over the one on `<Form>`, so you can run one field on every keystroke while the rest wait for submit.
+`validationMode` set on a field wins over the one on `<Form>`.
 
 ## Showing the error
 
 `<Field.Error>` with no children shows the field's current message whenever it's invalid, or a `<ul>` of them when more than one applies. Give it a `match` prop to take control:
 
-- a `ValidityState` key like `"valueMissing"` or `"patternMismatch"` renders only when that specific flag is set — the hook for per-reason, translatable copy;
+- a `ValidityState` key like `"valueMissing"` or `"patternMismatch"` renders only when that specific flag is set, giving you the hook for per-reason, translatable copy;
 - `match={true}` always renders; `match={false}` (or omitted) renders whenever the field is invalid or carries a form error.
 
 ```svelte title="Custom copy per validity reason"
@@ -260,9 +260,9 @@ For `onChange` against a network call, `validationDebounceTime` (milliseconds) d
 </Field.Root>
 ```
 
-`<Field.Error>` participates in enter/exit animation — it exposes `data-starting-style` and `data-ending-style` so the message can fade or slide rather than snap in.
+`<Field.Error>` participates in enter/exit animation. It exposes `data-starting-style` and `data-ending-style`.
 
-For anything the `match` cases can't cover, `<Field.Validity>` hands you the raw validity state in a snippet and lets you render whatever you want:
+For anything the `match` cases can't cover, `<Field.Validity>` hands you the raw validity state in a snippet:
 
 ```svelte title="Rendering from raw validity state"
 <Field.Validity>
@@ -284,7 +284,7 @@ The snippet also receives `validity` (the `ValidityState` flags), `error` (the f
 
 Two handlers, depending on the shape you want the values in.
 
-Reach for the native `onsubmit` when you want the raw `FormData` — it runs only after validation passes, and you own the `preventDefault()`:
+Reach for the native `onsubmit` when you want the raw `FormData`. It runs only after validation passes, and you own the `preventDefault()`:
 
 ```svelte title="Native submission"
 <script>
@@ -300,7 +300,7 @@ Reach for the native `onsubmit` when you want the raw `FormData` — it runs onl
 />
 ```
 
-Reach for `onFormSubmit` when you'd rather reshape the values as a plain object before sending — it calls `preventDefault()` on the native submit event for you:
+Reach for `onFormSubmit` when you'd rather reshape the values as a plain object before sending. It calls `preventDefault()` on the native submit event for you:
 
 ```svelte title="Submission as a JavaScript object"
 <script>
@@ -357,7 +357,7 @@ Validation that can only happen on the server — a promo code that's expired, a
 
 ### With a SvelteKit form action
 
-Put the check in a [form action](https://svelte.dev/docs/kit/form-actions), return failures with `fail(...)` keyed by field name, and let the page feed them back through `errors`. Because `<Form>` renders a genuine `<form>`, `method` and `action` pass straight through and the form works with JavaScript off. `use:` applies to elements, not components, so reach SvelteKit's `enhance` through [`fromAction`](https://svelte.dev/docs/svelte/svelte-attachments#fromAction) — `<Form>` spreads the attachment onto the `<form>` it renders.
+Put the check in a [form action](https://svelte.dev/docs/kit/form-actions), return failures with `fail(...)` keyed by field name, and let the page feed them back through `errors`. Because `<Form>` renders a genuine `<form>`, `method` and `action` pass straight through and the form works with JavaScript off. `use:` applies to elements, not components, so reach SvelteKit's `enhance` through [`fromAction`](https://svelte.dev/docs/svelte/svelte-attachments#fromAction). `<Form>` spreads the attachment onto the `<form>` it renders.
 
 ```ts title="src/routes/+page.server.ts"
 import { fail } from '@sveltejs/kit'
@@ -399,7 +399,7 @@ export const actions = {
 </Form>
 ```
 
-The `form` prop is SvelteKit's action data; `form?.errors` lands on the right fields by name, and the first invalid field takes focus. The demo below simulates the server error shape on the client; the blocks above show the SvelteKit wiring.
+The `form` prop is SvelteKit's action data. The demo below simulates the server error shape on the client.
 
 :demo{name="form/form-action"}
 
@@ -442,8 +442,6 @@ Keep validation rules in one schema object. Parse the submitted values with `saf
 </Form>
 ```
 
-`onFormSubmit` hands over the values as an object, which is exactly what `safeParse` takes — pairing the two keeps the submit handler a two-liner.
-
 :demo{name="form/zod"}
 
 ## Driving a field from an external library
@@ -471,4 +469,4 @@ When something else owns form state — a dedicated form library, or your own st
 </Field.Root>
 ```
 
-When the library orchestrates validation and submission, `<Form>` is optional — a plain `<form>` works. To trigger validation yourself, the `<Form>` instance obtained with `bind:this` exposes a `validate()` that validates every field, or one of them when passed a field `name`.
+When the library orchestrates validation and submission, `<Form>` is optional. A plain `<form>` works. To trigger validation yourself, the `<Form>` instance obtained with `bind:this` exposes a `validate()` that validates every field, or one of them when passed a field `name`.

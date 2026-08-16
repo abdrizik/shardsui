@@ -33,7 +33,7 @@ Animate panels as they activate using the `data-starting-style` and `data-ending
 
 ### Links
 
-When a tab navigates to a URL instead of toggling a panel, render it as an anchor: set `as="a"` on `<Tabs.Tab>`. The `href` is forwarded to the element, and the tab keeps its `role="tab"` and its place in the list's keyboard navigation.
+When a tab navigates to a URL instead of toggling a panel, set `as="a"` on `<Tabs.Tab>`. The `href` is forwarded to the element, and the tab keeps its `role="tab"` and its place in the list's keyboard navigation.
 
 ```svelte title="Tabs as links"
 <Tabs.Root>
@@ -122,7 +122,7 @@ Renders a `<button>` element.
 
 ### Indicator
 
-A visual indicator that can be styled to match the position of the currently active tab. Place it inside `<Tabs.List>` — it is measured against the list — and position it with the CSS variables below.
+A visual indicator you style to match the position of the active tab. Place it inside `<Tabs.List>` — it is measured against the list — and position it with the CSS variables below.
 Renders a `<span>` element; nothing renders while the active value is `null`.
 
 ::table{columns="Prop,Type,Default"}

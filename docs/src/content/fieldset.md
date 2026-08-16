@@ -41,7 +41,7 @@ Renders a `<fieldset>` element.
 
 ### Legend
 
-An accessible label that is automatically associated with the fieldset.
+An accessible label, automatically associated with the fieldset.
 Renders a `<div>` element.
 
 ::table{columns="Prop,Type,Default"}

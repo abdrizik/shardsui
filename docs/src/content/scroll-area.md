@@ -62,7 +62,7 @@ var(--scroll-area-overflow-y-end, 40px);
 
 ### Combining with Tabs
 
-When a tab list overflows, wrap `<Tabs.List>` in a `<ScrollArea.Viewport>` so the list scrolls horizontally inside the scroll area. Nest the tabs as the viewport's content and add the scrollbar parts alongside it.
+When a tab list overflows, wrap `<Tabs.List>` in a `<ScrollArea.Viewport>` so the list scrolls horizontally inside the scroll area, and add the scrollbar parts alongside it.
 
 ```svelte title="Tabs with ScrollArea"
 <Tabs.Root value="overview">

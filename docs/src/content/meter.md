@@ -48,7 +48,7 @@ Renders a `<div>` element with `role="meter"`.
 
 ### Track
 
-Contains the meter indicator and represents the entire range of the meter.
+Contains the indicator and represents the entire range of the meter.
 Renders a `<div>` element.
 
 ::table{columns="Prop,Type,Default"}
