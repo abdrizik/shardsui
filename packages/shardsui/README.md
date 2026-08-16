@@ -4,11 +4,9 @@
 
 Headless, accessible UI components for **Svelte 5**.
 
-Unstyled, composable component parts with full ARIA, keyboard, and focus management. Bring your own
-styles.
+Unstyled, composable component parts with full ARIA, keyboard, and focus management.
 
-[Documentation](https://shardsui.com) · [Quick start](https://shardsui.com/svelte/quick-start) ·
-[npm](https://www.npmjs.com/package/@shardsui/svelte)
+[Documentation](https://shardsui.com)
 
 ## Install
 
@@ -16,7 +14,7 @@ styles.
 npm i @shardsui/svelte
 ```
 
-Requires `svelte@^5.40` as a peer dependency.
+Requires `svelte@^5.40`
 
 ## Usage
 
@@ -37,21 +35,9 @@ Requires `svelte@^5.40` as a peer dependency.
 </Dialog.Root>
 ```
 
-Every component is its own entry point, so you import only what you use. A root barrel is there when
-you'd rather pull several at once:
-
-```js
-import { Combobox, Dialog, Menu } from '@shardsui/svelte'
-```
-
-## Documentation
-
-Styling, composition, state, animation, forms, accessibility, and a page for every component live in
-the [documentation](https://shardsui.com).
-
 ## Browser support
 
-ShardsUI supports Chrome and Edge 121, Firefox 97, and Safari 18.2 — on desktop and iOS — or later.
+Chrome and Edge 121, Firefox 97, and Safari 18.2 or later.
 
 ## License
 
