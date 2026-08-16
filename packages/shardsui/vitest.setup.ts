@@ -5,6 +5,7 @@ import { afterEach } from 'vitest'
 // Unmount rendered components between tests so DOM from one test doesn't leak into the next.
 afterEach(() => {
   cleanup()
+  globalThis.SHARDSUI_ANIMATIONS_DISABLED = true
 })
 
 // Skip animation waits in all tests.

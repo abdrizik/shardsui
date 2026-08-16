@@ -377,7 +377,6 @@ describe('<NavigationMenu.Viewport />', () => {
     })
     it('updates popup sizing when inline nested content is inserted while active', async () => {
       const restoreResizeObserver = mockResizeObserver()
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
       try {
@@ -422,12 +421,10 @@ describe('<NavigationMenu.Viewport />', () => {
         expect(positioner.style.getPropertyValue('--positioner-width')).toBe('250px')
         expect(positioner.style.getPropertyValue('--positioner-height')).toBe('220px')
       } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
         restoreResizeObserver()
       }
     })
     it('does not animate popup sizing when kept nested default content first moves into the portal', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
       let setPopupPropertySpy: ReturnType<typeof vi.spyOn> | undefined
 
@@ -473,12 +470,10 @@ describe('<NavigationMenu.Viewport />', () => {
         expect(fixed.every((v) => v === '220px')).toBe(true)
       } finally {
         setPopupPropertySpy?.mockRestore()
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
       }
     })
     it('updates popup sizing when switching kept inline nested content', async () => {
       const restoreResizeObserver = mockResizeObserver()
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
       try {
@@ -527,13 +522,11 @@ describe('<NavigationMenu.Viewport />', () => {
           expect(positioner.style.getPropertyValue('--positioner-height')).toBe('300px')
         })
       } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
         restoreResizeObserver()
       }
     })
     it('updates popup sizing when a kept nested content hidden attribute changes', async () => {
       const restoreResizeObserver = mockResizeObserver()
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
       try {
@@ -566,74 +559,68 @@ describe('<NavigationMenu.Viewport />', () => {
         })
         expect(positioner.style.getPropertyValue('--positioner-width')).toBe('250px')
       } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
         restoreResizeObserver()
       }
     })
     it('keeps inline mutation resize interruptible when content updates again mid-transition', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
-      try {
-        render(InlineNestedDynamicContentNavigationMenu, { initialContentStage: 1 })
-        const trigger1 = screen.getByTestId('trigger-1')
+      render(InlineNestedDynamicContentNavigationMenu, { initialContentStage: 1 })
+      const trigger1 = screen.getByTestId('trigger-1')
 
-        fireEvent.click(trigger1)
-        await waitFor(() => {
-          expect(screen.queryByTestId('popup-root')).not.toBe(null)
-        })
+      fireEvent.click(trigger1)
+      await waitFor(() => {
+        expect(screen.queryByTestId('popup-root')).not.toBe(null)
+      })
 
-        const popupRoot = screen.getByTestId('popup-root')
-        const positioner = screen.getByTestId('positioner')
-        const animations = mockAnimations(popupRoot)
+      const popupRoot = screen.getByTestId('popup-root')
+      const positioner = screen.getByTestId('positioner')
+      const animations = mockAnimations(popupRoot)
 
-        const popupWidth = 250
-        const popupHeightValues = [190, 260]
-        let popupHeight = 260
-        defineOffsetSize(
-          popupRoot,
-          () => popupWidth,
-          () => {
-            const next = popupHeightValues.shift()
-            if (next != null) popupHeight = next
-            return popupHeight
-          }
-        )
+      const popupWidth = 250
+      const popupHeightValues = [190, 260]
+      let popupHeight = 260
+      defineOffsetSize(
+        popupRoot,
+        () => popupWidth,
+        () => {
+          const next = popupHeightValues.shift()
+          if (next != null) popupHeight = next
+          return popupHeight
+        }
+      )
 
-        popupRoot.style.setProperty('--popup-width', '250px')
-        popupRoot.style.setProperty('--popup-height', '220px')
-        positioner.style.setProperty('--positioner-width', '250px')
-        positioner.style.setProperty('--positioner-height', '220px')
+      popupRoot.style.setProperty('--popup-width', '250px')
+      popupRoot.style.setProperty('--popup-height', '220px')
+      positioner.style.setProperty('--positioner-width', '250px')
+      positioner.style.setProperty('--positioner-height', '220px')
 
-        const setPropertySpy = vi.spyOn(positioner.style, 'setProperty')
+      const setPropertySpy = vi.spyOn(positioner.style, 'setProperty')
 
-        animations.start()
-        fireEvent.click(screen.getByTestId('insert-content'))
+      animations.start()
+      fireEvent.click(screen.getByTestId('insert-content'))
 
-        await waitFor(() => {
-          expect(screen.queryByTestId('extra-content-2')).not.toBe(null)
-        })
-        await waitFor(() => {
-          expect(
-            setPropertySpy.mock.calls.some(
-              (call) => call[0] === '--positioner-height' && call[1] === '190px'
-            )
-          ).toBe(true)
-        })
+      await waitFor(() => {
+        expect(screen.queryByTestId('extra-content-2')).not.toBe(null)
+      })
+      await waitFor(() => {
+        expect(
+          setPropertySpy.mock.calls.some(
+            (call) => call[0] === '--positioner-height' && call[1] === '190px'
+          )
+        ).toBe(true)
+      })
 
-        await animations.finish()
+      await animations.finish()
 
-        await waitFor(() => {
-          expect(positioner.style.getPropertyValue('--positioner-height')).toBe('260px')
-        })
-        await waitFor(() => {
-          expect(popupRoot.style.getPropertyValue('--popup-height')).toBe('auto')
-        })
+      await waitFor(() => {
+        expect(positioner.style.getPropertyValue('--positioner-height')).toBe('260px')
+      })
+      await waitFor(() => {
+        expect(popupRoot.style.getPropertyValue('--popup-height')).toBe('auto')
+      })
 
-        setPropertySpy.mockRestore()
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      setPropertySpy.mockRestore()
     })
     it('preserves the current size when an interrupted mutation temporarily measures zero', async () => {
       const restoreResizeObserver = mockResizeObserver()
@@ -677,7 +664,6 @@ describe('<NavigationMenu.Viewport />', () => {
       }
     })
     it('seeds the popup width from the exiting panel when reopening after hovering a top-level link', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
       let popupWidthSpy: ReturnType<typeof vi.spyOn> | undefined
 
@@ -763,61 +749,55 @@ describe('<NavigationMenu.Viewport />', () => {
         await animations.finish(reopenAnimation)
       } finally {
         popupWidthSpy?.mockRestore()
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
       }
     })
     it.skipIf(isJSDOM)('closes on the short exit path after switching content', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
-      try {
-        const onOpenChangeComplete = vi.fn()
-        render(ScopedPopupExitAnimation, { onOpenChangeComplete })
+      const onOpenChangeComplete = vi.fn()
+      render(ScopedPopupExitAnimation, { onOpenChangeComplete })
 
-        const triggerProduct = screen.getByTestId('trigger-product')
-        const triggerLearn = screen.getByTestId('trigger-learn')
+      const triggerProduct = screen.getByTestId('trigger-product')
+      const triggerLearn = screen.getByTestId('trigger-learn')
 
-        fireEvent.click(triggerProduct)
+      fireEvent.click(triggerProduct)
 
-        const productContent = (await screen.findByText('Product panel')).closest(
-          '.scoped-exit-content'
-        ) as HTMLElement
-        const productContentAnimations = mockAnimations(productContent)
-        const productContentCloseAnimation = productContentAnimations.start()
+      const productContent = (await screen.findByText('Product panel')).closest(
+        '.scoped-exit-content'
+      ) as HTMLElement
+      const productContentAnimations = mockAnimations(productContent)
+      const productContentCloseAnimation = productContentAnimations.start()
 
-        fireEvent.click(triggerLearn)
+      fireEvent.click(triggerLearn)
 
-        await waitFor(() => {
-          expect(triggerProduct).toHaveAttribute('aria-expanded', 'false')
-        })
-        await waitFor(() => {
-          expect(triggerLearn).toHaveAttribute('aria-expanded', 'true')
-        })
+      await waitFor(() => {
+        expect(triggerProduct).toHaveAttribute('aria-expanded', 'false')
+      })
+      await waitFor(() => {
+        expect(triggerLearn).toHaveAttribute('aria-expanded', 'true')
+      })
 
-        const popupRoot = screen.getByTestId('popup-root')
+      const popupRoot = screen.getByTestId('popup-root')
 
-        await nextFrame()
-        await productContentAnimations.finish(productContentCloseAnimation)
+      await nextFrame()
+      await productContentAnimations.finish(productContentCloseAnimation)
 
-        await waitFor(() => {
-          expect(
-            popupRoot.getAnimations().some((animation) => animation.playState !== 'finished')
-          ).toBe(false)
-        })
+      await waitFor(() => {
+        expect(
+          popupRoot.getAnimations().some((animation) => animation.playState !== 'finished')
+        ).toBe(false)
+      })
 
-        triggerLearn.focus()
+      triggerLearn.focus()
 
-        const closeStart = performance.now()
-        fireEvent.keyDown(triggerLearn, { key: 'Escape' })
+      const closeStart = performance.now()
+      fireEvent.keyDown(triggerLearn, { key: 'Escape' })
 
-        await waitFor(() => {
-          expect(onOpenChangeComplete.mock.calls.length).toBe(1)
-        })
-        expect(onOpenChangeComplete.mock.calls[0][0]).toBe(false)
-        expect(performance.now() - closeStart).toBeLessThan(325)
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await waitFor(() => {
+        expect(onOpenChangeComplete.mock.calls.length).toBe(1)
+      })
+      expect(onOpenChangeComplete.mock.calls[0][0]).toBe(false)
+      expect(performance.now() - closeStart).toBeLessThan(325)
     })
     it('tabs from the last link of the last nested panel to the next top-level trigger', async () => {
       const user = userEvent.setup()

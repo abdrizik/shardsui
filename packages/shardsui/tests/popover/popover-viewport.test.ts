@@ -104,15 +104,8 @@ describe('<Popover.Viewport />', () => {
   })
 
   describe.skipIf(isJSDOM)('morphing containers', () => {
-    let previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
-
     beforeEach(() => {
-      previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-    })
-
-    afterEach(() => {
-      globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
     })
 
     it('marks the previous container inert and removes it after the transition', async () => {

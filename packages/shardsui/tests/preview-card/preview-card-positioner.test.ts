@@ -208,14 +208,8 @@ describe('<PreviewCard.Positioner />', () => {
 
   describe.skipIf(isJSDOM)('multiline inline trigger', () => {
     const injectedStyles: HTMLStyleElement[] = []
-    let previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
-
-    beforeEach(() => {
-      previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
-    })
 
     afterEach(() => {
-      globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
       injectedStyles.forEach((style) => style.remove())
       injectedStyles.length = 0
       window.scrollTo(0, 0)

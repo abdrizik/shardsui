@@ -189,15 +189,11 @@ describe('<Field.Error />', () => {
   })
 
   describe.skipIf(isJSDOM)('animations', () => {
-    let previousAnimationsDisabled: boolean
-
     beforeEach(() => {
-      previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
     })
 
     afterEach(() => {
-      globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
       cleanup()
     })
 

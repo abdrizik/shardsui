@@ -60,15 +60,8 @@ describe('<Menu.CheckboxItemIndicator /> / <Menu.RadioItemIndicator />', () => {
   )
 
   describe.skipIf(isJSDOM)('exit animation', () => {
-    let previousAnimationsDisabled = false
-
     beforeEach(() => {
-      previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-    })
-
-    afterEach(() => {
-      globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
     })
 
     it('removes the indicators when the animation finishes', async () => {

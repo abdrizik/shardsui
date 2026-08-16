@@ -420,27 +420,22 @@ describe('<Dialog.Popup />', () => {
   })
 
   it.skipIf(isJSDOM)('stays mounted until the exit transition finishes', async () => {
-    const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
     globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-    try {
-      const ontransitionend = vi.fn()
-      const { rerender } = render(ExitTransition, { open: true, ontransitionend })
+    const ontransitionend = vi.fn()
+    const { rerender } = render(ExitTransition, { open: true, ontransitionend })
 
-      await new Promise((resolve) => requestAnimationFrame(resolve))
+    await new Promise((resolve) => requestAnimationFrame(resolve))
 
-      await rerender({ open: false, ontransitionend })
-      expect(screen.queryByRole('dialog')).not.toBe(null)
+    await rerender({ open: false, ontransitionend })
+    expect(screen.queryByRole('dialog')).not.toBe(null)
 
-      await waitFor(() => {
-        expect(screen.queryByRole('dialog')).toBe(null)
-      })
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).toBe(null)
+    })
 
-      await waitFor(() => {
-        expect(ontransitionend).toHaveBeenCalledTimes(1)
-      })
-    } finally {
-      globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-    }
+    await waitFor(() => {
+      expect(ontransitionend).toHaveBeenCalledTimes(1)
+    })
   })
 
   describe.skipIf(isJSDOM)('display: contents ancestors', () => {

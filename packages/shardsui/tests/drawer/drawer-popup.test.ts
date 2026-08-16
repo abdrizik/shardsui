@@ -189,15 +189,8 @@ describe('<Drawer.Popup />', () => {
   })
 
   describe.skipIf(isJSDOM)('with exit animations', () => {
-    let previousAnimationsDisabled: boolean
-
-    beforeAll(() => {
-      previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
+    beforeEach(() => {
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-    })
-
-    afterAll(() => {
-      globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
     })
 
     it('clears parent nested drawer state when a nested drawer starts closing before unmount', async () => {

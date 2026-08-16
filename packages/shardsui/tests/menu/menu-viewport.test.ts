@@ -38,15 +38,8 @@ describe('<Menu.Viewport />', () => {
   })
 
   describe.skipIf(isJSDOM)('morphing containers with multiple triggers and payloads', () => {
-    let previousAnimationsDisabled = false
-
     beforeEach(() => {
-      previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-    })
-
-    afterEach(() => {
-      globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
     })
 
     it('creates morphing containers during transitions', async () => {

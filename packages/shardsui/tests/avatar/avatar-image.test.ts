@@ -179,7 +179,6 @@ describe('<Avatar.Image />', () => {
       document.head.appendChild(style)
 
       const imageMock = mockImageProbe()
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
       try {
         let transitionFinished = false
@@ -212,7 +211,6 @@ describe('<Avatar.Image />', () => {
         await waitFor(() => expect(transitionFinished).toBe(true))
         expect(screen.getByTestId('image')).not.toBeNull()
       } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
         imageMock.restore()
         document.head.removeChild(style)
       }
@@ -226,7 +224,6 @@ describe('<Avatar.Image />', () => {
       `
       document.head.appendChild(style)
 
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
       try {
         const { rerender } = render(ToggleImageSrc, { showImage: true })
@@ -239,7 +236,6 @@ describe('<Avatar.Image />', () => {
         )
         await waitFor(() => expect(screen.queryByTestId('image')).toBeNull())
       } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
         document.head.removeChild(style)
       }
     })

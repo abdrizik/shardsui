@@ -493,106 +493,86 @@ describe('<Dialog.Root />', () => {
       })
 
       it('is called on close once the exit animation finishes', async () => {
-        const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
         globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-        try {
-          const user = userEvent.setup()
-          const onOpenChangeComplete = vi.fn()
-          render(OpenChangeCompleteToggle, {
-            shape,
-            open: true,
-            mode: 'exit',
-            onOpenChangeComplete
-          })
+        const user = userEvent.setup()
+        const onOpenChangeComplete = vi.fn()
+        render(OpenChangeCompleteToggle, {
+          shape,
+          open: true,
+          mode: 'exit',
+          onOpenChangeComplete
+        })
 
-          expect(screen.getByTestId('dialog-popup')).not.toBe(null)
-          await waitFor(() => expect(onOpenChangeComplete.mock.calls[0][0]).toBe(true))
+        expect(screen.getByTestId('dialog-popup')).not.toBe(null)
+        await waitFor(() => expect(onOpenChangeComplete.mock.calls[0][0]).toBe(true))
 
-          await user.click(screen.getByTestId('toggle'))
+        await user.click(screen.getByTestId('toggle'))
 
-          await waitFor(() => expect(screen.queryByTestId('dialog-popup')).toBe(null))
+        await waitFor(() => expect(screen.queryByTestId('dialog-popup')).toBe(null))
 
-          expect(onOpenChangeComplete.mock.lastCall?.[0]).toBe(false)
-        } finally {
-          globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-        }
+        expect(onOpenChangeComplete.mock.lastCall?.[0]).toBe(false)
       })
 
       it('is called on open once the enter animation finishes', async () => {
-        const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
         globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-        try {
-          const user = userEvent.setup()
-          const onOpenChangeComplete = vi.fn()
-          render(OpenChangeCompleteToggle, {
-            shape,
-            open: false,
-            mode: 'enter',
-            onOpenChangeComplete
-          })
+        const user = userEvent.setup()
+        const onOpenChangeComplete = vi.fn()
+        render(OpenChangeCompleteToggle, {
+          shape,
+          open: false,
+          mode: 'enter',
+          onOpenChangeComplete
+        })
 
-          await user.click(screen.getByTestId('toggle'))
-          await waitFor(() => expect(onOpenChangeComplete.mock.calls[0][0]).toBe(true))
+        await user.click(screen.getByTestId('toggle'))
+        await waitFor(() => expect(onOpenChangeComplete.mock.calls[0][0]).toBe(true))
 
-          expect(screen.queryByTestId('dialog-popup')).not.toBe(null)
-        } finally {
-          globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-        }
+        expect(screen.queryByTestId('dialog-popup')).not.toBe(null)
       })
 
       it('waits for a restarted enter animation to finish', async () => {
-        const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
         globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-        try {
-          const onOpenChangeComplete = vi.fn()
-          render(OpenChangeCompleteRestart, { shape, onOpenChangeComplete })
+        const onOpenChangeComplete = vi.fn()
+        render(OpenChangeCompleteRestart, { shape, onOpenChangeComplete })
 
-          fireEvent.click(screen.getByText('Open externally'))
+        fireEvent.click(screen.getByText('Open externally'))
 
-          const popup = await screen.findByTestId('dialog-popup')
-          await waitFor(() => expect(popup.getAnimations().length).not.toBe(0))
+        const popup = await screen.findByTestId('dialog-popup')
+        await waitFor(() => expect(popup.getAnimations().length).not.toBe(0))
 
-          fireEvent.click(screen.getByText('Swap animation'))
+        fireEvent.click(screen.getByText('Swap animation'))
 
-          await Promise.resolve()
-          expect(onOpenChangeComplete).toHaveBeenCalledTimes(0)
+        await Promise.resolve()
+        expect(onOpenChangeComplete).toHaveBeenCalledTimes(0)
 
-          await waitFor(() => {
-            expect(onOpenChangeComplete).toHaveBeenCalledTimes(1)
-            expect(onOpenChangeComplete.mock.calls[0][0]).toBe(true)
-          })
-        } finally {
-          globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-        }
+        await waitFor(() => {
+          expect(onOpenChangeComplete).toHaveBeenCalledTimes(1)
+          expect(onOpenChangeComplete.mock.calls[0][0]).toBe(true)
+        })
       })
 
       it('is not called on open when dismissed during the enter animation', async () => {
-        const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
         globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-        try {
-          const onOpenChangeComplete = vi.fn()
-          render(OpenChangeCompleteDismiss, { shape, onOpenChangeComplete })
+        const onOpenChangeComplete = vi.fn()
+        render(OpenChangeCompleteDismiss, { shape, onOpenChangeComplete })
 
-          fireEvent.click(screen.getByText('Open externally'))
+        fireEvent.click(screen.getByText('Open externally'))
 
-          await waitFor(() => expect(screen.queryByTestId('dialog-popup')).not.toBe(null))
+        await waitFor(() => expect(screen.queryByTestId('dialog-popup')).not.toBe(null))
 
-          const popup = screen.getByTestId('dialog-popup')
-          await waitFor(() => {
-            const animations = popup.getAnimations()
-            expect(animations.length).not.toBe(0)
-            expect(animations.some((anim) => anim.playState !== 'finished')).toBe(true)
-          })
+        const popup = screen.getByTestId('dialog-popup')
+        await waitFor(() => {
+          const animations = popup.getAnimations()
+          expect(animations.length).not.toBe(0)
+          expect(animations.some((anim) => anim.playState !== 'finished')).toBe(true)
+        })
 
-          fireEvent.click(document.body)
+        fireEvent.click(document.body)
 
-          await waitFor(() => expect(screen.queryByTestId('dialog-popup')).toBe(null))
+        await waitFor(() => expect(screen.queryByTestId('dialog-popup')).toBe(null))
 
-          expect(onOpenChangeComplete).toHaveBeenCalledTimes(1)
-          expect(onOpenChangeComplete.mock.calls[0][0]).toBe(false)
-        } finally {
-          globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-        }
+        expect(onOpenChangeComplete).toHaveBeenCalledTimes(1)
+        expect(onOpenChangeComplete.mock.calls[0][0]).toBe(false)
       })
     })
   })

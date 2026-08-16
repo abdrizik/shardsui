@@ -305,47 +305,42 @@ describe('<Toast.Viewport />', () => {
     it.skipIf(!isJSDOM)(
       'collapses a deferred mouseleave after a closing toast is removed while blurred',
       async () => {
-        const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
         globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
-        try {
-          render(CloseNewestToast)
+        render(CloseNewestToast)
 
-          const addButton = screen.getByTestId('add-button')
-          fireEvent.click(addButton)
-          fireEvent.click(addButton)
-          await tick()
+        const addButton = screen.getByTestId('add-button')
+        fireEvent.click(addButton)
+        fireEvent.click(addButton)
+        await tick()
 
-          const newest = screen.getAllByTestId('root')[0]
-          let finishAnimation!: () => void
-          const animationFinished = new Promise<void>((resolve) => {
-            finishAnimation = resolve
-          })
-          Object.defineProperty(newest, 'getAnimations', {
-            configurable: true,
-            value: () => [{ finished: animationFinished }]
-          })
+        const newest = screen.getAllByTestId('root')[0]
+        let finishAnimation!: () => void
+        const animationFinished = new Promise<void>((resolve) => {
+          finishAnimation = resolve
+        })
+        Object.defineProperty(newest, 'getAnimations', {
+          configurable: true,
+          value: () => [{ finished: animationFinished }]
+        })
 
-          const viewport = screen.getByTestId('viewport')
-          await fireEvent.mouseEnter(viewport)
-          expect(viewport).toHaveAttribute('data-expanded')
+        const viewport = screen.getByTestId('viewport')
+        await fireEvent.mouseEnter(viewport)
+        expect(viewport).toHaveAttribute('data-expanded')
 
-          await fireEvent.click(screen.getByTestId('close-newest'))
-          expect(newest).toHaveAttribute('data-ending-style')
+        await fireEvent.click(screen.getByTestId('close-newest'))
+        expect(newest).toHaveAttribute('data-ending-style')
 
-          await fireEvent.mouseLeave(viewport)
-          expect(viewport).toHaveAttribute('data-expanded')
+        await fireEvent.mouseLeave(viewport)
+        expect(viewport).toHaveAttribute('data-expanded')
 
-          blurWindow()
-          await tick()
+        blurWindow()
+        await tick()
 
-          finishAnimation()
+        finishAnimation()
 
-          await waitFor(() => expect(screen.getAllByTestId('root')).toHaveLength(1))
-          await waitFor(() => expect(viewport).not.toHaveAttribute('data-expanded'))
-        } finally {
-          globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-        }
+        await waitFor(() => expect(screen.getAllByTestId('root')).toHaveLength(1))
+        await waitFor(() => expect(viewport).not.toHaveAttribute('data-expanded'))
       }
     )
   })
@@ -672,39 +667,34 @@ describe('<Toast.Viewport />', () => {
     })
 
     it.skipIf(!isJSDOM)('moves focus past toasts animating out when one is closed', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
-      try {
-        render(FocusCloseToast)
+      render(FocusCloseToast)
 
-        const button = screen.getByTestId('add-button')
-        button.focus()
+      const button = screen.getByTestId('add-button')
+      button.focus()
 
-        fireEvent.click(screen.getByTestId('add-oldest'))
-        fireEvent.click(screen.getByTestId('add-middle'))
-        fireEvent.click(screen.getByTestId('add-newest'))
-        await tick()
+      fireEvent.click(screen.getByTestId('add-oldest'))
+      fireEvent.click(screen.getByTestId('add-middle'))
+      fireEvent.click(screen.getByTestId('add-newest'))
+      await tick()
 
-        const [newest, middle, oldest] = screen.getAllByTestId('root')
-        expect(middle).toHaveTextContent('middle')
+      const [newest, middle, oldest] = screen.getAllByTestId('root')
+      expect(middle).toHaveTextContent('middle')
 
-        fireEvent.keyDown(button, { key: 'F6' })
-        await tick()
+      fireEvent.keyDown(button, { key: 'F6' })
+      await tick()
 
-        const viewport = screen.getByTestId('viewport')
-        const guard = document.querySelector('[data-shards-ui-focus-guard]') as HTMLElement
-        fireEvent.focus(guard, { relatedTarget: viewport })
+      const viewport = screen.getByTestId('viewport')
+      const guard = document.querySelector('[data-shards-ui-focus-guard]') as HTMLElement
+      fireEvent.focus(guard, { relatedTarget: viewport })
 
-        expect(newest).toHaveFocus()
+      expect(newest).toHaveFocus()
 
-        fireEvent.click(screen.getByTestId('close-middle-and-newest'))
+      fireEvent.click(screen.getByTestId('close-middle-and-newest'))
 
-        expect(middle).toHaveAttribute('data-ending-style')
-        expect(oldest).toHaveFocus()
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      expect(middle).toHaveAttribute('data-ending-style')
+      expect(oldest).toHaveFocus()
     })
 
     it.skipIf(!isJSDOM)('leaves focus alone when it is outside the viewport', async () => {

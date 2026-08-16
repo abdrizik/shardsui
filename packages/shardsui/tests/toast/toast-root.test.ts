@@ -110,136 +110,116 @@ describe('<Toast.Root />', () => {
   it.skipIf(isJSDOM)(
     'clears the starting state and restores the height when re-adding an ending toast',
     async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
-      try {
-        const user = userEvent.setup()
-        render(ReaddEndingToast)
+      const user = userEvent.setup()
+      render(ReaddEndingToast)
 
-        await user.click(screen.getByTestId('add'))
-        const toastRoot = screen.getByTestId('toast-root')
-        expect(toastRoot).not.toHaveAttribute('data-starting-style')
-        const initialHeight = toastRoot.style.getPropertyValue('--toast-height')
-        expect(initialHeight).not.toBe('')
+      await user.click(screen.getByTestId('add'))
+      const toastRoot = screen.getByTestId('toast-root')
+      expect(toastRoot).not.toHaveAttribute('data-starting-style')
+      const initialHeight = toastRoot.style.getPropertyValue('--toast-height')
+      expect(initialHeight).not.toBe('')
 
-        await user.click(screen.getByTestId('close'))
-        expect(toastRoot).toHaveAttribute('data-ending-style')
-        expect(toastRoot.style.getPropertyValue('--toast-height')).toBe('')
+      await user.click(screen.getByTestId('close'))
+      expect(toastRoot).toHaveAttribute('data-ending-style')
+      expect(toastRoot.style.getPropertyValue('--toast-height')).toBe('')
 
-        await user.click(screen.getByTestId('add'))
-        expect(screen.getByTestId('toast-root')).toBe(toastRoot)
+      await user.click(screen.getByTestId('add'))
+      expect(screen.getByTestId('toast-root')).toBe(toastRoot)
 
-        await waitFor(() => expect(toastRoot).not.toHaveAttribute('data-starting-style'))
-        await waitFor(() =>
-          expect(toastRoot.style.getPropertyValue('--toast-height')).toBe(initialHeight)
-        )
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await waitFor(() => expect(toastRoot).not.toHaveAttribute('data-starting-style'))
+      await waitFor(() =>
+        expect(toastRoot.style.getPropertyValue('--toast-height')).toBe(initialHeight)
+      )
     }
   )
 
   it.skipIf(isJSDOM)(
     'keeps stacking intact when re-adding an ending toast among other toasts',
     async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
-      try {
-        const user = userEvent.setup()
-        render(ReaddStackingToast)
+      const user = userEvent.setup()
+      render(ReaddStackingToast)
 
-        await user.click(screen.getByTestId('add-1'))
-        await user.click(screen.getByTestId('add-2'))
-        await user.click(screen.getByTestId('close-1'))
+      await user.click(screen.getByTestId('add-1'))
+      await user.click(screen.getByTestId('add-2'))
+      await user.click(screen.getByTestId('close-1'))
 
-        const toast1 = screen.getByTestId('toast-t1')
-        expect(toast1).toHaveAttribute('data-ending-style')
+      const toast1 = screen.getByTestId('toast-t1')
+      expect(toast1).toHaveAttribute('data-ending-style')
 
-        await user.click(screen.getByTestId('add-1'))
+      await user.click(screen.getByTestId('add-1'))
 
-        await waitFor(() => expect(toast1).not.toHaveAttribute('data-starting-style'))
-        await waitFor(() => expect(toast1.style.getPropertyValue('--toast-height')).not.toBe(''))
+      await waitFor(() => expect(toast1).not.toHaveAttribute('data-starting-style'))
+      await waitFor(() => expect(toast1.style.getPropertyValue('--toast-height')).not.toBe(''))
 
-        expect(toast1.style.getPropertyValue('--toast-index')).toBe('0')
-        expect(screen.getByTestId('content-t1')).not.toHaveAttribute('data-behind')
+      expect(toast1.style.getPropertyValue('--toast-index')).toBe('0')
+      expect(screen.getByTestId('content-t1')).not.toHaveAttribute('data-behind')
 
-        const toast2 = screen.getByTestId('toast-t2')
-        expect(toast2).not.toHaveAttribute('data-ending-style')
-        expect(toast2.style.getPropertyValue('--toast-index')).toBe('1')
-        expect(screen.getByTestId('content-t2')).toHaveAttribute('data-behind')
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      const toast2 = screen.getByTestId('toast-t2')
+      expect(toast2).not.toHaveAttribute('data-ending-style')
+      expect(toast2.style.getPropertyValue('--toast-index')).toBe('1')
+      expect(screen.getByTestId('content-t2')).toHaveAttribute('data-behind')
     }
   )
 
   it.skipIf(isJSDOM)(
     'clears swipe state when a retained root is reused for another toast',
     async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
-      try {
-        const user = userEvent.setup()
-        render(IndexKeyedToast)
+      const user = userEvent.setup()
+      render(IndexKeyedToast)
 
-        const addButton = screen.getByTestId('add')
-        await user.click(addButton)
-        await user.click(addButton)
-        await user.click(addButton)
+      const addButton = screen.getByTestId('add')
+      await user.click(addButton)
+      await user.click(addButton)
+      await user.click(addButton)
 
-        const swipedRoot = screen.getByTestId('root-1')
-        Object.defineProperty(swipedRoot, 'setPointerCapture', {
-          configurable: true,
-          value: () => {}
-        })
-        Object.defineProperty(swipedRoot, 'releasePointerCapture', {
-          configurable: true,
-          value: () => {}
-        })
+      const swipedRoot = screen.getByTestId('root-1')
+      Object.defineProperty(swipedRoot, 'setPointerCapture', {
+        configurable: true,
+        value: () => {}
+      })
+      Object.defineProperty(swipedRoot, 'releasePointerCapture', {
+        configurable: true,
+        value: () => {}
+      })
 
-        simulateSwipe(swipedRoot, 100, 100, 160, 100)
-        await waitFor(() => expect(swipedRoot).toHaveAttribute('data-swipe-direction', 'right'))
+      simulateSwipe(swipedRoot, 100, 100, 160, 100)
+      await waitFor(() => expect(swipedRoot).toHaveAttribute('data-swipe-direction', 'right'))
 
-        await user.click(addButton)
-        expect(screen.getByTestId('root-1')).toBe(swipedRoot)
+      await user.click(addButton)
+      expect(screen.getByTestId('root-1')).toBe(swipedRoot)
 
-        await waitFor(() => expect(swipedRoot).not.toHaveAttribute('data-swipe-direction'))
-        expect(swipedRoot).not.toHaveAttribute('data-ending-style')
-        expect(swipedRoot.style.getPropertyValue('--toast-swipe-movement-x')).toBe('0px')
-        expect(swipedRoot.style.getPropertyValue('--toast-swipe-movement-y')).toBe('0px')
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await waitFor(() => expect(swipedRoot).not.toHaveAttribute('data-swipe-direction'))
+      expect(swipedRoot).not.toHaveAttribute('data-ending-style')
+      expect(swipedRoot.style.getPropertyValue('--toast-swipe-movement-x')).toBe('0px')
+      expect(swipedRoot.style.getPropertyValue('--toast-swipe-movement-y')).toBe('0px')
     }
   )
 
   it.skipIf(isJSDOM)(
     'moves focus to the next toast when closing in an index-keyed list',
     async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
-      try {
-        const user = userEvent.setup()
-        render(IndexKeyedToast)
+      const user = userEvent.setup()
+      render(IndexKeyedToast)
 
-        await user.click(screen.getByTestId('add'))
-        await user.click(screen.getByTestId('add'))
-        await user.click(screen.getByTestId('add'))
+      await user.click(screen.getByTestId('add'))
+      await user.click(screen.getByTestId('add'))
+      await user.click(screen.getByTestId('add'))
 
-        await user.keyboard('{F6}')
-        await user.keyboard('{Tab}')
-        expect(screen.getByTestId('root-0')).toHaveFocus()
+      await user.keyboard('{F6}')
+      await user.keyboard('{Tab}')
+      expect(screen.getByTestId('root-0')).toHaveFocus()
 
-        await user.keyboard('{Escape}')
+      await user.keyboard('{Escape}')
 
-        await waitFor(() => expect(screen.getByTestId('root-1')).toHaveFocus())
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await waitFor(() => expect(screen.getByTestId('root-1')).toHaveFocus())
     }
   )
 
@@ -289,32 +269,27 @@ describe('<Toast.Root />', () => {
   })
 
   it.skipIf(isJSDOM)('clears swipe state when re-adding a swipe-dismissed toast', async () => {
-    const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
     globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
-    try {
-      render(SwipeReaddToast)
+    render(SwipeReaddToast)
 
-      fireEvent.click(screen.getByTestId('add'))
-      const toast = await screen.findByTestId('toast-root')
-      Object.defineProperty(toast, 'setPointerCapture', { configurable: true, value: () => {} })
-      Object.defineProperty(toast, 'releasePointerCapture', { configurable: true, value: () => {} })
+    fireEvent.click(screen.getByTestId('add'))
+    const toast = await screen.findByTestId('toast-root')
+    Object.defineProperty(toast, 'setPointerCapture', { configurable: true, value: () => {} })
+    Object.defineProperty(toast, 'releasePointerCapture', { configurable: true, value: () => {} })
 
-      simulateSwipe(toast, 100, 100, 160, 100)
+    simulateSwipe(toast, 100, 100, 160, 100)
 
-      await waitFor(() => expect(toast).toHaveAttribute('data-ending-style'))
-      expect(toast).toHaveAttribute('data-swipe-direction', 'right')
+    await waitFor(() => expect(toast).toHaveAttribute('data-ending-style'))
+    expect(toast).toHaveAttribute('data-swipe-direction', 'right')
 
-      fireEvent.click(screen.getByTestId('add'))
-      expect(screen.getByTestId('toast-root')).toBe(toast)
+    fireEvent.click(screen.getByTestId('add'))
+    expect(screen.getByTestId('toast-root')).toBe(toast)
 
-      await waitFor(() => expect(toast).not.toHaveAttribute('data-starting-style'))
-      await waitFor(() => expect(toast).not.toHaveAttribute('data-swipe-direction'))
-      expect(toast.style.getPropertyValue('--toast-swipe-movement-x')).toBe('0px')
-      expect(toast.style.getPropertyValue('--toast-swipe-movement-y')).toBe('0px')
-    } finally {
-      globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-    }
+    await waitFor(() => expect(toast).not.toHaveAttribute('data-starting-style'))
+    await waitFor(() => expect(toast).not.toHaveAttribute('data-swipe-direction'))
+    expect(toast.style.getPropertyValue('--toast-swipe-movement-x')).toBe('0px')
+    expect(toast.style.getPropertyValue('--toast-swipe-movement-y')).toBe('0px')
   })
 
   describe.skipIf(isJSDOM)('swipe behavior', () => {

@@ -519,20 +519,15 @@ describe('<Tooltip.Root />', () => {
     })
 
     it('is called on close when the exit animation finishes', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      try {
-        const onOpenChangeComplete = vi.fn()
-        render(TooltipLifecycle, { open: true, animated: true, onOpenChangeComplete })
+      const onOpenChangeComplete = vi.fn()
+      render(TooltipLifecycle, { open: true, animated: true, onOpenChangeComplete })
 
-        await waitFor(() => expect(onOpenChangeComplete).toHaveBeenCalledWith(true))
+      await waitFor(() => expect(onOpenChangeComplete).toHaveBeenCalledWith(true))
 
-        await fireEvent.click(screen.getByText('Toggle'))
-        await waitFor(() => expect(screen.queryByTestId('popup')).toBeNull())
-        expect(onOpenChangeComplete.mock.lastCall?.[0]).toBe(false)
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await fireEvent.click(screen.getByText('Toggle'))
+      await waitFor(() => expect(screen.queryByTestId('popup')).toBeNull())
+      expect(onOpenChangeComplete.mock.lastCall?.[0]).toBe(false)
     })
 
     it('is called on open when the enter animation finishes', async () => {
@@ -548,32 +543,27 @@ describe('<Tooltip.Root />', () => {
 
   describe.skipIf(isJSDOM)('animations', () => {
     it('unmounts an exiting tooltip when another tooltip opens', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      try {
-        const user = userEvent.setup({ delay: null })
-        render(TooltipGroupExiting)
+      const user = userEvent.setup({ delay: null })
+      render(TooltipGroupExiting)
 
-        const firstTrigger = screen.getByTestId('trigger-1')
-        const secondTrigger = screen.getByTestId('trigger-2')
+      const firstTrigger = screen.getByTestId('trigger-1')
+      const secondTrigger = screen.getByTestId('trigger-2')
 
-        await user.hover(firstTrigger)
-        const firstPopup = await screen.findByTestId('popup-1')
+      await user.hover(firstTrigger)
+      const firstPopup = await screen.findByTestId('popup-1')
 
-        await user.unhover(firstTrigger)
-        await waitFor(() => {
-          expect(firstPopup.getAnimations().length).toBe(1)
-        })
+      await user.unhover(firstTrigger)
+      await waitFor(() => {
+        expect(firstPopup.getAnimations().length).toBe(1)
+      })
 
-        await user.hover(secondTrigger)
-        await screen.findByTestId('popup-2')
+      await user.hover(secondTrigger)
+      await screen.findByTestId('popup-2')
 
-        await waitFor(() => {
-          expect(screen.queryByTestId('popup-1')).toBeNull()
-        })
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await waitFor(() => {
+        expect(screen.queryByTestId('popup-1')).toBeNull()
+      })
     })
   })
 

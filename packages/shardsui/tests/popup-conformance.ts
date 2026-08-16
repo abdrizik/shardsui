@@ -131,15 +131,8 @@ export function popupConformanceTests(config: PopupConformanceConfig): void {
     }
 
     describe('animations', () => {
-      let previousAnimationsDisabled = true
-
       beforeEach(() => {
-        previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
         globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      })
-
-      afterEach(() => {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
       })
 
       it.skipIf(isJSDOM)('removes the popup when there is no exit animation defined', async () => {

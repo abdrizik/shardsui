@@ -31,33 +31,27 @@ describe('<Radio.Indicator />', () => {
   })
 
   it.skipIf(isJSDOM)('removes the indicator when the animation finishes', async () => {
-    const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
     globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-    try {
-      const user = userEvent.setup()
+    const user = userEvent.setup()
 
-      let animationFinished = false
-      const notifyAnimationFinished = () => {
-        animationFinished = true
-      }
-
-      render(RadioKeepMountedAnimation, { value: 'a', onanimationend: notifyAnimationFinished })
-
-      expect(screen.getByTestId('indicator-a')).not.toBe(null)
-
-      await user.click(screen.getByText('Close'))
-
-      await waitFor(() => {
-        expect(animationFinished).toBe(true)
-      })
-    } finally {
-      globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
+    let animationFinished = false
+    const notifyAnimationFinished = () => {
+      animationFinished = true
     }
+
+    render(RadioKeepMountedAnimation, { value: 'a', onanimationend: notifyAnimationFinished })
+
+    expect(screen.getByTestId('indicator-a')).not.toBe(null)
+
+    await user.click(screen.getByText('Close'))
+
+    await waitFor(() => {
+      expect(animationFinished).toBe(true)
+    })
   })
 
   describe.skipIf(isJSDOM)('animations', () => {
     it('triggers enter animation via data-starting-style when mounting', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
 
       let transitionFinished = false
@@ -65,49 +59,40 @@ describe('<Radio.Indicator />', () => {
         transitionFinished = true
       }
 
-      try {
-        render(RadioEnterAnimation, { value: 'b', ontransitionend: notifyTransitionFinished })
+      render(RadioEnterAnimation, { value: 'b', ontransitionend: notifyTransitionFinished })
 
-        expect(screen.queryByTestId('indicator-a')).toBe(null)
+      expect(screen.queryByTestId('indicator-a')).toBe(null)
 
-        await new Promise<void>((resolve) =>
-          requestAnimationFrame(() => {
-            fireEvent.click(screen.getByText('Select a'))
-            resolve()
-          })
-        )
-
-        await waitFor(() => {
-          expect(transitionFinished).toBe(true)
+      await new Promise<void>((resolve) =>
+        requestAnimationFrame(() => {
+          fireEvent.click(screen.getByText('Select a'))
+          resolve()
         })
+      )
 
-        expect(screen.getByTestId('indicator-a')).not.toBe(null)
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await waitFor(() => {
+        expect(transitionFinished).toBe(true)
+      })
+
+      expect(screen.getByTestId('indicator-a')).not.toBe(null)
     })
 
     it('applies data-ending-style before unmount', async () => {
-      const previousAnimationsDisabled = globalThis.SHARDSUI_ANIMATIONS_DISABLED
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      try {
-        render(AnimatedRadio, { value: 'a' })
-        expect(screen.getByTestId('indicator-a')).not.toBe(null)
+      render(AnimatedRadio, { value: 'a' })
+      expect(screen.getByTestId('indicator-a')).not.toBe(null)
 
-        fireEvent.click(screen.getByTestId('radio-b'))
+      fireEvent.click(screen.getByTestId('radio-b'))
 
-        await waitFor(() => {
-          const indicatorA = screen.queryByTestId('indicator-a')
-          expect(indicatorA).not.toBe(null)
-          expect(indicatorA).toHaveAttribute('data-ending-style')
-        })
+      await waitFor(() => {
+        const indicatorA = screen.queryByTestId('indicator-a')
+        expect(indicatorA).not.toBe(null)
+        expect(indicatorA).toHaveAttribute('data-ending-style')
+      })
 
-        await waitFor(() => {
-          expect(screen.queryByTestId('indicator-a')).toBe(null)
-        })
-      } finally {
-        globalThis.SHARDSUI_ANIMATIONS_DISABLED = previousAnimationsDisabled
-      }
+      await waitFor(() => {
+        expect(screen.queryByTestId('indicator-a')).toBe(null)
+      })
     })
   })
 })
