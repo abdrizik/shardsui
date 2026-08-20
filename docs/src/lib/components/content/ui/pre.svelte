@@ -59,7 +59,7 @@
     display: flex;
     overflow-x: auto;
     overscroll-behavior-x: contain;
-    padding-block: calc(var(--spacing) * 2);
+    padding-block: calc(var(--spacing) * 3);
   }
 
   .code-block-root :global(pre code) {
@@ -72,7 +72,7 @@
   .code-block-root :global(pre code .line) {
     display: block;
     white-space: pre;
-    padding-inline: calc(var(--spacing) * 3);
+    padding-inline: calc(var(--spacing) * 4);
   }
 
   .code-block-root :global(pre code .line:empty) {
