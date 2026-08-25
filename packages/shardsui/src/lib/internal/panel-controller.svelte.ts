@@ -281,7 +281,7 @@ export class PanelController {
     this.#pendingTemporaryStyleRestore = restore
   }
 
-  #setDimensions(next: Dimensions, shouldCacheMeasurement: boolean = true): void {
+  #setDimensions(next: Dimensions, shouldCacheMeasurement = true): void {
     if (shouldCacheMeasurement) {
       this.#lastMeasuredDimensions = next
     }

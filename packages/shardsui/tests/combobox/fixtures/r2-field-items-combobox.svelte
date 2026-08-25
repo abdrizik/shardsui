@@ -1,33 +1,45 @@
 <script lang="ts">
+  import type { ComponentProps } from 'svelte'
   import { Combobox } from '$lib/components/combobox'
   import { Field } from '$lib/components/field'
 
   type Option = { id: string; label: string }
 
+  type FieldProps = ComponentProps<typeof Field.Root>
+
   let {
     open = $bindable(),
     multiple = false,
     value = $bindable(),
-    validate = undefined as ((value: unknown) => string | null) | undefined,
-    validationMode = undefined as string | undefined,
+    validate,
+    validationMode,
     options = [
       { id: 'a', label: 'a' },
       { id: 'b', label: 'b' }
-    ] as Option[],
+    ],
     withSpanLabel = false,
     withInput = false
+  }: {
+    open?: boolean
+    multiple?: boolean
+    value?: Option | Option[] | null
+    validate?: FieldProps['validate']
+    validationMode?: FieldProps['validationMode']
+    options?: Option[]
+    withSpanLabel?: boolean
+    withInput?: boolean
   } = $props()
 </script>
 
-<Field.Root validationMode={validationMode as never} validate={validate as never}>
+<Field.Root {validationMode} {validate}>
   <Combobox.Root
     {open}
     {multiple}
     {value}
-    items={options as never}
-    itemToStringLabel={((item: Option) => item.label) as never}
-    itemToStringValue={((item: Option) => item.id) as never}
-    isItemEqualToValue={((item: Option, v: Option) => item.id === v.id) as never}
+    items={options}
+    itemToStringLabel={(item: Option) => item.label}
+    itemToStringValue={(item: Option) => item.id}
+    isItemEqualToValue={(item: Option, v: Option) => item.id === v.id}
   >
     {#if withInput}
       <Combobox.Input data-testid="input" />

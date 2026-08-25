@@ -1,8 +1,8 @@
 <script lang="ts">
   import { Slider } from '$lib/components/slider'
   let {
-    value = $bindable(50 as number | number[]),
-    id = undefined,
+    value = $bindable(50),
+    id,
     label = 'Volume',
     useAriaLabel = false
   }: {

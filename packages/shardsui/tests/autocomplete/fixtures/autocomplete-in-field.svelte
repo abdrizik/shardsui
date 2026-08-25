@@ -1,20 +1,20 @@
 <script lang="ts">
   import { untrack } from 'svelte'
   import { Autocomplete } from '$lib/components/autocomplete'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
 
   const allItems = ['Option 1', 'Option 2', 'Option 3']
 
   let {
     required = false,
     invalid = false,
-    validate = undefined,
+    validate,
     validationMode = 'onBlur',
     value = ''
   }: {
     required?: boolean
     invalid?: boolean
-    validate?: (value: unknown) => string | null
+    validate?: FieldValidator
     validationMode?: 'onBlur' | 'onChange' | 'onSubmit'
     value?: string
   } = $props()

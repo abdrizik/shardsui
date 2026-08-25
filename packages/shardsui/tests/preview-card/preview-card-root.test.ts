@@ -5,7 +5,7 @@ import { isJSDOM } from '../test-utils'
 import PreviewCardConformance from './fixtures/conformance.svelte'
 import Nested from './fixtures/nested.svelte'
 import OpenVeto from './fixtures/open-veto.svelte'
-import PreviewCardShapes from './fixtures/preview-card-shapes.svelte'
+import PreviewCardArrangements from './fixtures/preview-card-arrangements.svelte'
 
 function hover(trigger: HTMLElement) {
   fireEvent.pointerDown(trigger, { pointerType: 'mouse' })
@@ -22,13 +22,13 @@ describe('<PreviewCard.Root />', () => {
   })
 
   describe.for([
-    { name: 'contained triggers', shape: 'contained' },
-    { name: 'detached triggers', shape: 'detached' },
-    { name: 'multiple detached triggers', shape: 'multiple-detached' }
-  ] as const)('when using $name', ({ shape }) => {
+    { name: 'contained triggers', arrangement: 'contained' },
+    { name: 'detached triggers', arrangement: 'detached' },
+    { name: 'multiple detached triggers', arrangement: 'multiple-detached' }
+  ] as const)('when using $name', ({ arrangement }) => {
     describe('uncontrolled open', () => {
       it('shows popup with content immediately when open=true', async () => {
-        render(PreviewCardShapes, { shape, open: true })
+        render(PreviewCardArrangements, { arrangement, open: true })
         await waitFor(() => {
           expect(screen.getByTestId('popup')).toBeInTheDocument()
           expect(screen.getByText('Content')).toBeInTheDocument()
@@ -36,13 +36,13 @@ describe('<PreviewCard.Root />', () => {
       })
 
       it('opens on trigger hover (delay=0)', async () => {
-        render(PreviewCardShapes, { shape, open: false, delay: 0 })
+        render(PreviewCardArrangements, { arrangement, open: false, delay: 0 })
         hover(screen.getByTestId('trigger'))
         await waitFor(() => expect(screen.getByTestId('popup')).toBeInTheDocument())
       })
 
       it('closes when pointer leaves trigger (closeDelay=0)', async () => {
-        render(PreviewCardShapes, { shape, open: false, delay: 0, closeDelay: 0 })
+        render(PreviewCardArrangements, { arrangement, open: false, delay: 0, closeDelay: 0 })
         const trigger = screen.getByTestId('trigger')
 
         hover(trigger)
@@ -54,7 +54,13 @@ describe('<PreviewCard.Root />', () => {
 
       it('fires onOpenChange(true) on open and (false) on close', async () => {
         const onOpenChange = vi.fn()
-        render(PreviewCardShapes, { shape, open: false, delay: 0, closeDelay: 0, onOpenChange })
+        render(PreviewCardArrangements, {
+          arrangement,
+          open: false,
+          delay: 0,
+          closeDelay: 0,
+          onOpenChange
+        })
         const trigger = screen.getByTestId('trigger')
 
         hover(trigger)
@@ -68,7 +74,7 @@ describe('<PreviewCard.Root />', () => {
 
     describe('initially open, uncontrolled', () => {
       it('closes when the pointer leaves the trigger', async () => {
-        render(PreviewCardShapes, { shape, open: true, delay: 0, closeDelay: 0 })
+        render(PreviewCardArrangements, { arrangement, open: true, delay: 0, closeDelay: 0 })
         await waitFor(() => expect(screen.getByTestId('popup')).toBeInTheDocument())
 
         fireEvent.mouseLeave(screen.getByTestId('trigger'))
@@ -76,7 +82,7 @@ describe('<PreviewCard.Root />', () => {
       })
 
       it('does not close after hovering out of the positioner', async () => {
-        render(PreviewCardShapes, { shape, open: true, delay: 0, closeDelay: 0 })
+        render(PreviewCardArrangements, { arrangement, open: true, delay: 0, closeDelay: 0 })
         await waitFor(() => expect(screen.getByTestId('popup')).toBeInTheDocument())
 
         const positioner = screen.getByTestId('positioner')
@@ -90,7 +96,7 @@ describe('<PreviewCard.Root />', () => {
 
     describe('data attributes', () => {
       it('popup and positioner are unmounted when closed', () => {
-        render(PreviewCardShapes, { shape, open: false })
+        render(PreviewCardArrangements, { arrangement, open: false })
         expect(popup()).toBeNull()
         expect(screen.queryByTestId('positioner')).toBeNull()
       })
@@ -98,7 +104,7 @@ describe('<PreviewCard.Root />', () => {
 
     describe('focus interactions', () => {
       it('opens when the trigger is focused (delay=0)', async () => {
-        render(PreviewCardShapes, { shape, open: false, delay: 0 })
+        render(PreviewCardArrangements, { arrangement, open: false, delay: 0 })
 
         const trigger = screen.getByTestId('trigger')
         trigger.focus()
@@ -109,7 +115,7 @@ describe('<PreviewCard.Root />', () => {
       })
 
       it('closes when the trigger is blurred (closeDelay=0)', async () => {
-        render(PreviewCardShapes, { shape, open: false, delay: 0, closeDelay: 0 })
+        render(PreviewCardArrangements, { arrangement, open: false, delay: 0, closeDelay: 0 })
 
         const trigger = screen.getByTestId('trigger')
         trigger.focus()
@@ -130,7 +136,7 @@ describe('<PreviewCard.Root />', () => {
       it('opens after the delay elapses', async () => {
         vi.useFakeTimers()
         try {
-          render(PreviewCardShapes, { shape, open: false, delay: 100 })
+          render(PreviewCardArrangements, { arrangement, open: false, delay: 100 })
 
           const trigger = screen.getByTestId('trigger')
           hover(trigger)
@@ -150,7 +156,7 @@ describe('<PreviewCard.Root />', () => {
       it('closes after the close delay elapses', async () => {
         vi.useFakeTimers()
         try {
-          render(PreviewCardShapes, { shape, open: false, delay: 0, closeDelay: 100 })
+          render(PreviewCardArrangements, { arrangement, open: false, delay: 0, closeDelay: 100 })
 
           const trigger = screen.getByTestId('trigger')
           hover(trigger)
@@ -172,7 +178,7 @@ describe('<PreviewCard.Root />', () => {
 
     describe('dismissal: reopen after Escape', () => {
       it('reopens on hover after Escape closes it', async () => {
-        render(PreviewCardShapes, { shape, open: false, delay: 0, closeDelay: 0 })
+        render(PreviewCardArrangements, { arrangement, open: false, delay: 0, closeDelay: 0 })
 
         const trigger = screen.getByTestId('trigger')
         hover(trigger)
@@ -199,7 +205,7 @@ describe('<PreviewCard.Root />', () => {
     describe('prop: onOpenChange', () => {
       it('does not call onOpenChange when the open state does not change', async () => {
         const onOpenChange = vi.fn()
-        render(PreviewCardShapes, { shape, open: false, delay: 0, onOpenChange })
+        render(PreviewCardArrangements, { arrangement, open: false, delay: 0, onOpenChange })
 
         const trigger = screen.getByTestId('trigger')
 
@@ -218,7 +224,7 @@ describe('<PreviewCard.Root />', () => {
 
     describe('prop: onOpenChange, positioner hover-out', () => {
       it('does not close after hovering out of a popup opened externally', async () => {
-        render(PreviewCardShapes, { shape, delay: 0, closeDelay: 0 })
+        render(PreviewCardArrangements, { arrangement, delay: 0, closeDelay: 0 })
 
         fireEvent.click(screen.getByText('Open'))
         await waitFor(() => expect(screen.getByTestId('popup')).toBeInTheDocument())
@@ -232,7 +238,7 @@ describe('<PreviewCard.Root />', () => {
       })
 
       it('closes after hovering out of a popup opened by its trigger', async () => {
-        render(PreviewCardShapes, { shape, open: false, delay: 0, closeDelay: 0 })
+        render(PreviewCardArrangements, { arrangement, open: false, delay: 0, closeDelay: 0 })
 
         const trigger = screen.getByTestId('trigger')
         hover(trigger)
@@ -249,14 +255,14 @@ describe('<PreviewCard.Root />', () => {
     describe.skipIf(isJSDOM)('prop: onOpenChangeComplete', () => {
       it('does not get called on mount when not open', async () => {
         const onOpenChangeComplete = vi.fn()
-        render(PreviewCardShapes, { shape, open: false, onOpenChangeComplete })
+        render(PreviewCardArrangements, { arrangement, open: false, onOpenChangeComplete })
         await new Promise((r) => setTimeout(r, 20))
         expect(onOpenChangeComplete.mock.calls.length).toBe(0)
       })
 
       it('is called on open when there is no enter animation defined', async () => {
         const onOpenChangeComplete = vi.fn()
-        render(PreviewCardShapes, { shape, open: false, onOpenChangeComplete })
+        render(PreviewCardArrangements, { arrangement, open: false, onOpenChangeComplete })
 
         fireEvent.click(screen.getByText('Open'))
         await waitFor(() => expect(screen.queryByTestId('popup')).not.toBeNull())
@@ -266,7 +272,7 @@ describe('<PreviewCard.Root />', () => {
 
       it('is called on close when there is no exit animation defined', async () => {
         const onOpenChangeComplete = vi.fn()
-        render(PreviewCardShapes, { shape, open: true, onOpenChangeComplete })
+        render(PreviewCardArrangements, { arrangement, open: true, onOpenChangeComplete })
 
         await waitFor(() => expect(screen.getByTestId('popup')).toBeInTheDocument())
 
@@ -305,8 +311,8 @@ describe('<PreviewCard.Root />', () => {
           `)
 
           const onOpenChangeComplete = vi.fn()
-          render(PreviewCardShapes, {
-            shape,
+          render(PreviewCardArrangements, {
+            arrangement,
             open: true,
             onOpenChangeComplete,
             popupClass: 'animation-test-indicator'
@@ -330,8 +336,8 @@ describe('<PreviewCard.Root />', () => {
           `)
 
           const onOpenChangeComplete = vi.fn()
-          render(PreviewCardShapes, {
-            shape,
+          render(PreviewCardArrangements, {
+            arrangement,
             open: false,
             onOpenChangeComplete,
             popupClass: 'animation-test-indicator'

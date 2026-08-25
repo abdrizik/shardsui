@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { Tabs } from '$lib/components/tabs'
+  import { Tabs, type TabsValue } from '$lib/components/tabs'
 
   let {
-    onValueChange = undefined,
+    onValueChange,
     disabledSecond = false
-  }: { onValueChange?: (value: unknown) => void; disabledSecond?: boolean } = $props()
+  }: { onValueChange?: (value: TabsValue) => void; disabledSecond?: boolean } = $props()
 
-  let value = $state(0)
+  let value = $state<TabsValue>(0)
 </script>
 
 <Tabs.Root bind:value {onValueChange}>

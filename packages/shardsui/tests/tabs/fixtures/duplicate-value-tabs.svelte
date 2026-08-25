@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Tabs } from '$lib/components/tabs'
+  import { Tabs, type TabsValue } from '$lib/components/tabs'
 
-  let { onValueChange = undefined }: { onValueChange?: (value: unknown) => void } = $props()
+  let { onValueChange = undefined }: { onValueChange?: (value: TabsValue) => void } = $props()
 </script>
 
 <Tabs.Root {onValueChange}>

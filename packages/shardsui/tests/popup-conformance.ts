@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
 import type { Component } from 'svelte'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { isJSDOM } from './test-utils'
 
 type ConformanceProps = {

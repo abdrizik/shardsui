@@ -116,7 +116,7 @@
   const popupRole = $derived(combobox.inputInsidePopup ? 'dialog' : 'presentation')
 
   function redirectFocusToInput(event: FocusEvent) {
-    const target = getTarget(event) as Element | null
+    const target = getTarget(event)
     const isFromList = contains(combobox.listElement, target) || target === ref
     if (combobox.openMethod !== 'touch' && isFromList) {
       combobox.inputElement?.focus()

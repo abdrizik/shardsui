@@ -1,11 +1,8 @@
 <script lang="ts">
   import { Checkbox } from '$lib/components/checkbox'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
 
-  let {
-    validate = undefined,
-    required = false
-  }: { validate?: (value: unknown) => string | null; required?: boolean } = $props()
+  let { validate, required = false }: { validate?: FieldValidator; required?: boolean } = $props()
   let checked = $state(false)
 </script>
 

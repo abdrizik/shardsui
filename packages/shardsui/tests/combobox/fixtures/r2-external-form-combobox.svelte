@@ -11,8 +11,14 @@
       { code: 'US', label: 'United States' },
       { code: 'CA', label: 'Canada' },
       { code: 'AU', label: 'Australia' }
-    ] as Country[],
-    onsubmit = undefined as ((event: SubmitEvent) => void) | undefined
+    ],
+    onsubmit
+  }: {
+    multiple?: boolean
+    name?: string
+    value?: Country | Country[] | null
+    items?: Country[]
+    onsubmit?: (event: SubmitEvent) => void
   } = $props()
 </script>
 
@@ -25,9 +31,9 @@
   {name}
   {value}
   form="external-form"
-  items={items as never}
-  itemToStringLabel={((item: Country) => item.label) as never}
-  itemToStringValue={((item: Country) => item.code) as never}
+  {items}
+  itemToStringLabel={(item: Country) => item.label}
+  itemToStringValue={(item: Country) => item.code}
 >
   <Combobox.Input data-testid="input" />
   <Combobox.Portal>

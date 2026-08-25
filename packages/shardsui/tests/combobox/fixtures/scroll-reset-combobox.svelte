@@ -3,15 +3,18 @@
   import ItemsList from './items-list.svelte'
 
   let {
-    variant = 'list' as 'list' | 'wrapper' | 'clip' | 'dialog' | 'inline-dialog',
+    variant = 'list',
     items = Array.from({ length: 50 }, (_, index) => `item-${index}`)
+  }: {
+    variant?: 'list' | 'wrapper' | 'clip' | 'dialog' | 'inline-dialog'
+    items?: string[]
   } = $props()
 
   let dialogElement = $state<HTMLElement | null>(null)
 </script>
 
 {#if variant === 'inline-dialog'}
-  <Combobox.Root items={items as never} inline open>
+  <Combobox.Root {items} inline open>
     <div
       role="dialog"
       data-testid="dialog"
@@ -25,7 +28,7 @@
     </div>
   </Combobox.Root>
 {:else if variant === 'dialog'}
-  <Combobox.Root items={items as never} open>
+  <Combobox.Root {items} open>
     <div
       bind:this={dialogElement}
       role="dialog"
@@ -44,7 +47,7 @@
     </div>
   </Combobox.Root>
 {:else}
-  <Combobox.Root items={items as never}>
+  <Combobox.Root {items}>
     <Combobox.Input data-testid="input" />
     <Combobox.Portal>
       <Combobox.Positioner>

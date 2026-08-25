@@ -112,8 +112,7 @@ export class MenuPopup {
         restoreFocus: true,
         closeOnFocusOut: true,
         onFocusOut: (event) => {
-          const related = event.relatedTarget as Node | null
-          if (related && findRootOwnerId(related) === menu.rootId) return
+          if (findRootOwnerId(event.relatedTarget) === menu.rootId) return
           menu.setOpen(false, REASONS.focusOut, event)
         },
         getNextFocusableElement: () =>

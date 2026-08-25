@@ -2,8 +2,8 @@
   import { Slider } from '$lib/components/slider'
 
   let {
-    value = [40, 60] as number[],
-    format = undefined
+    value = [40, 60],
+    format
   }: {
     value?: number[]
     format?: Intl.NumberFormatOptions

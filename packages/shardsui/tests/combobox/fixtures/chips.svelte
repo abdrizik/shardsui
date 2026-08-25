@@ -5,20 +5,32 @@
 
   let {
     value = $bindable(),
-    onValueChange = undefined,
+    onValueChange,
     open = $bindable(),
-    onOpenChange = undefined,
+    onOpenChange,
     disabled = false,
     readOnly = false,
-    direction = 'ltr' as 'ltr' | 'rtl',
-    chips = ['apple', 'banana'] as string[],
-    onChipsMouseDown = undefined as
-      | ((event: MouseEvent & { preventShardsUIHandler(): void }) => void)
-      | undefined,
+    direction = 'ltr',
+    chips = ['apple', 'banana'],
+    onChipsMouseDown,
     withRemove = false,
     withPopup = true,
     inputFirst = false,
     withField = false
+  }: {
+    value?: string[] | null
+    onValueChange?: (value: unknown) => void
+    open?: boolean
+    onOpenChange?: (open: boolean) => void
+    disabled?: boolean
+    readOnly?: boolean
+    direction?: 'ltr' | 'rtl'
+    chips?: string[]
+    onChipsMouseDown?: (event: MouseEvent & { preventShardsUIHandler(): void }) => void
+    withRemove?: boolean
+    withPopup?: boolean
+    inputFirst?: boolean
+    withField?: boolean
   } = $props()
 </script>
 

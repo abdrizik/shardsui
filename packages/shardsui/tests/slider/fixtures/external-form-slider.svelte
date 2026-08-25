@@ -9,9 +9,9 @@
     onNativeSubmit?: (data: FormData) => void
   } = $props()
 
-  function onsubmit(event: SubmitEvent) {
+  function onsubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault()
-    onNativeSubmit?.(new FormData(event.currentTarget as HTMLFormElement))
+    onNativeSubmit?.(new FormData(event.currentTarget))
   }
 </script>
 

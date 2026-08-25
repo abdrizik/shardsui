@@ -42,7 +42,7 @@ describe('<ScrollArea.Viewport />', () => {
       const finished = new Promise<void>((resolve) => {
         resolveAnimation = resolve
       })
-      const getAnimations = vi.fn(() => [{ finished }] as unknown as Animation[])
+      const getAnimations = vi.fn(() => [{ finished }])
 
       render(AnimatedViewport)
 
@@ -70,7 +70,7 @@ describe('<ScrollArea.Viewport />', () => {
       const finished = new Promise<void>((resolve) => {
         resolveAnimation = resolve
       })
-      const getAnimations = vi.fn(() => [{ finished }] as unknown as Animation[])
+      const getAnimations = vi.fn(() => [{ finished }])
 
       const { rerender } = render(AnimatedViewport)
 

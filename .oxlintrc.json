@@ -1,0 +1,98 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "ignorePatterns": ["_/**", ".claude/**"],
+  "plugins": ["unicorn", "typescript", "oxc", "import", "vitest"],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2024": true
+  },
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "eqeqeq": [
+      "error",
+      "always",
+      {
+        "null": "ignore"
+      }
+    ],
+    "no-console": "error",
+    "no-else-return": "error",
+    "no-eval": "error",
+    "no-extra-boolean-cast": "error",
+    "no-lone-blocks": "error",
+    "no-param-reassign": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "svelte/store",
+            "message": "Runes only - use $state/$derived, or a class with $state fields to share reactivity."
+          },
+          {
+            "name": "svelte/legacy",
+            "message": "Legacy compatibility helpers; use the runes-mode equivalent."
+          },
+          {
+            "name": "svelte",
+            "importNames": [
+              "onMount",
+              "onDestroy",
+              "beforeUpdate",
+              "afterUpdate",
+              "createEventDispatcher",
+              "getContext",
+              "setContext",
+              "hasContext"
+            ],
+            "message": "Lifecycle hooks: use $effect (with its cleanup return) and callback props. Context: use the Context class from $lib/internal/context."
+          }
+        ]
+      }
+    ],
+    "no-unneeded-ternary": "error",
+    "no-useless-concat": "error",
+    "no-useless-constructor": "error",
+    "no-useless-escape": "error",
+    "no-useless-rename": "error",
+    "no-useless-return": "error",
+    "no-var": "error",
+    "oxc/double-comparisons": "error",
+    "oxc/missing-throw": "error",
+    "oxc/no-accumulating-spread": "error",
+    "oxc/only-used-in-recursion": "error",
+    "prefer-const": "error",
+    "prefer-object-spread": "error",
+    "typescript/ban-ts-comment": "error",
+    "typescript/no-inferrable-types": "error",
+    "typescript/no-unnecessary-type-arguments": "error",
+    "typescript/prefer-function-type": "error",
+    "unicorn/no-console-spaces": "error",
+    "unicorn/no-new-array": "error",
+    "unicorn/no-unreadable-array-destructuring": "error",
+    "unicorn/no-useless-fallback-in-spread": "error",
+    "unicorn/no-useless-spread": "error",
+    "unicorn/no-zero-fractions": "error",
+    "unicorn/prefer-optional-catch-binding": "error",
+    "unicorn/prefer-string-slice": "error",
+    "vitest/expect-expect": "off",
+    "vitest/no-conditional-expect": "off",
+    "vitest/no-conditional-tests": "off",
+    "vitest/no-focused-tests": "error",
+    "vitest/no-identical-title": "error",
+    "vitest/no-standalone-expect": "off",
+    "vitest/require-mock-type-parameters": "off",
+    "vitest/valid-title": "off"
+  },
+  "overrides": [
+    {
+      "files": ["packages/shardsui/src/lib/internal/context.ts"],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ]
+}

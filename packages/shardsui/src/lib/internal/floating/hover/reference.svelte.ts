@@ -217,7 +217,7 @@ export function hoverReferenceInteraction(
 
       const shouldClose =
         instance.pointerType === 'touch'
-          ? !contains(root.floatingElement, event.relatedTarget as Element | null)
+          ? !contains(root.floatingElement, event.relatedTarget)
           : true
 
       if (shouldClose && shouldAllowClose) {
@@ -226,7 +226,7 @@ export function hoverReferenceInteraction(
     }
 
     const onMouseOut = (event: MouseEvent): void => {
-      if (contains(trigger, event.relatedTarget as Element | null)) {
+      if (contains(trigger, event.relatedTarget)) {
         return
       }
       instance.openChangeTimeout.clear()

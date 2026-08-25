@@ -109,7 +109,7 @@ export class RadioGroupRoot<Value = unknown> {
     if (!field || !ref) return
 
     const next = event.relatedTarget
-    if (next instanceof Node && contains(ref, next)) return
+    if (contains(ref, next)) return
 
     field.commitOnBlur(this.value)
   }

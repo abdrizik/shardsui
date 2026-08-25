@@ -4,7 +4,7 @@
   let { open = $bindable(true) } = $props()
 </script>
 
-<Combobox.Root virtualized items={['one'] as never} bind:open>
+<Combobox.Root virtualized items={['one']} bind:open>
   <Combobox.Input data-testid="input" />
   <Combobox.Portal>
     <Combobox.Positioner>

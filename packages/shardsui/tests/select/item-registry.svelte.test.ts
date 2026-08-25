@@ -8,7 +8,7 @@ import { isJSDOM } from '../test-utils'
 function makeContainer(count: number, tag = 'button') {
   const container = document.createElement('div')
   const elements = Array.from({ length: count }, () => {
-    const element = document.createElement(tag) as HTMLElement
+    const element = document.createElement(tag)
     container.append(element)
     return element
   })
@@ -224,7 +224,8 @@ describe('SelectItemRegistry', () => {
     const cleanup = $effect.root(() => {
       const registry = new SelectItemRegistry(() =>
         defaults({
-          isItemEqualToValue: (a, b) => (a as { id: number }).id === (b as { id: number }).id
+          isItemEqualToValue: (a, b) =>
+            a instanceof Object && b instanceof Object && 'id' in a && 'id' in b && a.id === b.id
         })
       )
       flushSync()

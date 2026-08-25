@@ -45,7 +45,7 @@ function isFocusableCandidate(element: Element | null): element is FocusableElem
         getNodeName(element.parentElement) === 'details' &&
         getDetailsSummary(element.parentElement) === element)) &&
     (nodeName !== 'details' || getDetailsSummary(element) == null) &&
-    (nodeName !== 'input' || (element as HTMLInputElement).type !== 'hidden')
+    (nodeName !== 'input' || !('type' in element) || element.type !== 'hidden')
   )
 }
 
@@ -65,7 +65,7 @@ function isFocusableElement(element: Element | null): element is FocusableElemen
     if (
       (isAncestor &&
         getNodeName(current) === 'details' &&
-        !(current as HTMLDetailsElement).open &&
+        !('open' in current && current.open) &&
         !isWithinOpenDetailsSummary(element, current)) ||
       current.hasAttribute('hidden') ||
       (!isSlot && !isVisibleInTabbableTree(current, isAncestor))
@@ -257,6 +257,5 @@ export function enableFocusInside(container: HTMLElement) {
 }
 
 export function isOutsideEvent(event: FocusEvent, container: Element) {
-  const relatedTarget = event.relatedTarget as HTMLElement | null
-  return !relatedTarget || !contains(container, relatedTarget)
+  return !event.relatedTarget || !contains(container, event.relatedTarget)
 }

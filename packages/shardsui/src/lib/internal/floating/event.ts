@@ -1,7 +1,7 @@
 import { isAndroid } from '$lib/internal/detect-browser'
 
 export function isVirtualClick(event: MouseEvent): boolean {
-  const pointerType = (event as PointerEvent).pointerType
+  const pointerType = 'pointerType' in event ? event.pointerType : undefined
   if (pointerType === '' && event.isTrusted) {
     return true
   }

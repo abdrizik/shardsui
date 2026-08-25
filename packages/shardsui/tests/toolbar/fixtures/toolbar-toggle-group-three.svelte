@@ -4,8 +4,8 @@
   import { Toggle } from '$lib/components/toggle'
 
   let {
-    value = $bindable(['one'] as string[]),
-    onValueChange = undefined,
+    value = $bindable(['one']),
+    onValueChange,
     multiple = false,
     twoDisabled = false
   }: {

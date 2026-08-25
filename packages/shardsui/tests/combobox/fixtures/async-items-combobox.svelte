@@ -7,7 +7,7 @@
 </script>
 
 <Combobox.Root
-  items={items as never}
+  {items}
   onValueChange={(value) => {
     selectedValue = value as string | null
   }}

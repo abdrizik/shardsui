@@ -1,3 +1,4 @@
+import type { FieldValidator } from '$lib/components/field'
 import { Switch } from '$lib/components/switch'
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
@@ -23,6 +24,8 @@ import SwitchVetoInField from './fixtures/switch-veto-in-field.svelte'
 import SwitchWithFieldLabel from './fixtures/switch-with-field-label.svelte'
 import SwitchWithLabelFor from './fixtures/switch-with-label-for.svelte'
 import SwitchWithWrappingLabel from './fixtures/switch-with-wrapping-label.svelte'
+
+type CapturedFormData = { data: FormData | null }
 
 describe('<Switch.Root />', () => {
   describe('prop: onclick', () => {
@@ -457,7 +460,7 @@ describe('<Switch.Root />', () => {
     it.skipIf(isJSDOM)('matches native checkbox form submission behavior', async () => {
       const user = userEvent.setup()
 
-      const native: { data: FormData | null } = { data: null }
+      const native: CapturedFormData = { data: null }
       const { container: nativeContainer } = render(NativeCheckboxForm, {
         onData: (d: FormData) => (native.data = d)
       })
@@ -473,7 +476,7 @@ describe('<Switch.Root />', () => {
       await user.click(nativeSubmitButton)
       expect(native.data?.get('native')).toBe('on')
 
-      const custom: { data: FormData | null } = { data: null }
+      const custom: CapturedFormData = { data: null }
       const { container: customContainer } = render(SwitchFormSubmit, {
         onData: (d: FormData) => (custom.data = d)
       })
@@ -627,10 +630,8 @@ describe('<Switch.Root />', () => {
     })
 
     it('prop: validationMode=onChange', async () => {
-      render(SwitchInField, {
-        validationMode: 'onChange',
-        validate: (value: unknown) => ((value as boolean) ? 'error' : null)
-      })
+      const validate: FieldValidator = (value) => (value === true ? 'error' : null)
+      render(SwitchInField, { validationMode: 'onChange', validate })
       const switchElement = screen.getByTestId('switch')
 
       expect(switchElement).not.toHaveAttribute('aria-invalid')
@@ -641,10 +642,8 @@ describe('<Switch.Root />', () => {
     })
 
     it('prop: validationMode=onBlur', async () => {
-      render(SwitchInField, {
-        validationMode: 'onBlur',
-        validate: (value: unknown) => ((value as boolean) ? 'error' : null)
-      })
+      const validate: FieldValidator = (value) => (value === true ? 'error' : null)
+      render(SwitchInField, { validationMode: 'onBlur', validate })
       const switchElement = screen.getByTestId('switch')
 
       expect(switchElement).not.toHaveAttribute('aria-invalid')
@@ -688,7 +687,7 @@ describe('<Switch.Root />', () => {
     })
 
     it('revalidates when a controlled value changes externally', async () => {
-      const validateSpy = vi.fn((value: unknown) => ((value as boolean) ? 'error' : null))
+      const validateSpy = vi.fn<FieldValidator>((value) => (value === true ? 'error' : null))
 
       render(ControlledSwitchInField, {
         validate: validateSpy,

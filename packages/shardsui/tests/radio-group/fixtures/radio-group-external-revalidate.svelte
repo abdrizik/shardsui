@@ -1,12 +1,12 @@
 <script lang="ts">
   import { RadioGroup } from '$lib/components/radio-group'
   import { Radio } from '$lib/components/radio'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
 
   let {
-    validate = undefined
+    validate
   }: {
-    validate?: (value: unknown) => string | null
+    validate?: FieldValidator
   } = $props()
 
   let value = $state('a')

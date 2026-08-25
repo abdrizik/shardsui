@@ -42,10 +42,10 @@ function findAssociatedLabel(
 ): HTMLLabelElement | null {
   if (!input) return null
   const parent = input.parentElement
-  if (parent?.tagName === 'LABEL') return parent as HTMLLabelElement
+  if (parent instanceof HTMLLabelElement) return parent
   if (associatedId) {
-    const sibling = input.nextElementSibling as HTMLLabelElement | null
-    if (sibling?.htmlFor === associatedId) return sibling
+    const sibling = input.nextElementSibling
+    if (sibling instanceof HTMLLabelElement && sibling.htmlFor === associatedId) return sibling
   }
   return input.labels?.[0] ?? null
 }

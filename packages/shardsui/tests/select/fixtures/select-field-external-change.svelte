@@ -1,12 +1,12 @@
 <script lang="ts">
   import { Select } from '$lib/components/select'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
 
-  let { validate = undefined }: { validate?: (val: unknown) => string | null } = $props()
+  let { validate }: { validate?: FieldValidator } = $props()
 
   let value = $state('a')
 
-  const validateFn = $derived(validate ?? ((val: unknown) => (val === 'b' ? 'error' : null)))
+  const validateFn: FieldValidator = $derived(validate ?? ((val) => (val === 'b' ? 'error' : null)))
 </script>
 
 <div>

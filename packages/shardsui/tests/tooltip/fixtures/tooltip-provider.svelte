@@ -4,7 +4,11 @@
   let {
     providerDelay = 600,
     providerCloseDelay = 0,
-    triggerDelay = undefined as number | undefined
+    triggerDelay
+  }: {
+    providerDelay?: number
+    providerCloseDelay?: number
+    triggerDelay?: number
   } = $props()
 </script>
 

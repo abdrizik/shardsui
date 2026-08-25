@@ -103,10 +103,8 @@ export class SliderRoot {
 
   values = $derived.by((): number[] => {
     const { value, min, max } = this.#options()
-    if (!this.#arrayValue) {
-      return [clamp(value as number, min, max)]
-    }
-    return (value as readonly number[]).map((entry) => clamp(entry, min, max)).toSorted(asc)
+    const entries = Array.isArray(value) ? value : [value]
+    return entries.map((entry) => clamp(entry, min, max)).toSorted(asc)
   })
 
   range = $derived(this.values.length > 1)

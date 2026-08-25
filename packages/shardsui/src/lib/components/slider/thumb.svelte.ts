@@ -219,8 +219,7 @@ export class SliderThumb {
     const slider = this.#slider
     slider.setActive(-1)
 
-    const relatedTarget = event.relatedTarget as Node | null
-    if (slider.thumbElements.some((thumb) => contains(thumb, relatedTarget))) {
+    if (slider.thumbElements.some((thumb) => contains(thumb, event.relatedTarget))) {
       this.#options().onblur?.(event)
       return
     }

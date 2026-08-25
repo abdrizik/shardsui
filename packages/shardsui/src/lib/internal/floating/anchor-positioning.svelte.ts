@@ -442,9 +442,9 @@ export class AnchorPositioning {
       offset((state) => {
         const data = getOffsetData(state, sideParam, isRtl)
         const mainAxis =
-          typeof sideOffsetValue === 'function' ? sideOffsetValue(data) : sideOffsetValue
+          sideOffsetValue instanceof Function ? sideOffsetValue(data) : sideOffsetValue
         const crossAxis =
-          typeof alignOffsetValue === 'function' ? alignOffsetValue(data) : alignOffsetValue
+          alignOffsetValue instanceof Function ? alignOffsetValue(data) : alignOffsetValue
         return { mainAxis, crossAxis, alignmentAxis: crossAxis }
       })
     ]
@@ -528,7 +528,7 @@ export class AnchorPositioning {
         arrowElement,
         crossAxisShiftEnabled,
         getSideOffset: (state) =>
-          typeof sideOffsetValue === 'function'
+          sideOffsetValue instanceof Function
             ? sideOffsetValue(getOffsetData(state, sideParam, isRtl))
             : sideOffsetValue
       }),
@@ -552,9 +552,8 @@ export class AnchorPositioning {
       this.#placement = result.placement
       this.anchorHidden = Boolean(result.middlewareData.hide?.referenceHidden)
 
-      this.#adaptiveSideData =
-        (result.middlewareData.adaptiveOrigin as AdaptiveOriginData | undefined) ??
-        DEFAULT_ADAPTIVE_ORIGIN
+      const adaptiveOrigin: AdaptiveOriginData | undefined = result.middlewareData.adaptiveOrigin
+      this.#adaptiveSideData = adaptiveOrigin ?? DEFAULT_ADAPTIVE_ORIGIN
 
       this.#isPositioned = true
 

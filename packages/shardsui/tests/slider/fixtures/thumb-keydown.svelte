@@ -3,7 +3,7 @@
 
   let {
     value = 50,
-    onkeydown = undefined as ((event: KeyboardEvent) => void) | undefined
+    onkeydown
   }: {
     value?: number
     onkeydown?: (event: KeyboardEvent) => void

@@ -1,11 +1,11 @@
-import { DEFAULT_LABELABLE } from '$lib/internal/labelable.svelte'
+import { DEFAULT_LABELABLE, Labelable } from '$lib/internal/labelable.svelte'
 import { registerLabelId } from '$lib/internal/register-label-id'
 import { describe, expect, it } from 'vitest'
 
 describe('registerLabelId', () => {
   it('publishes the id while mounted and clears it on unmount', () => {
     const el = document.createElement('span')
-    const target: { labelId: string | undefined } = { labelId: undefined }
+    const target = new Labelable()
 
     const cleanup = registerLabelId(target, 'a')(el)
     expect(target.labelId).toBe('a')
@@ -17,7 +17,7 @@ describe('registerLabelId', () => {
   it('leaves a later sibling registration alone when an earlier one unmounts', () => {
     const first = document.createElement('span')
     const second = document.createElement('span')
-    const target: { labelId: string | undefined } = { labelId: undefined }
+    const target = new Labelable()
 
     const cleanupFirst = registerLabelId(target, 'a')(first)
     const cleanupSecond = registerLabelId(target, 'b')(second)

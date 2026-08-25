@@ -26,7 +26,7 @@ describe('<Menu.Item />', () => {
 
   it('does not close the menu when onclick prevents the ShardsUI handler', async () => {
     const user = userEvent.setup()
-    const onItem1Click = vi.fn((event) => {
+    const onItem1Click = vi.fn((event: MouseEvent) => {
       ;(event as MouseEvent & { preventShardsUIHandler(): void }).preventShardsUIHandler()
     })
     render(MenuWithItemHandlers, { onItem1Click })

@@ -4,8 +4,13 @@
   let {
     open = $bindable(),
     inputValue = $bindable(),
-    openOnInputClick = undefined as boolean | undefined,
-    items = ['apple'] as readonly string[]
+    openOnInputClick,
+    items = ['apple']
+  }: {
+    open?: boolean
+    inputValue?: string
+    openOnInputClick?: boolean
+    items?: readonly string[]
   } = $props()
 </script>
 

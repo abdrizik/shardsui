@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Combobox } from '$lib/components/combobox'
 
-  let { labels = 'old' as 'old' | 'both' | 'new' } = $props()
+  let { labels = 'old' }: { labels?: 'old' | 'both' | 'new' } = $props()
 </script>
 
 <Combobox.Root open>

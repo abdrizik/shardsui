@@ -1,8 +1,8 @@
 import { Dialog } from '$lib/components/dialog'
 import { render, screen, waitFor } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
-import { flushSync, tick } from 'svelte'
-import { expect, vi } from 'vitest'
+import { type ComponentProps, flushSync, tick } from 'svelte'
+import { expect, type MockInstance, vi } from 'vitest'
 import { isJSDOM } from '../test-utils'
 import DetachedControlledOpen from './fixtures/detached-controlled-open.svelte'
 import DetachedMountAction from './fixtures/detached-mount-action.svelte'
@@ -25,10 +25,8 @@ async function openAndCloseDialog(user: ReturnType<typeof userEvent.setup>) {
   await waitFor(() => expect(screen.queryByText('Dialog Content')).toBe(null))
 }
 
-function warningsMatching(spy: ReturnType<typeof vi.spyOn>, text: string) {
-  return spy.mock.calls.filter(
-    ([message]: unknown[]) => typeof message === 'string' && message.includes(text)
-  )
+function warningsMatching(spy: MockInstance<typeof console.warn>, text: string) {
+  return spy.mock.calls.filter(([message]) => typeof message === 'string' && message.includes(text))
 }
 
 async function waitTwoFrames() {
@@ -36,7 +34,7 @@ async function waitTwoFrames() {
 }
 
 async function handOff(
-  rerender: (props: Record<string, unknown>) => Promise<void>,
+  rerender: (props: ComponentProps<typeof DetachedSharedHandleRoots>) => Promise<void>,
   handle: Dialog.Handle,
   final: 'incoming' | 'outgoing' = 'incoming'
 ) {

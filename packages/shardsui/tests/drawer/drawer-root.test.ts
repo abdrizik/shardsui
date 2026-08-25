@@ -20,15 +20,15 @@ async function flush() {
 
 function mockResizeObserver() {
   const original = globalThis.ResizeObserver
-  if (typeof original === 'function') {
+  if (original) {
     globalThis.ResizeObserver = class {
       observe() {}
       unobserve() {}
       disconnect() {}
-    } as typeof ResizeObserver
+    }
   }
   return () => {
-    if (typeof original === 'function') {
+    if (original) {
       globalThis.ResizeObserver = original
     }
   }
@@ -53,7 +53,7 @@ function setupSwipeTestEnv() {
 function firePointerAtTime(
   element: HTMLElement,
   type: 'pointerDown' | 'pointerMove' | 'pointerUp',
-  init: Record<string, unknown>,
+  init: PointerEventInit,
   time: number
 ) {
   vi.setSystemTime(new Date(time))
@@ -105,7 +105,7 @@ async function simulateTimedDownSwipe(
   settleTime?: number
 ) {
   const resolvedSettleTime =
-    typeof settleTime === 'number' && Number.isFinite(settleTime) ? settleTime : null
+    settleTime !== undefined && Number.isFinite(settleTime) ? settleTime : null
   const settleY = endY - 1
 
   firePointerAtTime(
@@ -159,18 +159,14 @@ async function simulateTimedSwipe(element: HTMLElement, steps: TimedSwipeStep[])
 }
 
 describe('<Drawer.Root />', () => {
-  let originalPointerEvent: typeof PointerEvent | undefined
-
   beforeAll(() => {
     // PointerEvent is not fully implemented in jsdom, so fireEvent.pointer* ignores options.
     // https://github.com/jsdom/jsdom/issues/2527
-    originalPointerEvent = (window as Window & { PointerEvent?: typeof PointerEvent }).PointerEvent
-    ;(window as Window & { PointerEvent: typeof MouseEvent }).PointerEvent =
-      window.MouseEvent as unknown as typeof PointerEvent
+    vi.stubGlobal('PointerEvent', window.MouseEvent)
   })
 
   afterAll(() => {
-    ;(window as Window & { PointerEvent?: typeof PointerEvent }).PointerEvent = originalPointerEvent
+    vi.unstubAllGlobals()
   })
 
   it.skipIf(isJSDOM)('uses a size-based swipe threshold', async () => {

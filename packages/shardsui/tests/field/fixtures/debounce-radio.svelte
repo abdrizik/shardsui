@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import { RadioGroup } from '$lib/components/radio-group'
   import { Radio } from '$lib/components/radio'
 
-  let { validate }: { validate: (value: unknown) => string | null } = $props()
+  let { validate }: { validate: FieldValidator } = $props()
 </script>
 
 <Field.Root validationDebounceTime={100} validationMode="onChange" {validate}>

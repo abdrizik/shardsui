@@ -3,7 +3,7 @@
 
   let {
     value = $bindable(''),
-    variant = 'function' as 'function' | 'static' | 'complex'
+    variant = 'function'
   }: {
     value?: string
     variant?: 'function' | 'static' | 'complex'

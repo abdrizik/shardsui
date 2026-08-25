@@ -3,7 +3,7 @@
   import { Combobox } from '$lib/components/combobox'
   import { Select } from '$lib/components/select'
 
-  let { orientation = undefined as 'horizontal' | 'vertical' | undefined } = $props()
+  let { orientation }: { orientation?: 'horizontal' | 'vertical' } = $props()
 </script>
 
 <Autocomplete.Separator {orientation} data-testid="Autocomplete.Separator" />

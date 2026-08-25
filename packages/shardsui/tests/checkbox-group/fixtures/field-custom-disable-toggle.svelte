@@ -1,13 +1,12 @@
 <script lang="ts">
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import { Checkbox } from '$lib/components/checkbox'
   import { CheckboxGroup } from '$lib/components/checkbox-group'
 
   let disabled = $state(false)
 
-  function validate(nextValue: unknown) {
-    return (nextValue as string[]).length < 2 ? 'pick two' : null
-  }
+  const validate: FieldValidator = (nextValue) =>
+    Array.isArray(nextValue) && nextValue.length >= 2 ? null : 'pick two'
 </script>
 
 <Field.Root name="protocols" validationMode="onChange" {validate}>

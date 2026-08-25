@@ -221,12 +221,12 @@ export class MenuTrigger<Payload = unknown> {
     this.#allowMouseUpTimeout.clear()
     menu.allowMouseUpTrigger = false
 
-    const target = getTarget(mouseEvent) as Element | null
+    const target = getTarget(mouseEvent)
 
     if (
       contains(element, target) ||
       contains(menu.positionerElement, target) ||
-      (target != null && findRootOwnerId(target) === menu.rootId)
+      findRootOwnerId(target) === menu.rootId
     ) {
       return
     }
@@ -348,7 +348,7 @@ export class MenuTrigger<Payload = unknown> {
       menubar.hasSubmenuOpen &&
       !this.disabled &&
       !this.open &&
-      matchesFocusVisible(getTarget(event) as Element | null)
+      matchesFocusVisible(getTarget(event))
     ) {
       this.#claimTrigger()
       menu.setOpen(true, REASONS.triggerFocus)

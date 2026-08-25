@@ -4,7 +4,11 @@
   let {
     value = $bindable<string | null>(null),
     complex = false,
-    placeholder = undefined as string | undefined
+    placeholder
+  }: {
+    value?: unknown
+    complex?: boolean
+    placeholder?: string
   } = $props()
 </script>
 

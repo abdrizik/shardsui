@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Combobox } from '$lib/components/combobox'
 
-  let { initialFocus = undefined as boolean | undefined } = $props()
+  let { initialFocus }: { initialFocus?: boolean } = $props()
 </script>
 
 <Combobox.Root>

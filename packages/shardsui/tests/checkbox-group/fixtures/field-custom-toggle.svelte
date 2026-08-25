@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import { Checkbox } from '$lib/components/checkbox'
   import { CheckboxGroup } from '$lib/components/checkbox-group'
 
-  let { validate }: { validate?: (value: unknown) => string | null } = $props()
+  let { validate }: { validate?: FieldValidator } = $props()
 </script>
 
 <Field.Root name="protocols" validationMode="onChange" {validate}>

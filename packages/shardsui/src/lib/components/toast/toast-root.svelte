@@ -110,7 +110,8 @@
       node,
       'touchmove',
       (event) => {
-        if (!swipe.swiping || !contains(node, getTarget(event) as HTMLElement | null)) return
+        const target = getTarget(event)
+        if (!swipe.swiping || !contains(node, target)) return
         event.preventDefault()
       },
       { passive: false }

@@ -344,8 +344,7 @@ describe('<Combobox.Input />', () => {
       render(MultipleCombobox, {})
       const inputs = screen.getAllByRole('combobox')
       const inputElement = inputs.find((el) => el.tagName === 'INPUT') as HTMLInputElement
-      expect(inputElement).toBeTruthy()
-      expect(inputElement!.value).toBe('')
+      expect(inputElement.value).toBe('')
     })
 
     it('derives the input from the value on first mount when items carry labels', () => {

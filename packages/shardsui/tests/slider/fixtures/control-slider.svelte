@@ -4,19 +4,33 @@
   type Value = number | number[]
 
   let {
-    value = $bindable(50 as Value),
+    value = $bindable(50),
     min = 0,
     max = 100,
-    orientation = 'horizontal' as 'horizontal' | 'vertical',
-    thumbAlignment = 'center' as 'center' | 'edge',
-    thumbCollisionBehavior = 'push' as 'push' | 'swap' | 'none',
+    orientation = 'horizontal',
+    thumbAlignment = 'center',
+    thumbCollisionBehavior = 'push',
     minStepsBetweenValues = 0,
-    thumbCount = undefined as number | undefined,
+    thumbCount,
     trackText = false,
-    nextValue = undefined as Value | undefined,
+    nextValue,
     writeBack = false,
-    onValueChange = undefined as ((value: Value) => void) | undefined,
-    onValueCommitted = undefined as ((value: Value) => void) | undefined
+    onValueChange,
+    onValueCommitted
+  }: {
+    value?: Value
+    min?: number
+    max?: number
+    orientation?: 'horizontal' | 'vertical'
+    thumbAlignment?: 'center' | 'edge'
+    thumbCollisionBehavior?: 'push' | 'swap' | 'none'
+    minStepsBetweenValues?: number
+    thumbCount?: number
+    trackText?: boolean
+    nextValue?: Value
+    writeBack?: boolean
+    onValueChange?: (value: Value) => void
+    onValueCommitted?: (value: Value) => void
   } = $props()
 
   const values = $derived(Array.isArray(value) ? value : [value])

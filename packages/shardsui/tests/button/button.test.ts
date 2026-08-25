@@ -1,9 +1,10 @@
 import Button from '$lib/components/button/button.svelte'
 import { render, screen } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
+import type { ComponentProps } from 'svelte'
 import { expect, vi } from 'vitest'
 
-function renderWithHandlers(props: Record<string, unknown> = {}) {
+function renderWithHandlers(props: ComponentProps<typeof Button> = {}) {
   const handlers = {
     onclick: vi.fn(),
     onmousedown: vi.fn(),

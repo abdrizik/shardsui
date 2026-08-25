@@ -1,3 +1,4 @@
+import { isElement, isNode } from '@floating-ui/utils/dom'
 import { isWebKit } from '$lib/internal/detect-browser'
 import { getTarget } from '$lib/internal/dom'
 import { REASONS } from '$lib/internal/reasons'
@@ -138,8 +139,8 @@ export function dismiss(options: () => DismissOptions): void {
       )
     }
 
-    function isWithinOwnElements(target: Node | null): boolean {
-      if (!target) return false
+    function isWithinOwnElements(target: EventTarget | null): boolean {
+      if (!isNode(target)) return false
       return containsThroughPortals(popupElement, target) || isInsideElement(target)
     }
 
@@ -200,7 +201,8 @@ export function dismiss(options: () => DismissOptions): void {
       // UI Events dispatches `click` at the nearest common inclusive ancestor of the
       // `pointerdown` and `pointerup` targets, so a drag out of the popup would report an
       // outside target. Where the press started is what decides inside vs. outside.
-      let target = getTarget(event) as Element | null
+      const eventTarget = getTarget(event)
+      let target: Element | null = isElement(eventTarget) ? eventTarget : null
       if (event.type === 'click') {
         target = pressStartTarget ?? target
         pressStartTarget = null
@@ -226,7 +228,7 @@ export function dismiss(options: () => DismissOptions): void {
         return
       }
 
-      if (typeof outsidePress === 'function' && !outsidePress(event)) return
+      if (outsidePress instanceof Function && !outsidePress(event)) return
 
       if (hasBlockingChild('outsidePress')) {
         return
@@ -240,7 +242,7 @@ export function dismiss(options: () => DismissOptions): void {
       if (
         getOutsidePressEventType() !== 'sloppy' ||
         event.pointerType === 'touch' ||
-        isWithinOwnElements(getTarget(event) as Node | null)
+        isWithinOwnElements(getTarget(event))
       ) {
         return
       }
@@ -249,10 +251,7 @@ export function dismiss(options: () => DismissOptions): void {
     }
 
     function trackTouchStart(event: TouchEvent) {
-      if (
-        getOutsidePressEventType() !== 'sloppy' ||
-        isWithinOwnElements(getTarget(event) as Node | null)
-      ) {
+      if (getOutsidePressEventType() !== 'sloppy' || isWithinOwnElements(getTarget(event))) {
         return
       }
 
@@ -280,31 +279,29 @@ export function dismiss(options: () => DismissOptions): void {
       addTargetEventListenerOnce(event, trackTouchStart)
     }
 
-    function closeOnPressOutsideCapture(event: MouseEvent) {
+    function onPointerDownCapture(event: PointerEvent) {
       cancelDismissOnEndTimeout.clear()
 
-      if (event.type === 'pointerdown') {
-        currentPointerType = (event as PointerEvent).pointerType
-      }
+      currentPointerType = event.pointerType
+
+      addTargetEventListenerOnce(event, closeOnSloppyPointerDown)
+    }
+
+    function closeOnPressOutsideCapture(event: MouseEvent) {
+      cancelDismissOnEndTimeout.clear()
 
       if (event.type === 'mousedown' && touchState && !touchState.dismissOnMouseDown) {
         return
       }
 
-      addTargetEventListenerOnce(event, (targetEvent) => {
-        if (targetEvent.type === 'pointerdown') {
-          closeOnSloppyPointerDown(targetEvent as PointerEvent)
-        } else {
-          closeOnPressOutside(targetEvent)
-        }
-      })
+      addTargetEventListenerOnce(event, closeOnPressOutside)
     }
 
     function trackTouchMove(event: TouchEvent) {
       if (
         getOutsidePressEventType() !== 'sloppy' ||
         !touchState ||
-        isWithinOwnElements(getTarget(event) as Node | null)
+        isWithinOwnElements(getTarget(event))
       ) {
         return
       }
@@ -335,7 +332,7 @@ export function dismiss(options: () => DismissOptions): void {
       if (
         getOutsidePressEventType() !== 'sloppy' ||
         !touchState ||
-        isWithinOwnElements(getTarget(event) as Node | null)
+        isWithinOwnElements(getTarget(event))
       ) {
         return
       }
@@ -353,8 +350,8 @@ export function dismiss(options: () => DismissOptions): void {
     }
 
     function closeOnTriggerPress(event: MouseEvent) {
-      const target = getTarget(event) as Element | null
-      if (!target) return
+      const target = getTarget(event)
+      if (!isNode(target)) return
 
       if (!isInsideElement(target)) return
 
@@ -363,8 +360,8 @@ export function dismiss(options: () => DismissOptions): void {
 
     function trackPressStart(event: MouseEvent) {
       if (event.button !== 0) return
-      const target = getTarget(event) as Element | null
-      if (!target) return
+      const target = getTarget(event)
+      if (!isElement(target)) return
 
       pressStartTarget = target
 
@@ -393,7 +390,7 @@ export function dismiss(options: () => DismissOptions): void {
     if (outsidePress !== false) {
       cleanups.push(
         on(doc, 'click', closeOnPressOutsideCapture, { capture: true }),
-        on(doc, 'pointerdown', closeOnPressOutsideCapture, { capture: true }),
+        on(doc, 'pointerdown', onPointerDownCapture, { capture: true }),
         on(doc, 'mousedown', closeOnPressOutsideCapture, { capture: true }),
         on(doc, 'touchstart', ontouchstart, { capture: true }),
         on(doc, 'touchmove', ontouchmove, { capture: true }),
@@ -428,7 +425,7 @@ export function dismiss(options: () => DismissOptions): void {
       queueMicrotask(() => {
         for (const cleanup of cleanups) cleanup()
       })
-      for (const detach of [...pendingTargetCleanups]) detach()
+      for (const detach of pendingTargetCleanups) detach()
 
       compositionTimeout.clear()
       clearInsideTreeTimeout.clear()

@@ -19,7 +19,8 @@ function getOffset(ancestor: HTMLElement, element: HTMLElement, side: 'left' | '
   while (node.offsetParent) {
     result += node[propName]
     if (node.offsetParent === ancestor) break
-    node = node.offsetParent as HTMLElement
+    if (!(node.offsetParent instanceof HTMLElement)) break
+    node = node.offsetParent
   }
 
   return result

@@ -1,13 +1,13 @@
 <script lang="ts">
   import { Form } from '$lib/components/form'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
 
   let {
     validate,
     validationMode = 'onChange',
     onsubmit
   }: {
-    validate?: (value: unknown) => string | null
+    validate?: FieldValidator
     validationMode?: 'onChange' | 'onBlur'
     onsubmit?: (event: SubmitEvent) => void
   } = $props()

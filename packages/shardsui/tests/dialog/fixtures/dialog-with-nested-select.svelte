@@ -1,11 +1,13 @@
 <script lang="ts">
   import { Select } from '$lib/components/select'
-  import DialogShapes from './dialog-shapes.svelte'
+  import DialogArrangements from './dialog-arrangements.svelte'
 
-  let { shape = 'contained' }: { shape?: 'contained' | 'detached' | 'multiple-detached' } = $props()
+  let {
+    arrangement = 'contained'
+  }: { arrangement?: 'contained' | 'detached' | 'multiple-detached' } = $props()
 </script>
 
-<DialogShapes {shape}>
+<DialogArrangements {arrangement}>
   <Select.Root>
     <Select.Trigger data-testid="select-trigger">Open select</Select.Trigger>
     <Select.Portal>
@@ -16,4 +18,4 @@
       </Select.Positioner>
     </Select.Portal>
   </Select.Root>
-</DialogShapes>
+</DialogArrangements>

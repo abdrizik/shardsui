@@ -4,7 +4,7 @@
   import type { Orientation } from '$lib/internal/types'
 
   let {
-    direction = 'ltr' as TextDirection,
+    direction = 'ltr',
     orientation = 'horizontal'
   }: {
     direction?: TextDirection

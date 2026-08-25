@@ -9,17 +9,34 @@
     max = 100,
     step = 1,
     largeStep = 10,
-    orientation = 'horizontal' as 'horizontal' | 'vertical',
+    orientation = 'horizontal',
     disabled = false,
-    name = undefined,
-    form = undefined,
-    format = undefined,
-    locale = undefined,
+    name,
+    form,
+    format,
+    locale,
     minStepsBetweenValues = 0,
-    onValueChange = undefined as ((value: Value) => void) | undefined,
-    onValueCommitted = undefined as ((value: Value) => void) | undefined,
-    thumbAriaDescribedby = undefined,
-    thumbAriaLabel = undefined
+    onValueChange,
+    onValueCommitted,
+    thumbAriaDescribedby,
+    thumbAriaLabel
+  }: {
+    value?: Value
+    min?: number
+    max?: number
+    step?: number
+    largeStep?: number
+    orientation?: 'horizontal' | 'vertical'
+    disabled?: boolean
+    name?: string
+    form?: string
+    format?: Intl.NumberFormatOptions
+    locale?: string
+    minStepsBetweenValues?: number
+    onValueChange?: (value: Value) => void
+    onValueCommitted?: (value: Value) => void
+    thumbAriaDescribedby?: string
+    thumbAriaLabel?: string
   } = $props()
 </script>
 

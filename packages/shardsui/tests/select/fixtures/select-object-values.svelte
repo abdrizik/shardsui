@@ -5,13 +5,13 @@
 
   let {
     value = $bindable<User | User[] | null>(null),
-    onValueChange = undefined,
+    onValueChange,
     multiple = false,
     open = $bindable(false),
     users = [
       { id: 1, name: 'Alice', source: 'item' },
       { id: 2, name: 'Bob', source: 'item' }
-    ] as User[],
+    ],
     isItemEqualToValue = (item: User, val: User) => item.id === val.id
   }: {
     value?: User | User[] | null

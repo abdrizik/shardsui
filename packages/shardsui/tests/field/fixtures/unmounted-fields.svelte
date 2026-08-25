@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import { Form } from '$lib/components/form'
 
-  let { validateSpy }: { validateSpy: (value: unknown, formValues: unknown) => null } = $props()
+  let { validateSpy }: { validateSpy: FieldValidator } = $props()
   let checked = $state(true)
 </script>
 

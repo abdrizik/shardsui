@@ -5,11 +5,11 @@
     value = ['sans', 'serif'],
     items = { sans: 'Sans-serif', serif: 'Serif' }
   }: {
-    value?: unknown
+    value?: unknown[]
     items?: Record<string, unknown>
   } = $props()
 </script>
 
-<Select.Root multiple value={value as never} items={items as never}>
+<Select.Root multiple {value} {items}>
   <Select.Value data-testid="value">Custom Multiple Text</Select.Value>
 </Select.Root>

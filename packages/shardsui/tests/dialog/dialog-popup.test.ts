@@ -114,7 +114,7 @@ describe('<Dialog.Popup />', () => {
     it('supports an element-returning function with a no-op via false/void by interaction type', async () => {
       const user = userEvent.setup()
       const elementFor = (type: string) =>
-        type === 'keyboard' ? (screen.getByTestId('input-2') as HTMLElement) : undefined
+        type === 'keyboard' ? screen.getByTestId('input-2') : undefined
       render(DialogInitialFocusFn, { initialFocus: elementFor })
 
       const trigger = screen.getByTestId('trigger')

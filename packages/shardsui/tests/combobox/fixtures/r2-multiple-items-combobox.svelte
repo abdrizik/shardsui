@@ -5,13 +5,17 @@
 
   let {
     value = $bindable(),
-    onValueChange = undefined,
+    onValueChange,
     languages = [
       { id: 'js', value: 'JavaScript' },
       { id: 'ts', value: 'TypeScript' },
       { id: 'py', value: 'Python' },
       { id: 'rb', value: 'Ruby' }
-    ] as Language[]
+    ]
+  }: {
+    value?: Language[] | null
+    onValueChange?: (value: Language[] | null) => void
+    languages?: Language[]
   } = $props()
 </script>
 
@@ -19,10 +23,10 @@
   multiple
   {value}
   {onValueChange}
-  items={languages as never}
-  itemToStringLabel={((item: Language) => item.value) as never}
-  itemToStringValue={((item: Language) => item.id) as never}
-  isItemEqualToValue={((item: Language, v: Language) => item.id === v.id) as never}
+  items={languages}
+  itemToStringLabel={(item: Language) => item.value}
+  itemToStringValue={(item: Language) => item.id}
+  isItemEqualToValue={(item: Language, v: Language) => item.id === v.id}
 >
   <Combobox.Input data-testid="input" />
   <Combobox.Portal>

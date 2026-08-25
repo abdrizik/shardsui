@@ -6,7 +6,7 @@
   const allItems = ['apple', 'banana', 'cherry']
 
   let {
-    mode = 'list' as Mode,
+    mode = 'list',
     openOnInputClick = false
   }: {
     mode?: Mode

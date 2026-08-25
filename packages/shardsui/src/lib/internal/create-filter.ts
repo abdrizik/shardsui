@@ -106,8 +106,7 @@ export function createFilter(options: FilterOptions = {}): Filter {
         return true
       }
 
-      const selectedString =
-        value != null ? stringifyAsLabel(value, itemToString as (item: unknown) => string) : ''
+      const selectedString = value != null ? stringifyAsLabel(value, itemToString) : ''
 
       if (
         selectedString &&

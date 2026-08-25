@@ -4,9 +4,13 @@
   type Value = number | number[]
 
   let {
-    value = $bindable(50 as Value),
+    value = $bindable(50),
     width = 1000,
-    nextValue = undefined as Value | undefined
+    nextValue
+  }: {
+    value?: Value
+    width?: number
+    nextValue?: Value
   } = $props()
 
   const values = $derived(Array.isArray(value) ? value : [value])

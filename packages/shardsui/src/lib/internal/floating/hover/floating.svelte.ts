@@ -117,12 +117,12 @@ export function hoverFloatingInteraction(
       !!(tree && parentId && getNodeChildren(tree.nodes, parentId).length > 0)
 
     const onpointerdown = (event: PointerEvent): void => {
-      const target = getTarget(event) as Element | null
-      if (!isInteractiveElement(target)) {
+      const target = getTarget(event)
+      if (!isElement(target) || !isInteractiveElement(target)) {
         instance.interactedInside = false
         return
       }
-      instance.interactedInside = target?.closest('[aria-haspopup]') != null
+      instance.interactedInside = target.closest('[aria-haspopup]') != null
     }
 
     const onmouseenter = (): void => {

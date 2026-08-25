@@ -23,19 +23,7 @@ function fireTouch(
 }
 
 function mockControlRect(control: HTMLElement, width: number) {
-  vi.spyOn(control, 'getBoundingClientRect').mockImplementation(
-    () =>
-      ({
-        width,
-        height: 10,
-        bottom: 10,
-        left: 0,
-        x: 0,
-        y: 0,
-        top: 0,
-        right: width
-      }) as DOMRect
-  )
+  vi.spyOn(control, 'getBoundingClientRect').mockImplementation(() => new DOMRect(0, 0, width, 10))
 }
 
 describe('<Slider.Thumb />', () => {
@@ -357,14 +345,8 @@ describe('<Slider.Thumb />', () => {
 
     const control = screen.getByTestId('control')
     const thumb = screen.getByTestId('thumb')
-    vi.spyOn(control, 'getBoundingClientRect').mockImplementation(
-      () =>
-        ({ width: 10, height: 100, top: 0, left: 0, right: 10, bottom: 100, x: 0, y: 0 }) as DOMRect
-    )
-    vi.spyOn(thumb, 'getBoundingClientRect').mockImplementation(
-      () =>
-        ({ width: 10, height: 20, top: 40, left: 0, right: 10, bottom: 60, x: 0, y: 40 }) as DOMRect
-    )
+    vi.spyOn(control, 'getBoundingClientRect').mockImplementation(() => new DOMRect(0, 0, 10, 100))
+    vi.spyOn(thumb, 'getBoundingClientRect').mockImplementation(() => new DOMRect(0, 40, 10, 20))
 
     fireEvent.pointerDown(thumb, { button: 0, buttons: 1, clientX: 5, clientY: 60 })
     fireEvent.pointerMove(document.body, { buttons: 1, clientX: 5, clientY: 80 })

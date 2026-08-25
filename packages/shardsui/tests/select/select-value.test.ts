@@ -151,7 +151,7 @@ describe('<Select.Value />', () => {
         items,
         itemToStringLabel: (item: { country: string }) => item.country,
         itemToStringValue: (item: { code: string }) => item.code
-      } as unknown as Record<string, unknown>)
+      })
 
       expect(screen.getByTestId('value')).toHaveTextContent('Canada')
     })
@@ -163,7 +163,7 @@ describe('<Select.Value />', () => {
       ]
       render(SelectWithItemsLookup, {
         value: items[1]
-      } as unknown as Record<string, unknown>)
+      })
       expect(screen.getByTestId('value')).toHaveTextContent('Canada')
     })
 
@@ -176,7 +176,7 @@ describe('<Select.Value />', () => {
         name: 'country',
         value: items[1],
         items
-      } as unknown as Record<string, unknown>)
+      })
       const hiddenInput = container.querySelector('input[name="country"]') as HTMLInputElement
       expect(hiddenInput).not.toBe(null)
       expect(hiddenInput.value).toBe('CA')

@@ -1,13 +1,18 @@
 <script lang="ts">
+  import type { ComponentProps } from 'svelte'
   import { Combobox } from '$lib/components/combobox'
 
   let {
     open = $bindable(),
-    onItemHighlighted = undefined,
+    onItemHighlighted,
     rows = [
       ['1', '2', '3'],
       ['4', '5', '6']
-    ] as string[][]
+    ]
+  }: {
+    open?: boolean
+    onItemHighlighted?: ComponentProps<typeof Combobox.Root>['onItemHighlighted']
+    rows?: string[][]
   } = $props()
 </script>
 

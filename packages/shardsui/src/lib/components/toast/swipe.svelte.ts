@@ -1,3 +1,4 @@
+import { isElement } from '@floating-ui/utils/dom'
 import { SHARDSUI_SWIPE_IGNORE_SELECTOR } from '$lib/internal/constants'
 import { getTarget } from '$lib/internal/dom'
 import {
@@ -67,8 +68,8 @@ export class ToastSwipe {
   }
 
   start = (event: PointerEvent) => {
-    const target = getTarget(event) as HTMLElement | null
-    if (target?.closest(IGNORE_SELECTOR)) return
+    const target = getTarget(event)
+    if (isElement(target) && target.closest(IGNORE_SELECTOR)) return
 
     this.#cancelled = false
     this.#intendedDirection = undefined

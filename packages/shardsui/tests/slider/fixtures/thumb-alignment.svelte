@@ -5,16 +5,27 @@
   type Value = number | number[]
 
   let {
-    value = 50 as Value,
+    value = 50,
     min = 0,
     max = 100,
-    orientation = 'horizontal' as 'horizontal' | 'vertical',
-    thumbAlignment = 'edge' as 'center' | 'edge',
-    direction = 'ltr' as TextDirection,
+    orientation = 'horizontal',
+    thumbAlignment = 'edge',
+    direction = 'ltr',
     thumbSize = 16,
     controlSize = 200,
     showLastThumb = true,
     hidden = false
+  }: {
+    value?: Value
+    min?: number
+    max?: number
+    orientation?: 'horizontal' | 'vertical'
+    thumbAlignment?: 'center' | 'edge'
+    direction?: TextDirection
+    thumbSize?: number
+    controlSize?: number
+    showLastThumb?: boolean
+    hidden?: boolean
   } = $props()
 
   const vertical = $derived(orientation === 'vertical')

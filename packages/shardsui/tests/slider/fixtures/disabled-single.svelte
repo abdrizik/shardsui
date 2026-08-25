@@ -3,7 +3,13 @@
 
   type Value = number | number[]
 
-  let { value = 20, onValueChange = undefined as ((value: Value) => void) | undefined } = $props()
+  let {
+    value = 20,
+    onValueChange
+  }: {
+    value?: number
+    onValueChange?: (value: Value) => void
+  } = $props()
 </script>
 
 <Slider.Root {value} {onValueChange} data-testid="root">

@@ -20,7 +20,7 @@
   let openDialog = $state(false)
   let draftName = $state('')
   let createInputEl = $state<HTMLInputElement | null>(null)
-  let highlighted: Tag | undefined
+  let highlighted = $state<Tag | undefined>()
 
   const trimmed = $derived(query.trim())
   const match = $derived(findTag(trimmed))
@@ -96,7 +96,7 @@
   bind:inputValue={query}
   multiple
   isItemEqualToValue={(a: Tag, b: Tag) => a.id === b.id}
-  onItemHighlighted={(item) => (highlighted = item as Tag | undefined)}
+  onItemHighlighted={(item) => (highlighted = item)}
 >
   <div class="flex max-w-md flex-col gap-1 text-sm/5 font-semibold text-gray-900">
     <label for={id}>Tags</label>

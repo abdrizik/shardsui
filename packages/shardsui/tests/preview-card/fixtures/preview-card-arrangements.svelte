@@ -2,15 +2,15 @@
   import { PreviewCard } from '$lib/components/preview-card'
 
   let {
-    shape = 'contained',
+    arrangement = 'contained',
     open = $bindable(false),
-    onOpenChange = undefined,
-    onOpenChangeComplete = undefined,
+    onOpenChange,
+    onOpenChangeComplete,
     delay = 0,
     closeDelay = 0,
-    popupClass = undefined
+    popupClass
   }: {
-    shape?: 'contained' | 'detached' | 'multiple-detached'
+    arrangement?: 'contained' | 'detached' | 'multiple-detached'
     open?: boolean
     onOpenChange?: (open: boolean) => void
     onOpenChangeComplete?: (open: boolean) => void
@@ -33,7 +33,7 @@
 <button type="button" onclick={() => (open = true)}>Open</button>
 <button type="button" onclick={() => (open = false)}>Close</button>
 
-{#if shape === 'contained'}
+{#if arrangement === 'contained'}
   <PreviewCard.Root bind:open {onOpenChange} {onOpenChangeComplete}>
     <PreviewCard.Trigger href="#" {delay} {closeDelay} data-testid="trigger"
       >Link</PreviewCard.Trigger
@@ -44,7 +44,7 @@
   <PreviewCard.Trigger {handle} href="#" {delay} {closeDelay} data-testid="trigger"
     >Link</PreviewCard.Trigger
   >
-  {#if shape === 'multiple-detached'}
+  {#if arrangement === 'multiple-detached'}
     <PreviewCard.Trigger {handle} href="#" data-testid="trigger-2">Another link</PreviewCard.Trigger
     >
   {/if}

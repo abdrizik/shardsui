@@ -1,20 +1,24 @@
 <script lang="ts">
-  import DialogShapes from './dialog-shapes.svelte'
+  import DialogArrangements from './dialog-arrangements.svelte'
 
-  let { shape = 'contained' }: { shape?: 'contained' | 'detached' | 'multiple-detached' } = $props()
+  let {
+    arrangement = 'contained'
+  }: { arrangement?: 'contained' | 'detached' | 'multiple-detached' } = $props()
 
   let openNested = $state(false)
   let openNested2 = $state(false)
 </script>
 
 <div>
-  <DialogShapes {shape} triggerText="Open base" popupTestId="level-1">
+  <DialogArrangements {arrangement} triggerText="Open base" popupTestId="level-1">
     <button type="button" onclick={() => (openNested = true)}>Open nested 1</button>
-  </DialogShapes>
+  </DialogArrangements>
 
-  <DialogShapes {shape} bind:open={openNested} popupTestId="level-2">
+  <DialogArrangements {arrangement} bind:open={openNested} popupTestId="level-2">
     <button type="button" onclick={() => (openNested2 = true)}>Open nested 2</button>
-  </DialogShapes>
+  </DialogArrangements>
 
-  <DialogShapes {shape} bind:open={openNested2} popupTestId="level-3">Final nested</DialogShapes>
+  <DialogArrangements {arrangement} bind:open={openNested2} popupTestId="level-3"
+    >Final nested</DialogArrangements
+  >
 </div>

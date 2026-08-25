@@ -6,8 +6,13 @@
   let {
     value = $bindable(),
     open = $bindable(),
-    onValueChange = undefined,
-    items = ['one', 'two', 'three', 'four', 'five'] as string[]
+    onValueChange,
+    items = ['one', 'two', 'three', 'four', 'five']
+  }: {
+    value?: unknown
+    open?: boolean
+    onValueChange?: (value: unknown) => void
+    items?: string[]
   } = $props()
 
   const filter = createFilter()
@@ -20,7 +25,7 @@
 <Combobox.Root
   virtualized
   bind:inputValue
-  filteredItems={filteredItems as never}
+  {filteredItems}
   filter={null}
   {value}
   {open}

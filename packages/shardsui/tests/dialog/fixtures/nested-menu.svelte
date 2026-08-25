@@ -1,11 +1,13 @@
 <script lang="ts">
   import { Menu } from '$lib/components/menu'
-  import DialogShapes from './dialog-shapes.svelte'
+  import DialogArrangements from './dialog-arrangements.svelte'
 
-  let { shape = 'contained' }: { shape?: 'contained' | 'detached' | 'multiple-detached' } = $props()
+  let {
+    arrangement = 'contained'
+  }: { arrangement?: 'contained' | 'detached' | 'multiple-detached' } = $props()
 </script>
 
-<DialogShapes {shape}>
+<DialogArrangements {arrangement}>
   <Menu.Root>
     <Menu.Trigger>Open menu</Menu.Trigger>
     <Menu.Portal>
@@ -16,4 +18,4 @@
       </Menu.Positioner>
     </Menu.Portal>
   </Menu.Root>
-</DialogShapes>
+</DialogArrangements>

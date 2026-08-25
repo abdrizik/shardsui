@@ -1,10 +1,10 @@
 export const prerender = true
 
-const content = import.meta.glob('/src/content/*.md', {
+const content = import.meta.glob<string>('/src/content/*.md', {
   query: '?raw',
   import: 'default',
   eager: true
-}) as Record<string, string>
+})
 
 const demos = new Set(
   Object.keys(

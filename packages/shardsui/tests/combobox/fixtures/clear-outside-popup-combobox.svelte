@@ -4,7 +4,7 @@
   let { value = $bindable() } = $props()
 </script>
 
-<Combobox.Root items={['a', 'b'] as never} bind:value>
+<Combobox.Root items={['a', 'b']} bind:value>
   <Combobox.Trigger data-testid="trigger">
     <Combobox.Value />
   </Combobox.Trigger>

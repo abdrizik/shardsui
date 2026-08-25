@@ -1,7 +1,10 @@
 <script lang="ts">
   import { Combobox } from '$lib/components/combobox'
 
-  let { open = $bindable(), items = ['alpha', 'beta', 'alpine'] as string[] } = $props()
+  let {
+    open = $bindable(),
+    items = ['alpha', 'beta', 'alpine']
+  }: { open?: boolean; items?: string[] } = $props()
 </script>
 
 <Combobox.Root {items} {open}>

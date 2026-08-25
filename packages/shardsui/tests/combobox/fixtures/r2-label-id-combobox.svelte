@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Combobox } from '$lib/components/combobox'
 
-  let { id = undefined as string | undefined } = $props()
+  let { id }: { id?: string } = $props()
 </script>
 
 <Combobox.Root {id}>

@@ -3,29 +3,38 @@
 
   let {
     value = $bindable(),
-    items = undefined as unknown[] | undefined,
+    items,
     multiple = false,
-    placeholder = undefined as string | undefined,
-    itemToStringLabel = undefined as ((item: unknown) => string) | undefined,
+    placeholder,
+    itemToStringLabel,
     grouped = false,
     inputInsidePopup = false
+  }: {
+    value?: unknown
+    items?: readonly unknown[]
+    multiple?: boolean
+    placeholder?: string
+    itemToStringLabel?: (item: unknown) => string
+    grouped?: boolean
+    inputInsidePopup?: boolean
   } = $props()
 
   function labelOf(item: unknown): string {
-    if (item && typeof item === 'object' && 'label' in (item as Record<string, unknown>)) {
-      const l = (item as Record<string, unknown>).label
+    if (item instanceof Object && 'label' in item) {
+      const l = item.label
       return l == null ? '' : String(l)
     }
     return String(item)
   }
+
+  function itemsOf(group: unknown): readonly unknown[] {
+    return group instanceof Object && 'items' in group && Array.isArray(group.items)
+      ? group.items
+      : []
+  }
 </script>
 
-<Combobox.Root
-  {value}
-  {multiple}
-  items={items as never}
-  itemToStringLabel={itemToStringLabel as never}
->
+<Combobox.Root {value} {multiple} {items} {itemToStringLabel}>
   <Combobox.Trigger data-testid="value">
     <Combobox.Value {placeholder} />
   </Combobox.Trigger>
@@ -38,8 +47,8 @@
         <Combobox.List>
           {#if grouped && items}
             {#each items as group, gi (gi)}
-              <Combobox.Group items={(group as { items: unknown[] }).items as never}>
-                {#each (group as { items: unknown[] }).items as item, ii (ii)}
+              <Combobox.Group items={itemsOf(group)}>
+                {#each itemsOf(group) as item, ii (ii)}
                   <Combobox.Item value={item}>{labelOf(item)}</Combobox.Item>
                 {/each}
               </Combobox.Group>

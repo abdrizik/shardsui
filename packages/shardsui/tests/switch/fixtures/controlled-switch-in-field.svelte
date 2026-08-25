@@ -1,13 +1,13 @@
 <script lang="ts">
   import { Switch } from '$lib/components/switch'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import type { FormValidationMode } from '$lib/components/form'
   let {
-    validate = undefined,
-    validationMode = undefined,
+    validate,
+    validationMode,
     required = false
   }: {
-    validate?: ((value: unknown) => string | null) | undefined
+    validate?: FieldValidator | undefined
     validationMode?: FormValidationMode | undefined
     required?: boolean
   } = $props()

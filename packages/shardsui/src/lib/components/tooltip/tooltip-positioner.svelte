@@ -44,7 +44,7 @@
     const win = ref?.ownerDocument.defaultView ?? window
 
     return on(win, 'mousemove', (event) => {
-      const target = getTarget(event) as Element | null
+      const target = getTarget(event)
       if (contains(tooltip.popupElement, target)) return
       tooltip.setCursorPosition(event.clientX, event.clientY)
     })

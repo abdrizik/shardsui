@@ -4,8 +4,13 @@
   let {
     open = $bindable(),
     value = $bindable(),
-    onValueChange = undefined,
-    groupLabelId = undefined as string | undefined
+    onValueChange,
+    groupLabelId
+  }: {
+    open?: boolean
+    value?: unknown
+    onValueChange?: (value: unknown) => void
+    groupLabelId?: string
   } = $props()
 </script>
 

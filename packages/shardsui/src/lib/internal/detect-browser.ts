@@ -1,7 +1,6 @@
-const nav =
-  typeof navigator === 'undefined'
-    ? undefined
-    : (navigator as Navigator & { userAgentData?: { platform?: string } })
+type NavigatorWithUAData = Navigator & { userAgentData?: { platform?: string } }
+
+const nav: NavigatorWithUAData | undefined = globalThis.navigator
 
 const platform = nav?.userAgentData?.platform || nav?.platform || ''
 const userAgent = nav?.userAgent ?? ''

@@ -6,11 +6,11 @@
   let {
     value = $bindable(),
     open = $bindable(),
-    onValueChange = undefined,
+    onValueChange,
     count = 100,
     windowSize = 5
   }: {
-    value?: unknown
+    value?: string | null
     open?: boolean
     onValueChange?: (value: unknown) => void
     count?: number
@@ -28,9 +28,9 @@
 
   let windowStart = $state(0)
 
-  function handleItemHighlighted(item: unknown) {
+  function handleItemHighlighted(item: string | undefined) {
     if (item == null) return
-    const index = filteredItems.indexOf(item as string)
+    const index = filteredItems.indexOf(item)
     if (index < 0) return
     windowStart = Math.max(
       0,
@@ -42,7 +42,7 @@
 <Combobox.Root
   virtualized
   bind:inputValue
-  filteredItems={filteredItems as never}
+  {filteredItems}
   filter={null}
   {value}
   {open}

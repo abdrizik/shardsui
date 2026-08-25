@@ -1,17 +1,16 @@
 <script lang="ts">
   import { Select } from '@shardsui/svelte/select'
 
-  const topics = {
-    kerning: 'Kerning',
-    contrast: 'Contrast ratio',
-    flexbox: 'Flexbox',
-    easing: 'Easing'
-  }
+  const topics = [
+    { value: 'kerning', label: 'Kerning' },
+    { value: 'contrast', label: 'Contrast ratio' },
+    { value: 'flexbox', label: 'Flexbox' },
+    { value: 'easing', label: 'Easing' }
+  ]
 
-  type Topic = keyof typeof topics
-  const values = Object.keys(topics) as Topic[]
+  let value = $state(['kerning', 'contrast'])
 
-  let value = $state<Topic[]>(['kerning', 'contrast'])
+  const label = $derived(topics.find((topic) => topic.value === value[0])?.label)
 </script>
 
 <div class="flex flex-col gap-1">
@@ -21,14 +20,11 @@
       class="flex h-8 min-w-56 items-center justify-between gap-3 rounded-md border border-gray-200 bg-gray-50 pr-2 pl-3 text-sm font-normal text-gray-900 select-none hover:bg-gray-100 focus-visible:outline-2 focus-visible:-outline-offset-1 focus-visible:outline-gray-950 data-popup-open:bg-gray-100"
     >
       <Select.Value class="data-placeholder:opacity-60">
-        {#snippet children(current)}
-          {@const selected = current as Topic[]}
-          {#if selected.length === 0}
-            Select topics
-          {:else}
-            {topics[selected[0]]}{selected.length > 1 ? ` (+${selected.length - 1} more)` : ''}
-          {/if}
-        {/snippet}
+        {#if value.length === 0}
+          Select topics
+        {:else}
+          {label}{value.length > 1 ? ` (+${value.length - 1} more)` : ''}
+        {/if}
       </Select.Value>
       <Select.Icon class="flex">
         {@render chevronGrabberIcon()}
@@ -40,15 +36,15 @@
           class="group min-w-(--anchor-width) origin-(--transform-origin) rounded-md bg-gray-50 bg-clip-padding text-gray-900 shadow-lg outline-1 outline-gray-200 transition-[transform,scale,opacity] duration-100 ease-out data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0"
         >
           <Select.List class="max-h-(--available-height) overflow-y-auto py-1">
-            {#each values as v (v)}
+            {#each topics as topic (topic.value)}
               <Select.Item
-                value={v}
+                value={topic.value}
                 class="grid grid-cols-[1rem_1fr] items-center gap-2 py-1.5 pr-4 pl-2.5 text-sm/4 outline-hidden select-none data-highlighted:relative data-highlighted:z-0 data-highlighted:text-gray-50 data-highlighted:before:absolute data-highlighted:before:inset-x-1 data-highlighted:before:inset-y-0 data-highlighted:before:z-[-1] data-highlighted:before:rounded-sm data-highlighted:before:bg-gray-900"
               >
                 <Select.ItemIndicator class="col-start-1">
                   {@render checkIcon()}
                 </Select.ItemIndicator>
-                <div class="col-start-2">{topics[v]}</div>
+                <div class="col-start-2">{topic.label}</div>
               </Select.Item>
             {/each}
           </Select.List>

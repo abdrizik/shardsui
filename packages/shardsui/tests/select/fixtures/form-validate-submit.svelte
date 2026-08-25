@@ -1,12 +1,12 @@
 <script lang="ts">
   import { Select } from '$lib/components/select'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import { Form } from '$lib/components/form'
 
   let {
-    validate = (val: unknown) => (val === '2' ? 'error' : null)
+    validate = (val) => (val === '2' ? 'error' : null)
   }: {
-    validate?: (value: unknown) => string | null
+    validate?: FieldValidator
   } = $props()
 </script>
 

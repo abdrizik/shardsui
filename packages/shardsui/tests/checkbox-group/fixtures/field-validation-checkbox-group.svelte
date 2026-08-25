@@ -1,16 +1,16 @@
 <script lang="ts">
   import { Form } from '$lib/components/form'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import { Checkbox } from '$lib/components/checkbox'
   import { CheckboxGroup } from '$lib/components/checkbox-group'
 
   let {
-    validationMode = undefined,
+    validationMode,
     validate,
     value = []
   }: {
     validationMode?: 'onSubmit' | 'onBlur' | 'onChange'
-    validate?: (value: unknown) => string | null
+    validate?: FieldValidator
     value?: string[]
   } = $props()
 </script>

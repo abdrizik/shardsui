@@ -1,16 +1,16 @@
 <script lang="ts">
   import { Form, type FormValidationMode } from '$lib/components/form'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator, type FieldValidityState } from '$lib/components/field'
 
   let {
     onValidity,
-    validate = undefined,
-    validationMode = undefined,
+    validate,
+    validationMode,
     required = false,
     withForm = false
   }: {
-    onValidity: (data: unknown) => void
-    validate?: (value: unknown) => string | string[] | null
+    onValidity: (data: FieldValidityState) => void
+    validate?: FieldValidator
     validationMode?: FormValidationMode
     required?: boolean
     withForm?: boolean

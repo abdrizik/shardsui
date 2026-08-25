@@ -2,7 +2,7 @@ import { PreviewCard } from '$lib/components/preview-card'
 import { fireEvent, render, screen, waitFor } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
 import { tick } from 'svelte'
-import { expect, vi } from 'vitest'
+import { expect, type MockInstance, vi } from 'vitest'
 import { isJSDOM } from '../test-utils'
 import DetachedKeepMounted from './fixtures/detached-keep-mounted.svelte'
 import DetachedRootHandoff from './fixtures/detached-root-handoff.svelte'
@@ -27,10 +27,8 @@ const CLOSE_TRANSITION_MS = 50
 
 const CLOSE_TRANSITION_TIMEOUT = 300
 
-function warningsMatching(spy: ReturnType<typeof vi.spyOn>, text: string) {
-  return spy.mock.calls.filter(
-    ([message]: unknown[]) => typeof message === 'string' && message.includes(text)
-  )
+function warningsMatching(spy: MockInstance<typeof console.warn>, text: string) {
+  return spy.mock.calls.filter(([message]) => typeof message === 'string' && message.includes(text))
 }
 
 function hover(trigger: HTMLElement) {

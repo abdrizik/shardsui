@@ -1,3 +1,4 @@
+import { isElement } from '@floating-ui/utils/dom'
 import { SHARDSUI_PORTAL_ATTRIBUTE } from '$lib/internal/constants'
 import { contains, getTarget } from '$lib/internal/dom'
 import type { DialogRoot } from './dialog.svelte'
@@ -34,14 +35,14 @@ export function outsidePress(
     }
     if (!dialog.modal) return true
 
-    const target = getTarget(event) as Element | null
+    const target = getTarget(event)
     const internalBackdrop = dialog.internalBackdropElement
     const backdrop = dialog.backdropElement
     if (!internalBackdrop && !backdrop) return true
     return (
       target === internalBackdrop ||
       target === backdrop ||
-      (target != null &&
+      (isElement(target) &&
         contains(target, popupElement) &&
         !target.hasAttribute(SHARDSUI_PORTAL_ATTRIBUTE))
     )

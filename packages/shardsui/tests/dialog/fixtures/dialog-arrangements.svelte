@@ -3,20 +3,20 @@
   import { Dialog } from '$lib/components/dialog'
 
   let {
-    shape = 'contained',
+    arrangement = 'contained',
     open = $bindable(false),
-    onOpenChange = undefined,
-    onOpenChangeComplete = undefined,
+    onOpenChange,
+    onOpenChangeComplete,
     modal = true,
     disablePointerDismissal = false,
     includeBackdrop = false,
-    container = undefined,
-    popupClass = undefined,
+    container,
+    popupClass,
     popupTestId = 'dialog-popup',
     triggerText = 'Open',
-    children = undefined
+    children
   }: {
-    shape?: 'contained' | 'detached' | 'multiple-detached'
+    arrangement?: 'contained' | 'detached' | 'multiple-detached'
     open?: boolean
     onOpenChange?: (open: boolean) => void
     onOpenChangeComplete?: (open: boolean) => void
@@ -51,14 +51,14 @@
   </Dialog.Portal>
 {/snippet}
 
-{#if shape === 'contained'}
+{#if arrangement === 'contained'}
   <Dialog.Root bind:open {modal} {disablePointerDismissal} {onOpenChange} {onOpenChangeComplete}>
     <Dialog.Trigger data-testid="trigger">{triggerText}</Dialog.Trigger>
     {@render portal()}
   </Dialog.Root>
 {:else}
   <Dialog.Trigger {handle} data-testid="trigger">{triggerText}</Dialog.Trigger>
-  {#if shape === 'multiple-detached'}
+  {#if arrangement === 'multiple-detached'}
     <Dialog.Trigger {handle} data-testid="trigger-2">Open another</Dialog.Trigger>
   {/if}
   <Dialog.Root

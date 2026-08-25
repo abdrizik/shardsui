@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import { Form } from '$lib/components/form'
   import { Checkbox } from '$lib/components/checkbox'
   import { CheckboxGroup } from '$lib/components/checkbox-group'
@@ -9,7 +9,7 @@
   import { Slider } from '$lib/components/slider'
   import { Switch } from '$lib/components/switch'
 
-  let { validateSpy }: { validateSpy: (value: unknown, formValues: unknown) => null } = $props()
+  let { validateSpy }: { validateSpy: FieldValidator } = $props()
 </script>
 
 <Form>

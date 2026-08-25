@@ -25,7 +25,7 @@ export type ContentItem =
     }
   | {
       type: 'radioGroup'
-      value?: string
+      value?: unknown
       items: RadioItem[]
     }
   | RadioItem
@@ -37,7 +37,7 @@ export type MenuDefinition = {
   items: ContentItem[]
 }
 
-export const menuContents: Record<string, MenuDefinition> = {
+export const menuContents = {
   file: {
     label: 'File',
     triggerTestId: 'file-trigger',
@@ -96,4 +96,4 @@ export const menuContents: Record<string, MenuDefinition> = {
       }
     ]
   }
-}
+} satisfies Record<string, MenuDefinition>

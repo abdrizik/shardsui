@@ -12,13 +12,14 @@
     "test:chromium": "pnpm --filter @shardsui/svelte test:chromium",
     "test:firefox": "pnpm --filter @shardsui/svelte test:firefox",
     "test:webkit": "pnpm --filter @shardsui/svelte test:webkit",
-    "lint": "oxfmt --check .",
+    "lint": "oxlint && oxfmt --check .",
     "format": "oxfmt .",
     "test:package": "pnpm --filter @shardsui/svelte test:package",
     "test:package:types": "pnpm --filter @shardsui/svelte test:package:types"
   },
   "devDependencies": {
     "oxfmt": "^0.63.0",
+    "oxlint": "1.78.0",
     "typescript": "catalog:dev"
   }
 }

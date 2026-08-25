@@ -4,7 +4,7 @@
   import type { FieldValidator } from '$lib/components/field/field.svelte'
 
   let {
-    validate = (() => null) as FieldValidator
+    validate = () => null
   }: {
     validate?: FieldValidator
   } = $props()
@@ -13,7 +13,12 @@
 </script>
 
 <Field.Root validationMode="onChange" {validate} name="volume">
-  <Slider.Root {value} onValueChange={(next) => (value = next as number)}>
+  <Slider.Root
+    {value}
+    onValueChange={(next) => {
+      if (!Array.isArray(next)) value = next
+    }}
+  >
     <Slider.Control>
       <Slider.Track>
         <Slider.Thumb data-testid="thumb" />

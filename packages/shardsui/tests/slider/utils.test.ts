@@ -270,8 +270,7 @@ describe('resolveThumbCollision', () => {
       minStepsBetweenValues: 10
     })
 
-    const continuedValues = continued.value as number[]
-    expect(continuedValues).toEqual([70, 95])
+    expect(continued.value).toEqual([70, 95])
     expect(continued.thumbIndex).toBe(1)
     expect(continued.didSwap).toBe(false)
   })
@@ -290,8 +289,7 @@ describe('resolveThumbCollision', () => {
       minStepsBetweenValues: 5
     })
 
-    const resultValues = result.value as number[]
-    expect(resultValues).toEqual([40, 45])
+    expect(result.value).toEqual([40, 45])
     expect(result.thumbIndex).toBe(0)
     expect(result.didSwap).toBe(false)
   })
@@ -310,8 +308,7 @@ describe('resolveThumbCollision', () => {
       minStepsBetweenValues: 5
     })
 
-    const resultValues = result.value as number[]
-    expect(resultValues).toEqual([40, 45])
+    expect(result.value).toEqual([40, 45])
     expect(result.thumbIndex).toBe(1)
     expect(result.didSwap).toBe(true)
   })
@@ -330,8 +327,7 @@ describe('resolveThumbCollision', () => {
       minStepsBetweenValues: 5
     })
 
-    const resultValues = result.value as number[]
-    expect(resultValues).toEqual([25, 30])
+    expect(result.value).toEqual([25, 30])
     expect(result.thumbIndex).toBe(1)
     expect(result.didSwap).toBe(false)
   })
@@ -350,8 +346,7 @@ describe('resolveThumbCollision', () => {
       minStepsBetweenValues: 5
     })
 
-    const resultValues = result.value as number[]
-    expect(resultValues).toEqual([25, 30])
+    expect(result.value).toEqual([25, 30])
     expect(result.thumbIndex).toBe(0)
     expect(result.didSwap).toBe(true)
   })
@@ -373,8 +368,7 @@ describe('resolveThumbCollision', () => {
       minStepsBetweenValues: 5
     })
 
-    const resultValues = result.value as number[]
-    expect(resultValues).toEqual([40, 46])
+    expect(result.value).toEqual([40, 46])
     expect(result.thumbIndex).toBe(1)
     expect(result.didSwap).toBe(true)
   })

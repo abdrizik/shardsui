@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Combobox } from '$lib/components/combobox'
 
-  let { onitemclick = undefined as ((event: MouseEvent) => void) | undefined } = $props()
+  let { onitemclick = undefined }: { onitemclick?: (event: MouseEvent) => void } = $props()
 </script>
 
 <Combobox.Root open disabled>

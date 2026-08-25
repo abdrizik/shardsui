@@ -64,7 +64,8 @@ type FocusManagerOptions = {
 
 function getEventType(event: Event | null | undefined, lastInteractionType: string): string {
   if (!event) return lastInteractionType || 'mouse'
-  const win = (getTarget(event) as Element | null)?.ownerDocument?.defaultView ?? window
+  const eventTarget = getTarget(event)
+  const win = (isElement(eventTarget) ? eventTarget.ownerDocument.defaultView : null) ?? window
   if (event instanceof win.KeyboardEvent) return 'keyboard'
   if (event instanceof win.FocusEvent) return lastInteractionType || 'keyboard'
   if ('pointerType' in event) return (event as PointerEvent).pointerType || 'keyboard'
@@ -318,8 +319,8 @@ export function manageFocus(options: () => FocusManagerOptions): void {
     const onpointerdown = (event: PointerEvent) => {
       lastInteractionType = event.pointerType || 'keyboard'
 
-      const target = getTarget(event) as Element | null
-      if (target?.closest(CLICK_TRIGGER_SELECTOR)) {
+      const target = getTarget(event)
+      if (isElement(target) && target.closest(CLICK_TRIGGER_SELECTOR)) {
         markPointerDown()
       }
     }
@@ -515,9 +516,9 @@ export function manageFocus(options: () => FocusManagerOptions): void {
 
     const dismissIfFocusLeft = (event: FocusEvent, fromTrigger: boolean) => {
       const relatedTarget = event.relatedTarget as Element | null
-      const target = getTarget(event) as Element | null
+      const target = getTarget(event)
 
-      if (trapsFocus && relatedTarget == null && target != null && contains(popup, target)) {
+      if (trapsFocus && relatedTarget == null && isElement(target) && contains(popup, target)) {
         addPreviouslyFocusedElement(target)
       }
 
@@ -571,16 +572,16 @@ export function manageFocus(options: () => FocusManagerOptions): void {
     if (!restoreFocus || !active || !popup) return
 
     const onfocusin = (event: FocusEvent) => {
-      const target = getTarget(event) as Element | null
-      if (isTabbable(target)) lastFocusedTabbable = target
+      const target = getTarget(event)
+      if (isElement(target) && isTabbable(target)) lastFocusedTabbable = target
     }
 
     const onfocusout = (event: FocusEvent) => {
-      const target = getTarget(event) as HTMLElement | null
+      const target = getTarget(event)
       const floatingFocusElement = getFloatingFocusElement(popup)
 
       queueMicrotask(() => {
-        if (target && isElementVisible(target)) return
+        if (isElement(target) && isElementVisible(target)) return
         const doc = popup.ownerDocument
         const active = doc.activeElement
         if (active !== doc.body) return

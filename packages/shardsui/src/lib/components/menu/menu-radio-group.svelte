@@ -19,7 +19,7 @@
     ...rest
   }: Props = $props()
 
-  const group = $state({ labelId: undefined as string | undefined })
+  const group: MenuGroupContext = $state({ labelId: undefined })
 
   MenuRadioGroupContext.set({
     get value() {

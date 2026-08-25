@@ -158,7 +158,7 @@
   }
 
   function commitFieldOnBlur(event: FocusEvent) {
-    if (contains(select.positionerElement, event.relatedTarget as Node | null)) return
+    if (contains(select.positionerElement, event.relatedTarget)) return
     field?.commitOnBlur(select.value)
   }
 

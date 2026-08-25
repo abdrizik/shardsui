@@ -145,7 +145,7 @@ export class PopoverRoot<Payload = unknown> {
     this.#selectTrigger(next, trigger)
 
     if (reason === REASONS.triggerPress) {
-      this.instantType = (event as MouseEvent | undefined)?.detail === 0 ? 'click' : undefined
+      this.instantType = event instanceof UIEvent && event.detail === 0 ? 'click' : undefined
     } else if (!next && (reason === REASONS.escapeKey || reason == null)) {
       this.instantType = 'dismiss'
     } else if (reason === REASONS.focusOut) {

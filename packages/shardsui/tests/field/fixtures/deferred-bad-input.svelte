@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidityState } from '$lib/components/field'
 
-  let { onValidity }: { onValidity: (data: unknown) => void } = $props()
+  let { onValidity }: { onValidity: (data: FieldValidityState) => void } = $props()
 </script>
 
 <Field.Root validationMode="onBlur" validate={() => 'custom error'}>

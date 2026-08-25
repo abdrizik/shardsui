@@ -1,14 +1,20 @@
 <script lang="ts">
+  import type { ComponentProps } from 'svelte'
   import { Combobox } from '$lib/components/combobox'
   import { Field } from '$lib/components/field'
 
+  type FieldProps = ComponentProps<typeof Field.Root>
+
   let {
-    validate = undefined as ((value: unknown) => string | null) | undefined,
+    validate,
     validationMode = 'onBlur'
+  }: {
+    validate?: FieldProps['validate']
+    validationMode?: FieldProps['validationMode']
   } = $props()
 </script>
 
-<Field.Root validationMode={validationMode as never} validate={validate as never}>
+<Field.Root {validationMode} {validate}>
   <Combobox.Root>
     <Combobox.Trigger data-testid="trigger" />
     <Combobox.Portal>

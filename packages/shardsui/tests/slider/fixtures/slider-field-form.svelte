@@ -5,9 +5,9 @@
   import type { FieldValidator } from '$lib/components/field/field.svelte'
 
   let {
-    validate = (() => null) as FieldValidator,
+    validate = () => null,
     range = false,
-    value = undefined as number | number[] | undefined
+    value
   }: {
     validate?: FieldValidator
     range?: boolean

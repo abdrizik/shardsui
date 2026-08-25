@@ -55,13 +55,16 @@ describe('<Drawer.Popup />', () => {
   })
 
   it('applies a negative snap point offset to upward drawers', async () => {
-    const heights: Record<string, number> = { popup: 300, viewport: 400 }
+    const heights = { popup: 300, viewport: 400 }
     const original = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight')!
     Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
       configurable: true,
       get(this: HTMLElement) {
         const testid = this.getAttribute('data-testid')
-        return (testid && heights[testid]) ?? original.get!.call(this)
+        return (
+          (testid === 'popup' || testid === 'viewport' ? heights[testid] : undefined) ??
+          original.get!.call(this)
+        )
       }
     })
 

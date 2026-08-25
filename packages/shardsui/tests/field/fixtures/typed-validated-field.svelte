@@ -1,17 +1,17 @@
 <script lang="ts">
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import { Form, type FormValidationMode } from '$lib/components/form'
 
   let {
-    validate = undefined,
+    validate,
     validationMode = 'onBlur',
-    validationDebounceTime = undefined,
+    validationDebounceTime,
     type = 'text',
-    required = undefined,
-    value = undefined,
+    required,
+    value,
     useForm = false
   }: {
-    validate?: (val: unknown) => string | null | Promise<string | null>
+    validate?: FieldValidator
     validationMode?: FormValidationMode
     validationDebounceTime?: number
     type?: string

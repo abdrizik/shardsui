@@ -6,15 +6,20 @@
   let {
     value = $bindable<unknown>(undefined),
     multiple = false,
-    items = undefined as Item[] | undefined,
-    placeholder = undefined as string | undefined
+    items,
+    placeholder
+  }: {
+    value?: unknown
+    multiple?: boolean
+    items?: Item[]
+    placeholder?: string
   } = $props()
 </script>
 
 <Combobox.Root
   {value}
   {multiple}
-  items={items as never}
+  {items}
   itemToStringLabel={items ? (item: unknown) => (item as Item).label : undefined}
 >
   <Combobox.Trigger data-testid="trigger">

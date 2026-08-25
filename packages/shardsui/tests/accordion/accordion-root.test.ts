@@ -419,7 +419,7 @@ describe('<Accordion.Root />', () => {
       await user.click(trigger1)
 
       expect(onValueChange).toHaveBeenCalledTimes(1)
-      const [valueArg] = onValueChange.mock.calls[0] as [unknown[]]
+      const [valueArg] = onValueChange.mock.calls[0]
       expect(Array.isArray(valueArg)).toBe(true)
       expect(valueArg).toHaveLength(1)
     })

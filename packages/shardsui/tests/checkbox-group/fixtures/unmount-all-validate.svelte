@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Checkbox } from '$lib/components/checkbox'
   import { CheckboxGroup } from '$lib/components/checkbox-group'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import { Form } from '$lib/components/form'
 
   let {
@@ -9,7 +9,7 @@
     validate
   }: {
     onFormSubmit: (values: Record<string, unknown>) => void
-    validate: (value: unknown) => string | null
+    validate: FieldValidator
   } = $props()
 
   let mounted = $state(true)

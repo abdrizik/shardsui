@@ -45,18 +45,14 @@ async function flush() {
 }
 
 describe('<Drawer.Viewport />', () => {
-  let originalPointerEvent: typeof PointerEvent | undefined
-
   beforeAll(() => {
     // PointerEvent is not fully implemented in jsdom, so fireEvent.pointer* ignores options.
     // https://github.com/jsdom/jsdom/issues/2527
-    originalPointerEvent = (window as Window & { PointerEvent?: typeof PointerEvent }).PointerEvent
-    ;(window as Window & { PointerEvent: typeof MouseEvent }).PointerEvent =
-      window.MouseEvent as unknown as typeof PointerEvent
+    vi.stubGlobal('PointerEvent', window.MouseEvent)
   })
 
   afterAll(() => {
-    ;(window as Window & { PointerEvent?: typeof PointerEvent }).PointerEvent = originalPointerEvent
+    vi.unstubAllGlobals()
   })
 
   it('clears text selection on swipe start', async () => {
@@ -363,8 +359,7 @@ describe('<Drawer.Viewport />', () => {
     Object.defineProperty(popup, 'offsetHeight', { value: 200, configurable: true })
 
     const originalElementFromPoint = document.elementFromPoint
-    document.elementFromPoint = ((_x: number, y: number) =>
-      y < 100 ? viewport : popup) as typeof document.elementFromPoint
+    document.elementFromPoint = (_x: number, y: number) => (y < 100 ? viewport : popup)
 
     try {
       fireTouch(viewport, 'touchstart', 'touches', { clientX: 0, clientY: 0 })
@@ -390,8 +385,7 @@ describe('<Drawer.Viewport />', () => {
     Object.defineProperty(popup, 'offsetHeight', { value: 200, configurable: true })
 
     const originalElementFromPoint = document.elementFromPoint
-    document.elementFromPoint = ((_x: number, y: number) =>
-      y < 100 ? viewport : popup) as typeof document.elementFromPoint
+    document.elementFromPoint = (_x: number, y: number) => (y < 100 ? viewport : popup)
 
     try {
       fireTouch(viewport, 'touchstart', 'touches', { clientX: 0, clientY: 0 })
@@ -422,7 +416,7 @@ describe('<Drawer.Viewport />', () => {
       const pointerDownEvent = new Event('pointerdown', {
         bubbles: true,
         cancelable: true
-      }) as PointerEvent
+      })
 
       Object.defineProperties(pointerDownEvent, {
         button: { value: 0 },

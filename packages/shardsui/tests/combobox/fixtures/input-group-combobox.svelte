@@ -7,9 +7,17 @@
     open = $bindable(),
     disabled = false,
     readOnly = false,
-    openOnInputClick = undefined as boolean | undefined,
+    openOnInputClick,
     withField = false,
     fieldDisabled = false
+  }: {
+    value?: unknown
+    open?: boolean
+    disabled?: boolean
+    readOnly?: boolean
+    openOnInputClick?: boolean
+    withField?: boolean
+    fieldDisabled?: boolean
   } = $props()
 </script>
 

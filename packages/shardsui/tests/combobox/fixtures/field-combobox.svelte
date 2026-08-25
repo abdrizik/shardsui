@@ -1,32 +1,44 @@
 <script lang="ts">
+  import type { ComponentProps } from 'svelte'
   import { Combobox } from '$lib/components/combobox'
   import { Field } from '$lib/components/field'
 
+  type FieldProps = ComponentProps<typeof Field.Root>
+
   let {
     disabled = false,
-    invalid = undefined as boolean | undefined,
-    name = undefined as string | undefined,
-    validate = undefined as ((value: unknown) => string | null) | undefined,
-    validationMode = undefined as string | undefined,
+    invalid,
+    name,
+    validate,
+    validationMode,
     required = false,
     multiple = false,
     value = $bindable(),
     open = $bindable(),
     inputInsidePopup = false,
     useComboboxLabel = false,
-    triggerId = undefined as string | undefined,
+    triggerId,
     withLabel = false,
     withError = false
+  }: {
+    disabled?: boolean
+    invalid?: boolean
+    name?: string
+    validate?: FieldProps['validate']
+    validationMode?: FieldProps['validationMode']
+    required?: boolean
+    multiple?: boolean
+    value?: unknown
+    open?: boolean
+    inputInsidePopup?: boolean
+    useComboboxLabel?: boolean
+    triggerId?: string
+    withLabel?: boolean
+    withError?: boolean
   } = $props()
 </script>
 
-<Field.Root
-  {disabled}
-  {invalid}
-  {name}
-  validate={validate as never}
-  validationMode={validationMode as never}
->
+<Field.Root {disabled} {invalid} {name} {validate} {validationMode}>
   {#if withLabel && !useComboboxLabel}
     <Field.Label data-testid="label">Search</Field.Label>
   {/if}

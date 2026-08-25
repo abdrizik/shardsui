@@ -5,12 +5,17 @@
   let {
     multiple = false,
     value = $bindable(),
-    onValueChange = undefined,
-    items = ['apple', 'apricot', 'banana'] as string[]
+    onValueChange,
+    items = ['apple', 'apricot', 'banana']
+  }: {
+    multiple?: boolean
+    value?: unknown
+    onValueChange?: (value: unknown) => void
+    items?: string[]
   } = $props()
 </script>
 
-<Combobox.Root items={items as never} {multiple} bind:value {onValueChange}>
+<Combobox.Root {items} {multiple} bind:value {onValueChange}>
   <Combobox.Trigger data-testid="trigger">
     <Combobox.Value />
   </Combobox.Trigger>

@@ -3,9 +3,14 @@
 
   let {
     value = 0,
-    onValueChange = undefined as ((value: number | number[]) => void) | undefined,
-    ontouchstart = undefined as ((event: TouchEvent) => void) | undefined,
-    onmousedown = undefined as ((event: MouseEvent) => void) | undefined
+    onValueChange,
+    ontouchstart,
+    onmousedown
+  }: {
+    value?: number
+    onValueChange?: (value: number) => void
+    ontouchstart?: (event: TouchEvent) => void
+    onmousedown?: (event: MouseEvent) => void
   } = $props()
 </script>
 

@@ -230,7 +230,7 @@ describe('focus manager', () => {
           configurable: true,
           writable: true,
           value(options: FocusOptions | undefined) {
-            options && options.preventScroll
+            void options?.preventScroll
             return originalFocus.call(this, options)
           }
         })
@@ -863,7 +863,7 @@ describe('focus manager', () => {
     )
   })
 
-  describe.skipIf(!isJSDOM)('jsdom-only coverage', () => {
+  describe.skipIf(!isJSDOM)('jsdom-only coverage: focus trapping', () => {
     it('trapped combobox prevents focus moving outside the floating element', async () => {
       render(FocusManagerTrappedCombobox)
 

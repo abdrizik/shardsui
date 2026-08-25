@@ -49,7 +49,7 @@
   }
 
   function onscroll(event: Event) {
-    scrollTop = (event.target as HTMLElement).scrollTop
+    if (event.target instanceof HTMLElement) scrollTop = event.target.scrollTop
   }
 </script>
 

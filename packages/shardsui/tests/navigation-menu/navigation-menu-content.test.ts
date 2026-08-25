@@ -44,8 +44,8 @@ describe('<NavigationMenu.Content />', () => {
     const content2 = screen.queryByTestId('content-2')
     expect(content1After).not.toBeNull()
     expect(content2).not.toBeNull()
-    expect(viewport.contains(content1After as Node)).toBe(true)
-    expect(viewport.contains(content2 as Node)).toBe(true)
+    expect(viewport.contains(content1After)).toBe(true)
+    expect(viewport.contains(content2)).toBe(true)
   })
 
   it('keeps content mounted inside the popup when closed if the portal is kept mounted', async () => {

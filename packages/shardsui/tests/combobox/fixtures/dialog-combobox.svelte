@@ -7,14 +7,18 @@
   let {
     multiple = false,
     initialOpen = true,
-    fruits = ['Apple', 'Apricot', 'Banana', 'Grape', 'Orange'] as string[]
+    fruits = ['Apple', 'Apricot', 'Banana', 'Grape', 'Orange']
+  }: {
+    multiple?: boolean
+    initialOpen?: boolean
+    fruits?: string[]
   } = $props()
 
   let open = $state(untrack(() => initialOpen))
 </script>
 
 <Combobox.Root
-  items={fruits as never}
+  items={fruits}
   {multiple}
   inline
   open={multiple ? undefined : open}

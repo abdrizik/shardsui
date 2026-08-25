@@ -10,7 +10,7 @@ import SelectNativeForm from './fixtures/select-native-form.svelte'
 import SelectWithItems from './fixtures/select-with-items.svelte'
 
 function hiddenInput(container: HTMLElement) {
-  return container.querySelector('input[aria-hidden="true"]') as HTMLInputElement
+  return container.querySelector<HTMLInputElement>('input[aria-hidden="true"]')
 }
 
 describe('<Select.Root />', () => {
@@ -31,12 +31,12 @@ describe('<Select.Root />', () => {
         items,
         itemToStringLabel: (item: CountryItem) => item.country,
         itemToStringValue: (item: CountryItem) => item.code
-      } as unknown as Record<string, unknown>)
+      })
 
-      const hiddenInputs = container.querySelectorAll('input[name="countries"]')
+      const hiddenInputs = container.querySelectorAll<HTMLInputElement>('input[name="countries"]')
       expect(hiddenInputs).toHaveLength(2)
-      expect((hiddenInputs[0] as HTMLInputElement).value).toBe('US')
-      expect((hiddenInputs[1] as HTMLInputElement).value).toBe('CA')
+      expect(hiddenInputs[0].value).toBe('US')
+      expect(hiddenInputs[1].value).toBe('CA')
     })
 
     it('uses itemToStringValue for form submission', () => {
@@ -51,11 +51,11 @@ describe('<Select.Root />', () => {
         items,
         itemToStringLabel: (item: CountryItem) => item.country,
         itemToStringValue: (item: CountryItem) => item.code
-      } as unknown as Record<string, unknown>)
+      })
 
-      const hiddenInput = container.querySelector('input[name="country"]')
+      const hiddenInput = container.querySelector<HTMLInputElement>('input[name="country"]')
       expect(hiddenInput).toBeTruthy()
-      expect((hiddenInput as HTMLInputElement).value).toBe('US')
+      expect(hiddenInput?.value).toBe('US')
     })
   })
 
@@ -66,7 +66,7 @@ describe('<Select.Root />', () => {
         name: 'select',
         value: ['a']
       })
-      const hiddenInput = container.querySelector('input') as HTMLInputElement
+      const hiddenInput = container.querySelector<HTMLInputElement>('input')
       expect(hiddenInput).not.toBe(null)
       expect(hiddenInput).not.toHaveAttribute('required')
     })
@@ -77,7 +77,7 @@ describe('<Select.Root />', () => {
         name: 'select',
         value: []
       })
-      const hiddenInput = container.querySelector('input') as HTMLInputElement
+      const hiddenInput = container.querySelector<HTMLInputElement>('input')
       expect(hiddenInput).not.toBe(null)
       expect(hiddenInput).toHaveAttribute('required')
     })

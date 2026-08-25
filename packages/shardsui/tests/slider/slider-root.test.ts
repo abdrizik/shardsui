@@ -28,35 +28,11 @@ function mockHorizontalSliderLayout(
   width: number,
   thumbPositions: number[]
 ) {
-  vi.spyOn(control, 'getBoundingClientRect').mockImplementation(
-    () =>
-      ({
-        width,
-        height: 10,
-        bottom: 10,
-        left: 0,
-        x: 0,
-        y: 0,
-        top: 0,
-        right: width
-      }) as DOMRect
-  )
+  vi.spyOn(control, 'getBoundingClientRect').mockImplementation(() => new DOMRect(0, 0, width, 10))
 
   thumbs.forEach((thumb, index) => {
     const left = thumbPositions[index]
-    vi.spyOn(thumb, 'getBoundingClientRect').mockImplementation(
-      () =>
-        ({
-          width: 20,
-          height: 20,
-          left,
-          right: left + 20,
-          top: 0,
-          bottom: 20,
-          x: left,
-          y: 0
-        }) as DOMRect
-    )
+    vi.spyOn(thumb, 'getBoundingClientRect').mockImplementation(() => new DOMRect(left, 0, 20, 20))
   })
 }
 
@@ -76,19 +52,7 @@ function getSliderValues() {
 }
 
 function mockControlRect(control: HTMLElement, width = 100) {
-  vi.spyOn(control, 'getBoundingClientRect').mockImplementation(
-    () =>
-      ({
-        width,
-        height: 10,
-        bottom: 10,
-        left: 0,
-        x: 0,
-        y: 0,
-        top: 0,
-        right: width
-      }) as DOMRect
-  )
+  vi.spyOn(control, 'getBoundingClientRect').mockImplementation(() => new DOMRect(0, 0, width, 10))
 }
 
 describe('<Slider.Root />', () => {
@@ -348,19 +312,7 @@ describe('<Slider.Root />', () => {
       const control = screen.getByTestId('control')
       const thumb = screen.getByTestId('thumb')
 
-      vi.spyOn(control, 'getBoundingClientRect').mockImplementation(
-        () =>
-          ({
-            width: 100,
-            height: 10,
-            bottom: 10,
-            left: 0,
-            x: 0,
-            y: 0,
-            top: 0,
-            right: 100
-          }) as DOMRect
-      )
+      mockControlRect(control)
 
       fireEvent.pointerDown(thumb, { buttons: 1, clientX: 51 })
 
@@ -373,19 +325,7 @@ describe('<Slider.Root />', () => {
 
       const control = screen.getByTestId('control')
 
-      vi.spyOn(control, 'getBoundingClientRect').mockImplementation(
-        () =>
-          ({
-            width: 100,
-            height: 10,
-            bottom: 10,
-            left: 0,
-            x: 0,
-            y: 0,
-            top: 0,
-            right: 100
-          }) as DOMRect
-      )
+      mockControlRect(control)
 
       fireEvent.pointerDown(control, { button: 2, clientX: 41 })
 
@@ -942,19 +882,7 @@ describe('<Slider.Root />', () => {
       const thumb = screen.getByTestId('thumb')
 
       mockControlRect(control)
-      vi.spyOn(thumb, 'getBoundingClientRect').mockImplementation(
-        () =>
-          ({
-            width: 0,
-            height: 0,
-            bottom: 0,
-            left: 50,
-            right: 50,
-            top: 0,
-            x: 50,
-            y: 0
-          }) as DOMRect
-      )
+      vi.spyOn(thumb, 'getBoundingClientRect').mockImplementation(() => new DOMRect(50, 0, 0, 0))
 
       fireEvent.pointerDown(thumb, { buttons: 1, clientX: 50 })
       fireEvent.pointerUp(document.body, { buttons: 1, clientX: 50 })
@@ -1563,7 +1491,7 @@ describe('<Slider.Root />', () => {
   describe('Field validate', () => {
     it('validationMode=onSubmit with data-invalid/data-valid', async () => {
       render(SliderFieldForm, {
-        validate: (val: unknown) => ((val as number) > 90 ? 'error' : null),
+        validate: (val: unknown) => (Number(val) > 90 ? 'error' : null),
         value: 99
       })
 
@@ -1622,7 +1550,7 @@ describe('<Slider.Root />', () => {
     it('validationMode=onBlur', async () => {
       render(SliderField, {
         validationMode: 'onBlur',
-        validate: (value: unknown) => ((value as number) > 1 ? 'error' : null),
+        validate: (value: unknown) => (Number(value) > 1 ? 'error' : null),
         value: 0
       })
 
@@ -2084,17 +2012,7 @@ describe('<Slider.Root />', () => {
 
       const control = screen.getByTestId('control')
       vi.spyOn(control, 'getBoundingClientRect').mockImplementation(
-        () =>
-          ({
-            width: 10,
-            height: 100,
-            bottom: 100,
-            left: 0,
-            x: 0,
-            y: 0,
-            top: 0,
-            right: 10
-          }) as DOMRect
+        () => new DOMRect(0, 0, 10, 100)
       )
 
       fireTouch(control, 'touchstart', [{ identifier: 1, clientX: 0, clientY: 20 }])

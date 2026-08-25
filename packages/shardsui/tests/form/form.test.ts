@@ -1,3 +1,4 @@
+import type { FieldValidator } from '$lib/components/field'
 import { Form } from '$lib/components/form'
 import { fireEvent, render, screen, waitFor } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
@@ -385,7 +386,7 @@ describe('<Form />', () => {
 
     it('runs field validation on first change after Form error is set', async () => {
       const user = userEvent.setup()
-      const validate = vi.fn((value: unknown) => (value === 'abcd' ? 'field error' : null))
+      const validate = vi.fn<FieldValidator>((value) => (value === 'abcd' ? 'field error' : null))
       render(ValidateAfterFormErrorForm, { validate })
 
       const input = screen.getByTestId('name')

@@ -1,3 +1,4 @@
+import { isElement, isHTMLElement } from '@floating-ui/utils/dom'
 import { clamp } from './clamp'
 import { contains, getTarget } from './dom'
 import { getElementAtPoint } from './get-element-at-point'
@@ -129,7 +130,7 @@ export function safelyChangePointerCapture(
   try {
     element[method](pointerId)
   } catch (error) {
-    if ((error as DOMException | null)?.name !== 'NotFoundError') throw error
+    if (!(error instanceof DOMException) || error.name !== 'NotFoundError') throw error
   }
 }
 
@@ -339,9 +340,11 @@ export class SwipeDismiss {
     this.#lastProgressDetails = null
   }
 
-  #getTargetAtPoint(position: { x: number; y: number }, nativeEvent: Event): HTMLElement | null {
-    return (getElementAtPoint(this.#element?.ownerDocument, position.x, position.y) ??
-      getTarget(nativeEvent)) as HTMLElement | null
+  #getTargetAtPoint(position: { x: number; y: number }, nativeEvent: Event): Element | null {
+    const target =
+      getElementAtPoint(this.#element?.ownerDocument, position.x, position.y) ??
+      getTarget(nativeEvent)
+    return isElement(target) ? target : null
   }
 
   #findGestureScrollableTouchTarget(
@@ -387,7 +390,12 @@ export class SwipeDismiss {
     }
 
     const { primaryDirection, scrollAxes } = this.#directionsState
-    if (this.#ignoreScrollableAncestors && element && target && scrollAxes.length > 0) {
+    if (
+      this.#ignoreScrollableAncestors &&
+      element &&
+      isHTMLElement(target) &&
+      scrollAxes.length > 0
+    ) {
       if (!ignoreScrollable && hasScrollableAncestor(target, element, scrollAxes)) {
         return false
       }
@@ -665,7 +673,7 @@ export class SwipeDismiss {
     if (!this.#enabled || !this.#swipingUntracked) return
 
     if (isTouchLikeEvent(event) && !this.#swipeFromScrollable) {
-      const target = getTarget(event) as HTMLElement | null
+      const target = getTarget(event)
       if (this.#findGestureScrollableTouchTarget(target, boundaryElement)) {
         return
       }

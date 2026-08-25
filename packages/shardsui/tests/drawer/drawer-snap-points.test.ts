@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/svelte'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import DrawerSnapPointsCase from './fixtures/drawer-snap-points-case.svelte'
 
-const STUBBED_HEIGHTS: Record<string, number> = { popup: 300, viewport: 400 }
+const STUBBED_HEIGHTS = { popup: 300, viewport: 400 }
 
 function readOffset() {
   return screen.getByTestId('snap-point-probe').textContent
@@ -20,7 +20,10 @@ describe('Drawer snap point composition', () => {
       configurable: true,
       get(this: HTMLElement) {
         const testid = this.getAttribute('data-testid')
-        return (testid && STUBBED_HEIGHTS[testid]) ?? original.get!.call(this)
+        return (
+          (testid === 'popup' || testid === 'viewport' ? STUBBED_HEIGHTS[testid] : undefined) ??
+          original.get!.call(this)
+        )
       }
     })
   })

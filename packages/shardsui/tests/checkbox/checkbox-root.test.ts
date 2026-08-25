@@ -1,4 +1,5 @@
 import { Checkbox } from '$lib/components/checkbox'
+import type { FieldValidator } from '$lib/components/field'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
 import { expect, vi } from 'vitest'
@@ -546,7 +547,7 @@ describe('<Checkbox.Root />', () => {
     })
 
     it('revalidates when the controlled value changes externally', async () => {
-      const validate = vi.fn((value: unknown) => ((value as boolean) ? 'error' : null))
+      const validate = vi.fn<FieldValidator>((value) => (value === true ? 'error' : null))
       render(CheckboxRevalidateExternal, { validate })
 
       const checkbox = screen.getByTestId('checkbox')
@@ -646,7 +647,7 @@ describe('<Checkbox.Root />', () => {
 
   describe('validationMode=onChange', () => {
     it('marks aria-invalid immediately when validate returns error on change', async () => {
-      const validate = vi.fn((value: unknown) => ((value as boolean) ? 'error' : null))
+      const validate = vi.fn<FieldValidator>((value) => (value === true ? 'error' : null))
       render(CheckboxValidation, { validationMode: 'onChange', validate })
       const checkbox = screen.getByTestId('checkbox')
 
@@ -660,7 +661,7 @@ describe('<Checkbox.Root />', () => {
 
   describe('validationMode=onBlur', () => {
     it('marks aria-invalid only after blur when validate returns error', async () => {
-      const validate = vi.fn((value: unknown) => ((value as boolean) ? 'error' : null))
+      const validate = vi.fn<FieldValidator>((value) => (value === true ? 'error' : null))
       render(CheckboxValidation, { validationMode: 'onBlur', validate })
       const checkbox = screen.getByTestId('checkbox')
 
