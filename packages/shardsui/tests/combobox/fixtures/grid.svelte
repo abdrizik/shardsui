@@ -1,17 +1,25 @@
 <script lang="ts">
+  import type { ComponentProps } from 'svelte'
   import { Combobox } from '$lib/components/combobox'
   import { DirectionProvider } from '$lib/components/direction-provider'
 
   let {
     open = $bindable(true),
-    onItemHighlighted = undefined,
+    onItemHighlighted,
     autoHighlight = false,
-    direction = 'ltr' as 'ltr' | 'rtl',
+    direction = 'ltr',
     rows = [
       ['1', '2', '3'],
       ['4', '5', '6']
-    ] as string[][],
+    ],
     grouped = false
+  }: {
+    open?: boolean
+    onItemHighlighted?: ComponentProps<typeof Combobox.Root>['onItemHighlighted']
+    autoHighlight?: boolean
+    direction?: 'ltr' | 'rtl'
+    rows?: string[][]
+    grouped?: boolean
   } = $props()
 </script>
 

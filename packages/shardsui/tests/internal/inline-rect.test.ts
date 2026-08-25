@@ -3,6 +3,12 @@ import {
   getInlineRectCoords,
   type InlineRectCoords
 } from '$lib/internal/floating/inline-rect'
+import {
+  detectOverflow,
+  type MiddlewareState,
+  type Placement,
+  type ReferenceElement
+} from '@floating-ui/dom'
 import { describe, expect, it, vi } from 'vitest'
 
 type RectLike = {
@@ -17,14 +23,18 @@ type RectLike = {
 function createTrigger(rects: RectLike[] | (() => RectLike[])) {
   const trigger = document.createElement('span')
   Object.defineProperty(trigger, 'getClientRects', {
-    value: () => (typeof rects === 'function' ? rects() : rects)
+    value: () => (rects instanceof Function ? rects() : rects)
   })
   return trigger
 }
 
+function toClientRect(rect: RectLike) {
+  return { ...rect, x: rect.left, y: rect.top }
+}
+
 function createMiddlewareState(
-  reference: Element | { getClientRects(): ArrayLike<RectLike>; contextElement?: Element },
-  placement: string,
+  reference: ReferenceElement,
+  placement: Placement,
   referenceRect: { x: number; y: number; width: number; height: number },
   options?: {
     getElementRects?: (
@@ -32,30 +42,32 @@ function createMiddlewareState(
       contextElement: Element | undefined
     ) => { x: number; y: number; width: number; height: number }
   }
-) {
+): MiddlewareState {
   const floatingRect = { x: 0, y: 0, width: 20, height: 10 }
 
   return {
+    x: 0,
+    y: 0,
+    initialPlacement: placement,
     placement,
     strategy: 'absolute',
+    middlewareData: {},
     elements: { reference, floating: document.createElement('div') },
     rects: {
       reference: referenceRect,
       floating: floatingRect
     },
     platform: {
-      getElementRects: async ({
-        reference: positioningReference
-      }: {
-        reference: {
-          contextElement?: Element
-          getBoundingClientRect(): RectLike & { x: number; y: number }
-        }
-      }) => {
+      detectOverflow,
+      getClippingRect: () => ({ x: 0, y: 0, width: 0, height: 0 }),
+      getDimensions: () => ({ width: 0, height: 0 }),
+      getElementRects: async ({ reference: positioningReference }) => {
+        const contextElement =
+          'contextElement' in positioningReference ? positioningReference.contextElement : undefined
         const rect = positioningReference.getBoundingClientRect()
         return {
           reference: options?.getElementRects
-            ? options.getElementRects(rect, positioningReference.contextElement)
+            ? options.getElementRects(rect, contextElement)
             : { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
           floating: floatingRect
         }
@@ -103,7 +115,7 @@ describe('inlineRect', () => {
 
     expect(
       await middleware.fn?.(
-        createMiddlewareState(trigger, 'bottom', { x: 0, y: 0, width: 10, height: 10 }) as never
+        createMiddlewareState(trigger, 'bottom', { x: 0, y: 0, width: 10, height: 10 })
       )
     ).toEqual({
       reset: {
@@ -135,7 +147,7 @@ describe('inlineRect', () => {
 
     expect(
       await createInlineMiddleware(() => coords).fn?.(
-        createMiddlewareState(trigger, 'bottom', { x: 0, y: 100, width: 120, height: 30 }) as never
+        createMiddlewareState(trigger, 'bottom', { x: 0, y: 100, width: 120, height: 30 })
       )
     ).toEqual({
       reset: {
@@ -163,7 +175,7 @@ describe('inlineRect', () => {
 
     expect(
       await middleware.fn?.(
-        createMiddlewareState(trigger, 'right', { x: 0, y: 0, width: 60, height: 50 }) as never
+        createMiddlewareState(trigger, 'right', { x: 0, y: 0, width: 60, height: 50 })
       )
     ).toEqual({
       reset: {
@@ -191,7 +203,7 @@ describe('inlineRect', () => {
 
     expect(
       await middleware.fn?.(
-        createMiddlewareState(trigger, 'left', { x: 0, y: 0, width: 60, height: 50 }) as never
+        createMiddlewareState(trigger, 'left', { x: 0, y: 0, width: 60, height: 50 })
       )
     ).toEqual({
       reset: {
@@ -221,9 +233,7 @@ describe('inlineRect', () => {
         y: 200,
         lineIndex: undefined,
         trigger
-      })).fn?.(
-        createMiddlewareState(trigger, 'bottom', { x: 80, y: 0, width: 40, height: 30 }) as never
-      )
+      })).fn?.(createMiddlewareState(trigger, 'bottom', { x: 80, y: 0, width: 40, height: 30 }))
     ).toEqual({
       reset: {
         rects: {
@@ -246,28 +256,24 @@ describe('inlineRect', () => {
 
     expect(
       await createInlineMiddleware(() => undefined).fn?.(
-        createMiddlewareState(trigger, 'bottom', { x: 0, y: 0, width: 10, height: 10 }) as never
+        createMiddlewareState(trigger, 'bottom', { x: 0, y: 0, width: 10, height: 10 })
       )
     ).toEqual({})
   })
 
   it('does not run when the reference has no client rects', async () => {
-    const state = createMiddlewareState(document.createElement('span'), 'bottom', {
+    const reference = {
+      getBoundingClientRect: () =>
+        toClientRect({ left: 0, top: 0, right: 0, bottom: 0, width: 0, height: 0 })
+    }
+    const state = createMiddlewareState(reference, 'bottom', {
       x: 0,
       y: 0,
       width: 10,
       height: 10
     })
 
-    expect(
-      await createInlineMiddleware(() => undefined).fn?.({
-        ...state,
-        elements: {
-          ...state.elements,
-          reference: {}
-        }
-      } as never)
-    ).toEqual({})
+    expect(await createInlineMiddleware(() => undefined).fn?.(state)).toEqual({})
   })
 
   it('does not reset when the inline rect matches the current reference rect', async () => {
@@ -289,7 +295,7 @@ describe('inlineRect', () => {
           y: rects[1].top,
           width: rects[1].width,
           height: rects[1].height
-        }) as never
+        })
       )
     ).toEqual({})
   })
@@ -313,7 +319,7 @@ describe('inlineRect', () => {
 
     expect(
       await middleware.fn?.(
-        createMiddlewareState(trigger, 'bottom', { x: 0, y: 100, width: 120, height: 30 }) as never
+        createMiddlewareState(trigger, 'bottom', { x: 0, y: 100, width: 120, height: 30 })
       )
     ).toEqual({
       reset: {
@@ -338,7 +344,8 @@ describe('inlineRect', () => {
     const trigger = createTrigger(rects)
     const reference = {
       contextElement: trigger,
-      getClientRects: () => rects
+      getBoundingClientRect: () => toClientRect(rects[0]),
+      getClientRects: () => rects.map(toClientRect)
     }
     const middleware = createInlineMiddleware(() => ({
       x: 100,
@@ -349,7 +356,7 @@ describe('inlineRect', () => {
 
     expect(
       await middleware.fn?.(
-        createMiddlewareState(reference, 'bottom', { x: 0, y: 0, width: 120, height: 30 }) as never
+        createMiddlewareState(reference, 'bottom', { x: 0, y: 0, width: 120, height: 30 })
       )
     ).toEqual({
       reset: {
@@ -387,7 +394,7 @@ describe('inlineRect', () => {
           'top',
           { x: 100, y: 800, width: 80, height: 30 },
           { getElementRects }
-        ) as never
+        )
       )
     ).toEqual({
       reset: {

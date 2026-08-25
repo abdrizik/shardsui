@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/svelte'
 import { expect, vi } from 'vitest'
+import type { FieldValidator } from '$lib/components/field'
 import AllFormValues from './fixtures/all-form-values.svelte'
 import BasicField from './fixtures/basic-field.svelte'
 import ClearNameGroup from './fixtures/clear-name-group.svelte'
@@ -115,7 +116,7 @@ describe('<Field.Root />', () => {
     })
 
     it('receives all form values as the 2nd argument', async () => {
-      const validateSpy = vi.fn((_value: unknown, _formValues: unknown) => null)
+      const validateSpy = vi.fn<FieldValidator>(() => null)
       render(AllFormValues, { validateSpy })
 
       await fireEvent.click(screen.getByText('submit'))
@@ -134,7 +135,7 @@ describe('<Field.Root />', () => {
     })
 
     it('unmounted fields are excluded from the validate fn', async () => {
-      const validateSpy = vi.fn((_value: unknown, _formValues: unknown) => null)
+      const validateSpy = vi.fn<FieldValidator>(() => null)
       render(UnmountedFields, { validateSpy })
 
       await fireEvent.click(screen.getByText('submit'))
@@ -153,7 +154,7 @@ describe('<Field.Root />', () => {
     })
 
     it('does not leak a sibling standalone field into formValues', async () => {
-      const validate = vi.fn((_value: unknown, _formValues: unknown) => null)
+      const validate = vi.fn<FieldValidator>(() => null)
       render(SiblingStandaloneFields, { validate })
 
       await fireEvent.input(screen.getByTestId('first'), { target: { value: 'typed' } })
@@ -193,7 +194,7 @@ describe('<Field.Root />', () => {
 
     it('uses the Field.Control name for form submission and form validation values', async () => {
       const handleSubmit = vi.fn()
-      const validate = vi.fn((_value: unknown, _formValues: unknown) => null)
+      const validate = vi.fn<FieldValidator>(() => null)
       render(ControlNameSubmit, { onFormSubmit: handleSubmit, validate })
 
       await fireEvent.click(screen.getByText('submit'))
@@ -296,7 +297,7 @@ describe('<Field.Root />', () => {
     describe('onChange', () => {
       it('validates the field on change', async () => {
         render(ValidatedField, {
-          validate: (val: unknown) => (String(val).length < 3 ? 'error' : null),
+          validate: (val) => (String(val).length < 3 ? 'error' : null),
           validationMode: 'onChange'
         })
 
@@ -312,9 +313,9 @@ describe('<Field.Root />', () => {
 
       it('ignores stale async validation results', async () => {
         const resolvers: Record<string, (value: string | null) => void> = {}
-        const validate = (value: unknown) =>
+        const validate: FieldValidator = (value) =>
           new Promise<string | null>((resolve) => {
-            resolvers[value as string] = resolve
+            resolvers[String(value)] = resolve
           })
 
         render(ValidatedField, { validate, validationMode: 'onChange' })
@@ -340,7 +341,7 @@ describe('<Field.Root />', () => {
     describe('onBlur', () => {
       it('validates the field on blur', async () => {
         render(ValidatedField, {
-          validate: (val: unknown) => (String(val).length < 3 ? 'error' : null),
+          validate: (val) => (String(val).length < 3 ? 'error' : null),
           validationMode: 'onBlur'
         })
 
@@ -587,7 +588,7 @@ describe('<Field.Root />', () => {
 
   describe('prop: validationDebounceTime', () => {
     it('debounces validation', async () => {
-      const validate = vi.fn((val: unknown) => (String(val).length < 3 ? 'error' : null))
+      const validate = vi.fn<FieldValidator>((val) => (String(val).length < 3 ? 'error' : null))
 
       render(ValidatedField, {
         validate,
@@ -608,7 +609,7 @@ describe('<Field.Root />', () => {
     })
 
     it('debounces validation for field-aware controls', async () => {
-      const validate = vi.fn((value: unknown) => (value ? 'error' : null))
+      const validate = vi.fn<FieldValidator>((value) => (value ? 'error' : null))
       render(DebounceCheckbox, { validate })
 
       const control = screen.getByRole('checkbox')
@@ -624,7 +625,7 @@ describe('<Field.Root />', () => {
     })
 
     it('debounces validation for radio groups', async () => {
-      const validate = vi.fn((value: unknown) => (value === 'b' ? 'error' : null))
+      const validate = vi.fn<FieldValidator>((value) => (value === 'b' ? 'error' : null))
       render(DebounceRadio, { validate })
 
       const control = screen.getByRole('radiogroup')
@@ -642,10 +643,10 @@ describe('<Field.Root />', () => {
 
     it('ignores async validation results superseded during debounce', async () => {
       const resolvers: Record<string, (value: string | null) => void> = {}
-      const validate = vi.fn(
-        (value: unknown) =>
+      const validate = vi.fn<FieldValidator>(
+        (value) =>
           new Promise<string | null>((resolve) => {
-            resolvers[value as string] = resolve
+            resolvers[String(value)] = resolve
           })
       )
 

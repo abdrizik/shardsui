@@ -16,10 +16,10 @@
     escapeKey = true,
     outsidePress = true,
     triggerPress = false,
-    bubbles = undefined,
+    bubbles,
     outsidePressEvent = 'sloppy',
     markOutside = false,
-    onDismiss = undefined
+    onDismiss
   }: Props = $props()
 
   let open = $state(true)
@@ -40,7 +40,7 @@
     outsidePressEvent,
     popupElement: popupElement,
     isInsideElement: (target) =>
-      !!(triggerElement?.contains(target as Node) || popupElement?.contains(target as Node))
+      !!(triggerElement?.contains(target) || popupElement?.contains(target))
   }))
 
   $effect(() => {

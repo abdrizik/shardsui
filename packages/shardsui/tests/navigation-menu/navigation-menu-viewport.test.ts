@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
 import { flushSync } from 'svelte'
-import { expect, vi } from 'vitest'
+import { expect, vi, type MockInstance } from 'vitest'
 import { isJSDOM } from '../test-utils'
 import DeeplyNested from './fixtures/deeply-nested.svelte'
 import IconInitialValue from './fixtures/icon-initial-value.svelte'
@@ -426,7 +426,7 @@ describe('<NavigationMenu.Viewport />', () => {
     })
     it('does not animate popup sizing when kept nested default content first moves into the portal', async () => {
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      let setPopupPropertySpy: ReturnType<typeof vi.spyOn> | undefined
+      let setPopupPropertySpy: MockInstance<CSSStyleDeclaration['setProperty']> | undefined
 
       try {
         render(InlineNested, { keepMountedContent: true })
@@ -460,7 +460,7 @@ describe('<NavigationMenu.Viewport />', () => {
           expect(positioner.style.getPropertyValue('--positioner-height')).toBe('220px')
         })
 
-        const calls = setPopupPropertySpy.mock.calls as Array<[string, string, string?]>
+        const calls = setPopupPropertySpy.mock.calls
         const fixed = calls
           .filter((c) => c[0] === '--popup-height')
           .map((c) => c[1])
@@ -665,7 +665,7 @@ describe('<NavigationMenu.Viewport />', () => {
     })
     it('seeds the popup width from the exiting panel when reopening after hovering a top-level link', async () => {
       globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
-      let popupWidthSpy: ReturnType<typeof vi.spyOn> | undefined
+      let popupWidthSpy: MockInstance<CSSStyleDeclaration['setProperty']> | undefined
 
       try {
         render(TopLevelLinkScopedAnimation)
@@ -731,7 +731,7 @@ describe('<NavigationMenu.Viewport />', () => {
 
         await nextFrame()
 
-        const popupWidthCalls = (popupWidthSpy.mock.calls as Array<[string, string, string?]>)
+        const popupWidthCalls = popupWidthSpy.mock.calls
           .filter((call) => call[0] === '--popup-width')
           .map((call) => call[1])
         const exitingWidthIndex = popupWidthCalls.indexOf('675px')

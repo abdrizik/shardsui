@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidityState } from '$lib/components/field'
   import { Form, type FormValidationMode } from '$lib/components/form'
 
   let {
@@ -7,7 +7,7 @@
     validate,
     validationMode
   }: {
-    onValidity: (data: unknown) => void
+    onValidity: (data: FieldValidityState) => void
     validate: () => string
     validationMode: FormValidationMode
   } = $props()

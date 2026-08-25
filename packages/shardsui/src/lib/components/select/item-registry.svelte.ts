@@ -1,11 +1,11 @@
 import { resolveIndex } from '$lib/internal/floating/list-navigation'
 import { isElementDisabled } from '$lib/internal/is-element-disabled'
-import { compareItemEquality } from '$lib/internal/item-equality'
+import { compareItemEquality, type ItemEqualityComparer } from '$lib/internal/item-equality'
 import { ItemList } from '$lib/internal/item-list.svelte'
 import type { SelectItem } from './context'
 
 export type SelectItemRegistryOptions = {
-  isItemEqualToValue: (a: unknown, b: unknown) => boolean
+  isItemEqualToValue: ItemEqualityComparer
   scroller: HTMLElement | null
 }
 

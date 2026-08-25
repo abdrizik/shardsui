@@ -236,7 +236,8 @@ describe('<NavigationMenu.Trigger />', () => {
         const popupRoot = await screen.findByTestId('popup-root')
         const setPropertySpy = vi.spyOn(popupRoot.style, 'setProperty')
         const popupWidthCallsSince = (startIndex: number) =>
-          (setPropertySpy.mock.calls.slice(startIndex) as Array<[string, string, string?]>)
+          setPropertySpy.mock.calls
+            .slice(startIndex)
             .filter((call) => call[0] === '--popup-width')
             .map((call) => call[1])
 
@@ -284,11 +285,8 @@ describe('<NavigationMenu.Trigger />', () => {
         const positioner = popupRoot.parentElement as HTMLElement
         const setPositionerPropertySpy = vi.spyOn(positioner.style, 'setProperty')
         const positionerWidthCallsSince = (startIndex: number) =>
-          (
-            setPositionerPropertySpy.mock.calls.slice(startIndex) as Array<
-              [string, string, string?]
-            >
-          )
+          setPositionerPropertySpy.mock.calls
+            .slice(startIndex)
             .filter((call) => call[0] === '--positioner-width')
             .map((call) => call[1])
 

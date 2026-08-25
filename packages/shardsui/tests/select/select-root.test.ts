@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
-import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest'
+import { beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest'
+import type { FieldValidator } from '$lib/components/field'
 import { popupConformanceTests } from '../popup-conformance'
 import { isJSDOM } from '../test-utils'
 import AutofillCancel from './fixtures/autofill-cancel.svelte'
@@ -184,7 +185,7 @@ describe('<Select.Root />', () => {
         value: countries[1],
         itemToStringLabel: (item: Country) => item.country,
         itemToStringValue: (item: Country) => item.code
-      } as unknown as Record<string, unknown>)
+      })
 
       expect(screen.getByRole('combobox')).toHaveTextContent('Canada')
     })
@@ -196,7 +197,7 @@ describe('<Select.Root />', () => {
         itemToStringLabel: (item: Country) => item.country,
         itemToStringValue: (item: Country) => item.code,
         items: countries
-      } as unknown as Record<string, unknown>)
+      })
 
       await user.click(screen.getByRole('option', { name: 'Canada' }))
       await waitFor(() => expect(screen.queryByRole('listbox')).not.toBeInTheDocument())
@@ -218,7 +219,7 @@ describe('<Select.Root />', () => {
         items,
         itemToStringLabel: (item: (typeof items)[number]) => item.country,
         itemToStringValue: (item: (typeof items)[number]) => item.code.toUpperCase()
-      } as unknown as Record<string, unknown>)
+      })
 
       const hiddenInputs = container.querySelectorAll('input[name="countries"]')
       expect(hiddenInputs).toHaveLength(2)
@@ -614,11 +615,9 @@ describe('<Select.Root />', () => {
       const { container } = render(MultipleSelect, {
         name: 'select',
         value: ['a', 'c']
-      } as unknown as Record<string, unknown>)
+      })
 
-      const hiddenInputs = container.querySelectorAll(
-        'input[name="select"]'
-      ) as NodeListOf<HTMLInputElement>
+      const hiddenInputs = container.querySelectorAll<HTMLInputElement>('input[name="select"]')
       expect(hiddenInputs).toHaveLength(2)
       expect(Array.from(hiddenInputs).map((i) => i.value)).toEqual(['a', 'c'])
     })
@@ -627,11 +626,11 @@ describe('<Select.Root />', () => {
       const { container } = render(MultipleSelect, {
         name: 'select',
         value: []
-      } as unknown as Record<string, unknown>)
+      })
 
       expect(container.querySelectorAll('input[name="select"]')).toHaveLength(0)
 
-      const mainInput = container.querySelector('input[aria-hidden="true"]') as HTMLInputElement
+      const mainInput = hiddenInput(container)
       expect(mainInput).not.toBe(null)
       expect(mainInput.value).toBe('')
     })
@@ -711,8 +710,8 @@ describe('<Select.Root />', () => {
       const user = userEvent.setup()
       render(SelectObjectValues, {
         value: { id: 2, name: 'Bob' },
-        isItemEqualToValue: (item: { id: number }, val: { id: number }) => item.id === val.id
-      } as unknown as Record<string, unknown>)
+        isItemEqualToValue: (item, val) => item.id === val.id
+      })
 
       const trigger = screen.getByTestId('trigger')
       expect(trigger).toHaveTextContent('Bob')
@@ -732,8 +731,8 @@ describe('<Select.Root />', () => {
           { id: 1, name: 'Alice' },
           { id: 2, name: 'Bob' }
         ],
-        isItemEqualToValue: (item: { id: number }, value: { id: number }) => item.id === value.id
-      } as unknown as Record<string, unknown>)
+        isItemEqualToValue: (item, value) => item.id === value.id
+      })
 
       expect(screen.getByRole('option', { name: 'Bob' })).toHaveAttribute('data-selected', '')
       expect(screen.getByRole('option', { name: 'Alice' })).not.toHaveAttribute('data-selected')
@@ -744,11 +743,9 @@ describe('<Select.Root />', () => {
         multiple: true,
         open: true,
         value: [{ id: 2, name: 'Bob', source: 'selected' }],
-        isItemEqualToValue: (
-          item: { id: number; source?: string },
-          val: { id: number; source?: string }
-        ) => item.id === val.id && item.source === 'item' && val.source === 'selected'
-      } as unknown as Record<string, unknown>)
+        isItemEqualToValue: (item, val) =>
+          item.id === val.id && item.source === 'item' && val.source === 'selected'
+      })
 
       const option = screen.getByRole('option', { name: 'Bob' })
       expect(option).toHaveAttribute('data-selected', '')
@@ -776,7 +773,7 @@ describe('<Select.Root />', () => {
         open: true,
         value: [],
         isItemEqualToValue
-      } as unknown as Record<string, unknown>)
+      })
 
       expect(await screen.findAllByRole('option')).toHaveLength(2)
       expect(isItemEqualToValue).not.toHaveBeenCalledWith(expect.anything(), expect.any(Array))
@@ -1262,7 +1259,7 @@ describe('<Select.Root />', () => {
     })
 
     it('marks the field dirty and validates after successful autofill', async () => {
-      const validateSpy = vi.fn((value: unknown) => (value === 'CA' ? null : 'error'))
+      const validateSpy = vi.fn<FieldValidator>((value) => (value === 'CA' ? null : 'error'))
       const { container } = render(AutofillField, { validate: validateSpy })
 
       const trigger = screen.getByTestId('trigger')

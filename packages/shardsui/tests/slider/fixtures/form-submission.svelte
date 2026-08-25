@@ -6,16 +6,20 @@
   type Value = number | number[]
 
   let {
-    value = 25 as Value,
-    format = undefined as Intl.NumberFormatOptions | undefined,
-    onSubmit = undefined as ((data: FormData) => void) | undefined
+    value = 25,
+    format,
+    onSubmit
+  }: {
+    value?: Value
+    format?: Intl.NumberFormatOptions
+    onSubmit?: (data: FormData) => void
   } = $props()
 
   const values = $derived(Array.isArray(value) ? value : [value])
 
-  function onsubmit(event: SubmitEvent) {
+  function onsubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault()
-    onSubmit?.(new FormData(event.currentTarget as HTMLFormElement))
+    onSubmit?.(new FormData(event.currentTarget))
   }
 </script>
 

@@ -1,36 +1,51 @@
 <script lang="ts">
+  import type { ComponentProps } from 'svelte'
   import { Combobox } from '$lib/components/combobox'
   import { Field } from '$lib/components/field'
   import { Form } from '$lib/components/form'
 
-  type Item = Record<string, unknown>
+  type FormProps = ComponentProps<typeof Form>
+  type RootProps = ComponentProps<typeof Combobox.Root>
 
   let {
-    onFormSubmit = undefined,
-    onsubmit = undefined,
-    errors = undefined as Record<string, string> | undefined,
+    onFormSubmit,
+    onsubmit,
+    errors,
     name = 'country',
     required = false,
     multiple = false,
-    items = undefined as Item[] | string[] | undefined,
+    items,
     value = $bindable(),
-    itemToStringLabel = undefined as ((item: unknown) => string) | undefined,
-    itemToStringValue = undefined as ((item: unknown) => string) | undefined,
+    itemToStringLabel,
+    itemToStringValue,
     withError = false,
-    openOnInputClick = undefined as boolean | undefined
+    openOnInputClick
+  }: {
+    onFormSubmit?: FormProps['onFormSubmit']
+    onsubmit?: FormProps['onsubmit']
+    errors?: FormProps['errors']
+    name?: string
+    required?: boolean
+    multiple?: boolean
+    items?: RootProps['items']
+    value?: RootProps['value']
+    itemToStringLabel?: RootProps['itemToStringLabel']
+    itemToStringValue?: RootProps['itemToStringValue']
+    withError?: boolean
+    openOnInputClick?: boolean
   } = $props()
 </script>
 
-<Form {onFormSubmit} {onsubmit} errors={errors as never}>
+<Form {onFormSubmit} {onsubmit} {errors}>
   <Field.Root {name}>
     <Combobox.Root
       {value}
       {required}
       {multiple}
       {openOnInputClick}
-      items={items as never}
-      itemToStringLabel={itemToStringLabel as never}
-      itemToStringValue={itemToStringValue as never}
+      {items}
+      {itemToStringLabel}
+      {itemToStringValue}
     >
       <Combobox.Input data-testid="input" />
       <Combobox.Portal>

@@ -6,10 +6,15 @@
   type Value = number | number[]
 
   let {
-    value = 25 as Value,
-    min = undefined as number | undefined,
-    max = undefined as number | undefined,
-    onFormSubmit = undefined as ((values: Record<string, unknown>) => void) | undefined
+    value = 25,
+    min,
+    max,
+    onFormSubmit
+  }: {
+    value?: Value
+    min?: number
+    max?: number
+    onFormSubmit?: (values: Record<string, unknown>) => void
   } = $props()
 
   const values = $derived(Array.isArray(value) ? value : [value])

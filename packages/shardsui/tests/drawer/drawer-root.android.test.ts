@@ -22,8 +22,7 @@ describe('<Drawer.Root />', () => {
       }
     }
 
-    const originalCloseWatcher = (window as Window & { CloseWatcher?: unknown }).CloseWatcher
-    ;(window as Window & { CloseWatcher?: typeof CloseWatcherStub }).CloseWatcher = CloseWatcherStub
+    vi.stubGlobal('CloseWatcher', CloseWatcherStub)
 
     try {
       render(BasicDrawer, { open: true, onOpenChange: handleOpenChange })
@@ -44,7 +43,7 @@ describe('<Drawer.Root />', () => {
       const lastCall = handleOpenChange.mock.calls[handleOpenChange.mock.calls.length - 1]
       expect(lastCall?.[0]).toBe(false)
     } finally {
-      ;(window as Window & { CloseWatcher?: unknown }).CloseWatcher = originalCloseWatcher
+      vi.unstubAllGlobals()
     }
   })
 })

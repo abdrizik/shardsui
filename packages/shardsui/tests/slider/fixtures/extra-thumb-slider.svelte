@@ -2,9 +2,13 @@
   import { Slider } from '$lib/components/slider'
 
   let {
-    value = [10, 20] as number[],
-    onValueChange = undefined as ((value: number | number[]) => void) | undefined,
-    onValueCommitted = undefined as ((value: number | number[]) => void) | undefined
+    value = [10, 20],
+    onValueChange,
+    onValueCommitted
+  }: {
+    value?: number[]
+    onValueChange?: (value: number[]) => void
+    onValueCommitted?: (value: number[]) => void
   } = $props()
 </script>
 

@@ -230,7 +230,8 @@ export class MenuRoot<Payload = unknown> {
     if (
       !next &&
       nativeEvent?.type === 'click' &&
-      (nativeEvent as PointerEvent).pointerType === 'touch' &&
+      'pointerType' in nativeEvent &&
+      nativeEvent.pointerType === 'touch' &&
       !this.#allowTouchToClose
     ) {
       return
@@ -280,7 +281,8 @@ export class MenuRoot<Payload = unknown> {
 
     const isKeyboardClick =
       (reason === REASONS.triggerPress || reason === REASONS.itemPress) &&
-      (nativeEvent as MouseEvent | undefined)?.detail === 0
+      nativeEvent instanceof UIEvent &&
+      nativeEvent.detail === 0
     if (isKeyboardClick) return 'click'
 
     const isDismissClose = !next && (reason === REASONS.escapeKey || reason == null)

@@ -170,7 +170,7 @@ export class NavigationMenuRoot {
     return undefined
   }
 
-  containsTrigger = (node: Node | null | undefined): boolean => {
+  containsTrigger = (node: EventTarget | null | undefined): boolean => {
     if (this.triggerElements.containsNode(node)) return true
     return this.parentRoot?.containsTrigger(node) ?? false
   }

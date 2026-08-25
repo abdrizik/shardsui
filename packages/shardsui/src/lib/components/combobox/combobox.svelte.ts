@@ -72,7 +72,7 @@ type ComboboxRootOptions = {
 export function isTypedInput(event: Event | undefined): boolean {
   if (!event) return true
   if (event.type === 'compositionend') return true
-  const inputType = (event as InputEvent).inputType
+  const inputType = event instanceof InputEvent ? event.inputType : undefined
   return inputType != null && inputType !== '' && inputType !== 'insertReplacementText'
 }
 
@@ -123,9 +123,10 @@ export class ComboboxRoot {
   inputOwnsFormValue = $derived.by(
     () => this.noSelection && (this.#options().inline || !this.inputInsidePopup)
   )
-  selectedValues: unknown[] = $derived.by(() =>
-    Array.isArray(this.#options().value) ? (this.#options().value as unknown[]) : []
-  )
+  selectedValues: unknown[] = $derived.by(() => {
+    const value = this.#options().value
+    return Array.isArray(value) ? value : []
+  })
   #animatedElement = $derived.by(() => {
     const positioner = this.positionerElement
     if (this.#options().inline && positioner) {
@@ -368,9 +369,9 @@ export class ComboboxRoot {
       () => {
         const index = this.itemRegistry.highlightedIndex
         if (!this.mounted && !this.#options().inline) {
-          return { index: -1, value: undefined as unknown, resolved: true }
+          return { index: -1, value: undefined, resolved: true }
         }
-        if (index < 0) return { index: -1, value: undefined as unknown, resolved: true }
+        if (index < 0) return { index: -1, value: undefined, resolved: true }
         if (this.#options().virtualized) {
           return {
             index,

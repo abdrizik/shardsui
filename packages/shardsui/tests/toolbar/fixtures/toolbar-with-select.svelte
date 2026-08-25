@@ -9,8 +9,8 @@
   ]
 
   let {
-    value = $bindable('a' as string),
-    onValueChange = undefined
+    value = $bindable('a'),
+    onValueChange
   }: {
     value?: string
     onValueChange?: (value: string | null) => void

@@ -1,19 +1,19 @@
 <script lang="ts">
-  import { Tabs } from '$lib/components/tabs'
+  import { Tabs, type TabsValue } from '$lib/components/tabs'
 
   let {
     activateOnFocus = false,
-    onValueChange = undefined
-  }: { activateOnFocus?: boolean; onValueChange?: (value: unknown) => void } = $props()
+    onValueChange
+  }: { activateOnFocus?: boolean; onValueChange?: (value: TabsValue) => void } = $props()
 
-  let value = $state(0)
+  let value = $state<TabsValue>(0)
 </script>
 
 <Tabs.Root
   {value}
   onValueChange={(next) => {
     onValueChange?.(next)
-    Promise.resolve().then(() => (value = next as number))
+    Promise.resolve().then(() => (value = next))
   }}
 >
   <Tabs.List {activateOnFocus}>

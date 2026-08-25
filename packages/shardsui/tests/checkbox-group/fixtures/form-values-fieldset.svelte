@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Checkbox } from '$lib/components/checkbox'
   import { CheckboxGroup } from '$lib/components/checkbox-group'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import { Fieldset } from '$lib/components/fieldset'
   import { Form } from '$lib/components/form'
 
@@ -10,7 +10,7 @@
     validate
   }: {
     onFormSubmit: (values: Record<string, unknown>) => void
-    validate: (value: unknown, values: Record<string, unknown>) => null
+    validate: FieldValidator
   } = $props()
 </script>
 

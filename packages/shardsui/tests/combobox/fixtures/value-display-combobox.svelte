@@ -3,25 +3,23 @@
 
   let {
     value = $bindable<unknown>(undefined),
-    items = undefined
+    items
   }: {
     value?: unknown
     items?: Array<unknown> | undefined
   } = $props()
 
-  const renderItems = $derived(
-    items ?? ([value] as unknown[]).filter((v) => v !== undefined && v !== null)
-  )
+  const renderItems = $derived(items ?? [value].filter((v) => v !== undefined && v !== null))
 
   function labelFor(item: unknown): string {
-    if (item && typeof item === 'object' && 'label' in (item as Record<string, unknown>)) {
-      return String((item as Record<string, unknown>).label)
+    if (item instanceof Object && 'label' in item) {
+      return String(item.label)
     }
     return String(item)
   }
 </script>
 
-<Combobox.Root {value} items={items as never}>
+<Combobox.Root {value} {items}>
   <Combobox.Trigger data-testid="value">
     <Combobox.Value />
   </Combobox.Trigger>

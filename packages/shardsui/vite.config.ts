@@ -5,7 +5,6 @@ import path from 'node:path'
 import { defineConfig } from 'vitest/config'
 
 const SUPPORTED_BROWSERS = ['chromium', 'firefox', 'webkit'] as const
-type SupportedBrowser = (typeof SUPPORTED_BROWSERS)[number]
 
 const environment = process.env.VITEST_ENV
 
@@ -13,10 +12,8 @@ function browserInstances() {
   if (environment === 'all-browsers') {
     return SUPPORTED_BROWSERS.map((browser) => ({ browser }))
   }
-  if (SUPPORTED_BROWSERS.includes(environment as SupportedBrowser)) {
-    return [{ browser: environment as SupportedBrowser }]
-  }
-  return null
+  const browser = SUPPORTED_BROWSERS.find((supported) => supported === environment)
+  return browser ? [{ browser }] : null
 }
 
 const CHROMIUM_ARGS = [

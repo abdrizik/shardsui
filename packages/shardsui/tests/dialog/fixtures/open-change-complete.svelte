@@ -1,13 +1,13 @@
 <script lang="ts">
   import { untrack } from 'svelte'
-  import DialogShapes from './dialog-shapes.svelte'
+  import DialogArrangements from './dialog-arrangements.svelte'
 
   let {
-    shape = 'contained',
+    arrangement = 'contained',
     open: initialOpen = false,
-    onOpenChangeComplete = undefined
+    onOpenChangeComplete
   }: {
-    shape?: 'contained' | 'detached' | 'multiple-detached'
+    arrangement?: 'contained' | 'detached' | 'multiple-detached'
     open?: boolean
     onOpenChangeComplete?: (open: boolean) => void
   } = $props()
@@ -17,5 +17,5 @@
 
 <div>
   <button type="button" onclick={() => (open = false)}>Close externally</button>
-  <DialogShapes {shape} bind:open {onOpenChangeComplete} />
+  <DialogArrangements {arrangement} bind:open {onOpenChangeComplete} />
 </div>

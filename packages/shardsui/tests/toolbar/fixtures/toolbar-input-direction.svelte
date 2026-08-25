@@ -2,7 +2,7 @@
   import { DirectionProvider, type TextDirection } from '$lib/components/direction-provider'
   import { Toolbar } from '$lib/components/toolbar'
 
-  let { direction = 'ltr' as TextDirection }: { direction?: TextDirection } = $props()
+  let { direction = 'ltr' }: { direction?: TextDirection } = $props()
 </script>
 
 <DirectionProvider {direction}>

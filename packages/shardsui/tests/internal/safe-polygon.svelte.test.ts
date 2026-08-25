@@ -27,13 +27,12 @@ function createMouseMoveEvent(
   clientY: number,
   target: EventTarget | null = null
 ): MouseEvent {
-  return {
-    type: 'mousemove',
-    clientX,
-    clientY,
-    relatedTarget: null,
-    composedPath: () => [target]
-  } as unknown as MouseEvent
+  const event = new MouseEvent('mousemove', { clientX, clientY })
+  Object.defineProperty(event, 'composedPath', {
+    configurable: true,
+    value: () => [target]
+  })
+  return event
 }
 
 function createSideScenario(side: Side) {

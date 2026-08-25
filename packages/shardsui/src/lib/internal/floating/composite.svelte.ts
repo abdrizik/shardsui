@@ -18,7 +18,9 @@ function isNativeInput(
 ): element is HTMLElement & (HTMLInputElement | HTMLTextAreaElement) {
   if (!isHTMLElement(element)) return false
   if (element.tagName === 'TEXTAREA') return true
-  return element.tagName === 'INPUT' && (element as HTMLInputElement).selectionStart != null
+  return (
+    element.tagName === 'INPUT' && 'selectionStart' in element && element.selectionStart != null
+  )
 }
 
 type Item = { element: HTMLElement; disabled: boolean; active: boolean }

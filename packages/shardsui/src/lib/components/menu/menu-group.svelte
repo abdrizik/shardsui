@@ -6,7 +6,7 @@
 
   let { as = 'div', ref = $bindable(null), children, ...rest }: Props = $props()
 
-  const group = $state({ labelId: undefined as string | undefined })
+  const group: MenuGroupContext = $state({ labelId: undefined })
   MenuGroupContext.set(group)
 </script>
 

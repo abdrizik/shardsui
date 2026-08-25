@@ -5,11 +5,16 @@
     open = $bindable(true),
     value = $bindable(),
     autoHighlight = false,
-    items = ['apple', 'banana', 'cherry'] as string[]
+    items = ['apple', 'banana', 'cherry']
+  }: {
+    open?: boolean
+    value?: string[] | null
+    autoHighlight?: boolean
+    items?: string[]
   } = $props()
 </script>
 
-<Combobox.Root multiple {open} {value} {autoHighlight} items={items as never}>
+<Combobox.Root multiple {open} {value} {autoHighlight} {items}>
   <Combobox.Chips data-testid="chips">
     <Combobox.Value>
       {#snippet children(selected)}

@@ -1,18 +1,18 @@
 <script lang="ts">
   import { Form } from '$lib/components/form'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import { RadioGroup } from '$lib/components/radio-group'
   import { Radio } from '$lib/components/radio'
 
   let {
     name = 'test',
     required = false,
-    validate = undefined,
-    onFormSubmit = undefined
+    validate,
+    onFormSubmit
   }: {
     name?: string
     required?: boolean
-    validate?: (value: unknown) => string | null
+    validate?: FieldValidator
     onFormSubmit?: (values: Record<string, unknown>) => void
   } = $props()
 </script>

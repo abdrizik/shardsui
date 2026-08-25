@@ -770,15 +770,13 @@ describe('<Autocomplete.Root />', () => {
     })
 
     it('when true, clicking with pointer submits the owning form', async () => {
-      let submittedData: FormData | null = null
+      const onFormSubmit = vi.fn<(data: FormData) => void>()
       const user = userEvent.setup()
 
       render(AutocompleteInForm, {
         name: 'q',
         submitOnItemClick: true,
-        onFormSubmit: (data: FormData) => {
-          submittedData = data
-        }
+        onFormSubmit
       })
 
       const input = screen.getByTestId('input')
@@ -791,9 +789,9 @@ describe('<Autocomplete.Root />', () => {
       await user.click(screen.getByRole('option', { name: 'alpha' }))
 
       await waitFor(() => {
-        expect(submittedData).not.toBeNull()
+        expect(onFormSubmit).toHaveBeenCalled()
       })
-      expect((submittedData as unknown as FormData).get('q')).toBe('alpha')
+      expect(onFormSubmit.mock.calls[0][0].get('q')).toBe('alpha')
     })
 
     it('submits the input form when the Autocomplete is not wrapped in a Field', async () => {
@@ -843,15 +841,13 @@ describe('<Autocomplete.Root />', () => {
     })
 
     it('when true, pressing Enter in the Input submits the owning form when an item is highlighted', async () => {
-      let submittedData: FormData | null = null
+      const onFormSubmit = vi.fn<(data: FormData) => void>()
       const user = userEvent.setup()
 
       render(AutocompleteInForm, {
         name: 'q',
         submitOnItemClick: true,
-        onFormSubmit: (data: FormData) => {
-          submittedData = data
-        }
+        onFormSubmit
       })
 
       const input = screen.getByTestId('input')
@@ -870,20 +866,18 @@ describe('<Autocomplete.Root />', () => {
       fireEvent.keyDown(input, { key: 'Enter' })
 
       await waitFor(() => {
-        expect(submittedData).not.toBeNull()
+        expect(onFormSubmit).toHaveBeenCalled()
       })
-      expect((submittedData as unknown as FormData).get('q')).toBe('alpha')
+      expect(onFormSubmit.mock.calls[0][0].get('q')).toBe('alpha')
     })
 
     it.skipIf(isJSDOM)('clicking an option submits an associated external form', async () => {
-      let submittedData: FormData | null = null
+      const onFormSubmit = vi.fn<(data: FormData) => void>()
       const user = userEvent.setup()
       render(ExternalForm, {
         name: 'q',
         submitOnItemClick: true,
-        onFormSubmit: (data: FormData) => {
-          submittedData = data
-        }
+        onFormSubmit
       })
 
       const input = screen.getByTestId('input')
@@ -891,9 +885,9 @@ describe('<Autocomplete.Root />', () => {
       await user.click(screen.getByRole('option', { name: 'alpha' }))
 
       await waitFor(() => {
-        expect(submittedData).not.toBeNull()
+        expect(onFormSubmit).toHaveBeenCalled()
       })
-      expect((submittedData as unknown as FormData).get('q')).toBe('alpha')
+      expect(onFormSubmit.mock.calls[0][0].get('q')).toBe('alpha')
     })
 
     it('focusing the listbox should keep the input focused and maintain functionality', async () => {
@@ -1029,22 +1023,20 @@ describe('<Autocomplete.Root />', () => {
     })
 
     it.skipIf(isJSDOM)('submits to an external form when `form` is provided', async () => {
-      let submittedData: FormData | null = null
+      const onFormSubmit = vi.fn<(data: FormData) => void>()
       const user = userEvent.setup()
       render(ExternalForm, {
         name: 'query',
         items: ['alpha', 'alpine'],
         withSubmitButton: true,
-        onFormSubmit: (data: FormData) => {
-          submittedData = data
-        }
+        onFormSubmit
       })
 
       await user.type(screen.getByTestId('input'), 'base ui')
       await user.click(screen.getByTestId('external-submit'))
 
-      await waitFor(() => expect(submittedData).not.toBeNull())
-      expect((submittedData as unknown as FormData).get('query')).toBe('base ui')
+      await waitFor(() => expect(onFormSubmit).toHaveBeenCalled())
+      expect(onFormSubmit.mock.calls[0][0].get('query')).toBe('base ui')
     })
 
     it('triggers native validation when required and empty', async () => {

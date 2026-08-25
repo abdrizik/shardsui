@@ -1,10 +1,14 @@
 <script lang="ts">
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import type { FormValidationMode } from '$lib/components/form'
   let {
-    validate = undefined,
-    validationMode = 'onBlur' as FormValidationMode,
-    validationDebounceTime = undefined
+    validate,
+    validationMode = 'onBlur',
+    validationDebounceTime
+  }: {
+    validate?: FieldValidator
+    validationMode?: FormValidationMode
+    validationDebounceTime?: number
   } = $props()
 </script>
 

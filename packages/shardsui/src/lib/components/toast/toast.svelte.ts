@@ -31,21 +31,20 @@ type TimerInfo = {
   callback: () => void
 }
 
+function toUpdateOptions<Data extends object>(
+  options: string | ToastManagerUpdateOptions<Data>
+): ToastManagerUpdateOptions<Data> {
+  return typeof options === 'string' ? { description: options } : options
+}
+
 function resolvePromiseOptions<T, Data extends object>(
   options:
     | string
     | ToastManagerUpdateOptions<Data>
     | ((result: T) => string | ToastManagerUpdateOptions<Data>),
-  result?: T
+  result: T
 ): ToastManagerUpdateOptions<Data> {
-  if (typeof options === 'string') {
-    return { description: options }
-  }
-  if (typeof options === 'function') {
-    const resolved = options(result as T)
-    return typeof resolved === 'string' ? { description: resolved } : resolved
-  }
-  return options
+  return toUpdateOptions(options instanceof Function ? options(result) : options)
 }
 
 type ToastProviderOptions = {
@@ -356,7 +355,7 @@ export class ToastProvider {
       setPromise?: (promise: Promise<Value>) => void
     }
   ): Promise<Value> => {
-    const loadingOptions = resolvePromiseOptions(options.loading)
+    const loadingOptions = toUpdateOptions(options.loading)
     const id = this.add({
       ...loadingOptions,
       type: 'loading'
@@ -389,7 +388,7 @@ export class ToastProvider {
 
   collapseOnOutsideTouch = (event: PointerEvent): void => {
     if (event.pointerType !== 'touch') return
-    const target = getTarget(event) as Element | null
+    const target = getTarget(event)
     if (contains(this.viewport, target)) return
 
     this.resumeTimers()

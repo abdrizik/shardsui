@@ -9,7 +9,7 @@ import DialogConformance from './fixtures/conformance.svelte'
 import ContainedPayload from './fixtures/contained-payload.svelte'
 import ControlledTriggerId from './fixtures/controlled-trigger-id.svelte'
 import DialogImperativeHandle from './fixtures/dialog-imperative-handle.svelte'
-import DialogShapes from './fixtures/dialog-shapes.svelte'
+import DialogArrangements from './fixtures/dialog-arrangements.svelte'
 import DialogWithNestedSelect from './fixtures/dialog-with-nested-select.svelte'
 import DynamicLabels from './fixtures/dynamic-labels.svelte'
 import ExternalScrollLock from './fixtures/external-scroll-lock.svelte'
@@ -98,13 +98,13 @@ describe('<Dialog.Root />', () => {
   })
 
   describe.for([
-    { name: 'contained triggers', shape: 'contained' },
-    { name: 'detached triggers', shape: 'detached' },
-    { name: 'multiple detached triggers', shape: 'multiple-detached' }
-  ] as const)('when using $name', ({ shape }) => {
+    { name: 'contained triggers', arrangement: 'contained' },
+    { name: 'detached triggers', arrangement: 'detached' },
+    { name: 'multiple detached triggers', arrangement: 'multiple-detached' }
+  ] as const)('when using $name', ({ arrangement }) => {
     it('rewires dismiss interactions after closing and reopening', async () => {
       const user = userEvent.setup()
-      render(DialogShapes, { shape, modal: false })
+      render(DialogArrangements, { arrangement, modal: false })
 
       const trigger = screen.getByTestId('trigger')
 
@@ -122,7 +122,7 @@ describe('<Dialog.Root />', () => {
     })
 
     it('links the popup to its Title and Description ids', async () => {
-      render(DialogShapes, { shape, modal: false, open: true, includeBackdrop: true })
+      render(DialogArrangements, { arrangement, modal: false, open: true, includeBackdrop: true })
 
       const popup = screen.queryByRole('dialog')
       expect(popup).not.toBe(null)
@@ -139,7 +139,7 @@ describe('<Dialog.Root />', () => {
       it('reports each open state change through onOpenChange', async () => {
         const user = userEvent.setup()
         const onOpenChange = vi.fn()
-        render(DialogShapes, { shape, onOpenChange })
+        render(DialogArrangements, { arrangement, onOpenChange })
 
         expect(onOpenChange).toHaveBeenCalledTimes(0)
 
@@ -157,7 +157,7 @@ describe('<Dialog.Root />', () => {
       it('calls onOpenChange once on Escape close', async () => {
         const user = userEvent.setup()
         const onOpenChange = vi.fn()
-        render(DialogShapes, { shape, open: true, onOpenChange })
+        render(DialogArrangements, { arrangement, open: true, onOpenChange })
 
         await user.keyboard('[Escape]')
 
@@ -167,7 +167,7 @@ describe('<Dialog.Root />', () => {
       it('calls onOpenChange once on backdrop click (modal)', async () => {
         const user = userEvent.setup()
         const onOpenChange = vi.fn()
-        render(DialogShapes, { shape, open: true, onOpenChange })
+        render(DialogArrangements, { arrangement, open: true, onOpenChange })
 
         await user.click(screen.getByRole('presentation', { hidden: true }))
 
@@ -177,7 +177,7 @@ describe('<Dialog.Root />', () => {
       it('calls onOpenChange once on outside click (non-modal)', async () => {
         const user = userEvent.setup()
         const onOpenChange = vi.fn()
-        render(DialogShapes, { shape, open: true, modal: false, onOpenChange })
+        render(DialogArrangements, { arrangement, open: true, modal: false, onOpenChange })
 
         await user.click(document.body)
 
@@ -188,7 +188,12 @@ describe('<Dialog.Root />', () => {
         it('detects clicks on user backdrop', async () => {
           const user = userEvent.setup()
           const onOpenChange = vi.fn()
-          render(DialogShapes, { shape, open: true, onOpenChange, includeBackdrop: true })
+          render(DialogArrangements, {
+            arrangement,
+            open: true,
+            onOpenChange,
+            includeBackdrop: true
+          })
 
           await user.click(screen.getByTestId('backdrop'))
 
@@ -198,7 +203,12 @@ describe('<Dialog.Root />', () => {
         it('does not change open state on non-main button clicks', async () => {
           const user = userEvent.setup()
           const onOpenChange = vi.fn()
-          render(DialogShapes, { shape, open: true, onOpenChange, includeBackdrop: true })
+          render(DialogArrangements, {
+            arrangement,
+            open: true,
+            onOpenChange,
+            includeBackdrop: true
+          })
 
           const backdrop = screen.getByTestId('backdrop')
           await user.pointer([{ target: backdrop }, { keys: '[MouseRight]', target: backdrop }])
@@ -209,7 +219,7 @@ describe('<Dialog.Root />', () => {
 
       it('stays closed when the open binding refuses to open', async () => {
         const user = userEvent.setup()
-        render(VetoOpen, { shape })
+        render(VetoOpen, { arrangement })
 
         await user.click(screen.getByRole('button', { name: 'Open' }))
 
@@ -219,13 +229,13 @@ describe('<Dialog.Root />', () => {
 
     describe('prop: modal', () => {
       it('makes other interactive elements on the page inert when a modal dialog is open', async () => {
-        render(DialogShapes, { shape, open: true, modal: true })
+        render(DialogArrangements, { arrangement, open: true, modal: true })
 
         expect(screen.getByRole('presentation', { hidden: true })).not.toBe(null)
       })
 
       it('does not make other interactive elements on the page inert when a non-modal dialog is open', async () => {
-        render(DialogShapes, { shape, open: true, modal: false })
+        render(DialogArrangements, { arrangement, open: true, modal: false })
 
         expect(screen.queryByRole('presentation')).toBeNull()
       })
@@ -234,8 +244,8 @@ describe('<Dialog.Root />', () => {
     describe('prop: disablePointerDismissal', () => {
       it('does not close when disablePointerDismissal=true', async () => {
         const onOpenChange = vi.fn()
-        render(DialogShapes, {
-          shape,
+        render(DialogArrangements, {
+          arrangement,
           open: true,
           onOpenChange,
           disablePointerDismissal: true,
@@ -250,8 +260,8 @@ describe('<Dialog.Root />', () => {
 
       it('closes when disablePointerDismissal=false', async () => {
         const onOpenChange = vi.fn()
-        render(DialogShapes, {
-          shape,
+        render(DialogArrangements, {
+          arrangement,
           open: true,
           onOpenChange,
           disablePointerDismissal: false,
@@ -268,8 +278,8 @@ describe('<Dialog.Root />', () => {
 
       it('closes when disablePointerDismissal=undefined (default)', async () => {
         const onOpenChange = vi.fn()
-        render(DialogShapes, {
-          shape,
+        render(DialogArrangements, {
+          arrangement,
           open: true,
           onOpenChange,
           modal: false
@@ -287,8 +297,8 @@ describe('<Dialog.Root />', () => {
     describe('outside press event with backdrops', () => {
       it('does not close on mousedown on backdrop — only on click (modal=true)', async () => {
         const onOpenChange = vi.fn()
-        render(DialogShapes, {
-          shape,
+        render(DialogArrangements, {
+          arrangement,
           open: true,
           modal: true,
           onOpenChange,
@@ -310,7 +320,7 @@ describe('<Dialog.Root />', () => {
 
       it('internal backdrop closes on click but not on mousedown', async () => {
         const onOpenChange = vi.fn()
-        render(DialogShapes, { shape, open: true, modal: true, onOpenChange })
+        render(DialogArrangements, { arrangement, open: true, modal: true, onOpenChange })
 
         const internalBackdrop = screen.getByRole('presentation', { hidden: true })
 
@@ -329,7 +339,7 @@ describe('<Dialog.Root />', () => {
     describe('prop: modal, internal backdrop', () => {
       it('renders an internal backdrop when modal=true', async () => {
         const user = userEvent.setup()
-        render(DialogShapes, { shape, modal: true })
+        render(DialogArrangements, { arrangement, modal: true })
 
         await user.click(screen.getByTestId('trigger'))
         await waitFor(() => expect(screen.queryByRole('dialog')).not.toBe(null))
@@ -344,7 +354,7 @@ describe('<Dialog.Root />', () => {
 
       it('does not render an internal backdrop when modal=false', async () => {
         const user = userEvent.setup()
-        render(DialogShapes, { shape, modal: false })
+        render(DialogArrangements, { arrangement, modal: false })
 
         await user.click(screen.getByTestId('trigger'))
         await waitFor(() => expect(screen.queryByRole('dialog')).not.toBe(null))
@@ -357,7 +367,7 @@ describe('<Dialog.Root />', () => {
 
     describe('multiple sibling dialogs — dismiss one by one', () => {
       it('does not dismiss previous modal dialog when opening a new modal dialog', async () => {
-        render(SiblingDialogs, { shape })
+        render(SiblingDialogs, { arrangement })
 
         await fireEvent.click(screen.getByRole('button', { name: 'Open base' }))
         await fireEvent.click(screen.getByRole('button', { name: 'Open nested 1' }))
@@ -367,7 +377,7 @@ describe('<Dialog.Root />', () => {
       })
 
       it('dismisses non-nested (sibling) dialogs one by one via their backdrops', async () => {
-        render(SiblingDialogs, { shape })
+        render(SiblingDialogs, { arrangement })
 
         await fireEvent.click(screen.getByRole('button', { name: 'Open base' }))
         await fireEvent.click(screen.getByRole('button', { name: 'Open nested 1' }))
@@ -388,7 +398,7 @@ describe('<Dialog.Root />', () => {
     describe.skipIf(isJSDOM)('nested popups', () => {
       it('nested modal menu: dismissing outside the menu closes only the menu, not the dialog', async () => {
         const user = userEvent.setup()
-        render(NestedMenu, { shape })
+        render(NestedMenu, { arrangement })
 
         await user.click(screen.getByRole('button', { name: 'Open' }))
         await waitFor(() => expect(screen.queryByRole('dialog')).not.toBe(null))
@@ -413,7 +423,7 @@ describe('<Dialog.Root />', () => {
 
       it('closes the nested select popup — then closes the dialog on the next outside press', async () => {
         const user = userEvent.setup()
-        render(DialogWithNestedSelect, { shape })
+        render(DialogWithNestedSelect, { arrangement })
 
         await user.click(screen.getByRole('button', { name: 'Open' }))
         await waitFor(() => expect(screen.queryByTestId('dialog-popup')).not.toBeNull())
@@ -440,7 +450,7 @@ describe('<Dialog.Root />', () => {
     describe.skipIf(isJSDOM || isGecko || isWebKit)('pointerdown removal', () => {
       it('moves focus to popup when a focused child is removed on pointerdown, outside press still dismisses', async () => {
         const user = userEvent.setup()
-        render(PointerdownRemoval, { shape })
+        render(PointerdownRemoval, { arrangement })
 
         const removeButton = screen.getByTestId('remove')
         await waitFor(() => expect(removeButton).toHaveFocus())
@@ -459,7 +469,7 @@ describe('<Dialog.Root />', () => {
       it('is called on close/open when no animation is defined', async () => {
         const user = userEvent.setup()
         const onOpenChangeComplete = vi.fn()
-        render(OpenChangeComplete, { shape, open: true, onOpenChangeComplete })
+        render(OpenChangeComplete, { arrangement, open: true, onOpenChangeComplete })
 
         await user.click(screen.getByText('Close externally'))
         await waitFor(() => expect(screen.queryByTestId('dialog-popup')).toBe(null))
@@ -470,7 +480,7 @@ describe('<Dialog.Root />', () => {
 
       it('is not called on mount when not open', async () => {
         const onOpenChangeComplete = vi.fn()
-        render(OpenChangeComplete, { shape, open: false, onOpenChangeComplete })
+        render(OpenChangeComplete, { arrangement, open: false, onOpenChangeComplete })
 
         expect(onOpenChangeComplete).toHaveBeenCalledTimes(0)
       })
@@ -479,7 +489,7 @@ describe('<Dialog.Root />', () => {
         const user = userEvent.setup()
         const onOpenChangeComplete = vi.fn()
         render(OpenChangeCompleteToggle, {
-          shape,
+          arrangement,
           open: false,
           mode: 'none',
           onOpenChangeComplete
@@ -497,7 +507,7 @@ describe('<Dialog.Root />', () => {
         const user = userEvent.setup()
         const onOpenChangeComplete = vi.fn()
         render(OpenChangeCompleteToggle, {
-          shape,
+          arrangement,
           open: true,
           mode: 'exit',
           onOpenChangeComplete
@@ -518,7 +528,7 @@ describe('<Dialog.Root />', () => {
         const user = userEvent.setup()
         const onOpenChangeComplete = vi.fn()
         render(OpenChangeCompleteToggle, {
-          shape,
+          arrangement,
           open: false,
           mode: 'enter',
           onOpenChangeComplete
@@ -533,7 +543,7 @@ describe('<Dialog.Root />', () => {
       it('waits for a restarted enter animation to finish', async () => {
         globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
         const onOpenChangeComplete = vi.fn()
-        render(OpenChangeCompleteRestart, { shape, onOpenChangeComplete })
+        render(OpenChangeCompleteRestart, { arrangement, onOpenChangeComplete })
 
         fireEvent.click(screen.getByText('Open externally'))
 
@@ -554,7 +564,7 @@ describe('<Dialog.Root />', () => {
       it('is not called on open when dismissed during the enter animation', async () => {
         globalThis.SHARDSUI_ANIMATIONS_DISABLED = false
         const onOpenChangeComplete = vi.fn()
-        render(OpenChangeCompleteDismiss, { shape, onOpenChangeComplete })
+        render(OpenChangeCompleteDismiss, { arrangement, onOpenChangeComplete })
 
         fireEvent.click(screen.getByText('Open externally'))
 

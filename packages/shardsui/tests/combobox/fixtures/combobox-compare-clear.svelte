@@ -4,7 +4,9 @@
   type User = { id: number; name: string }
 
   let {
-    isItemEqualToValue = undefined as ((item: unknown, value: unknown) => boolean) | undefined
+    isItemEqualToValue
+  }: {
+    isItemEqualToValue?: (item: User, value: User) => boolean
   } = $props()
 
   const users: User[] = [
@@ -21,8 +23,8 @@
   bind:open
   items={users}
   name="user"
-  itemToStringLabel={(item) => (item as User).name}
-  itemToStringValue={(item) => String((item as User).id)}
+  itemToStringLabel={(item) => item.name}
+  itemToStringValue={(item) => String(item.id)}
   {isItemEqualToValue}
 >
   <Combobox.Trigger>

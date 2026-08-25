@@ -172,7 +172,7 @@ describe('<Popover.Positioner />', () => {
       const originalResizeObserver = window.ResizeObserver
       const observedElements: Element[] = []
 
-      class TestResizeObserver {
+      class TestResizeObserver implements ResizeObserver {
         observe(element: Element) {
           observedElements.push(element)
         }
@@ -182,7 +182,7 @@ describe('<Popover.Positioner />', () => {
         disconnect() {}
       }
 
-      window.ResizeObserver = TestResizeObserver as unknown as typeof ResizeObserver
+      window.ResizeObserver = TestResizeObserver
 
       try {
         render(PositionerCustomAnchor)

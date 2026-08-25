@@ -3,17 +3,22 @@
   import ItemsList from './items-list.svelte'
 
   let {
-    items = undefined as readonly string[] | undefined,
-    staticItems = undefined as string[] | undefined,
-    initialValue = [] as string[],
-    externalValue = [] as string[]
+    items,
+    staticItems,
+    initialValue = [],
+    externalValue = []
+  }: {
+    items?: readonly string[]
+    staticItems?: string[]
+    initialValue?: string[]
+    externalValue?: string[]
   } = $props()
 
   // svelte-ignore state_referenced_locally
   let value = $state<string[]>(initialValue)
 </script>
 
-<Combobox.Root items={items as never} multiple bind:value>
+<Combobox.Root {items} multiple bind:value>
   <Combobox.Input data-testid="input" />
   <button type="button" data-testid="clear" onclick={() => (value = [])}>Clear</button>
   <button type="button" data-testid="set-external" onclick={() => (value = externalValue)}>

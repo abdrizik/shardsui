@@ -7,7 +7,7 @@
   }
 
   function hasOrder(toast: ToastObject): toast is ToastObject<OrderData> {
-    return (toast.data as OrderData | undefined)?.orderId !== undefined
+    return toast.data != null && 'orderId' in toast.data
   }
 
   const manager = new Toast.Manager()

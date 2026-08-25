@@ -2,9 +2,13 @@
   import { Combobox } from '$lib/components/combobox'
 
   let {
-    value = $bindable(),
-    onChipClick = undefined as ((event: MouseEvent) => void) | undefined,
-    onRemoveClick = undefined as ((event: MouseEvent) => void) | undefined
+    value = $bindable([]),
+    onChipClick,
+    onRemoveClick
+  }: {
+    value?: string[]
+    onChipClick?: (event: MouseEvent) => void
+    onRemoveClick?: (event: MouseEvent) => void
   } = $props()
 </script>
 

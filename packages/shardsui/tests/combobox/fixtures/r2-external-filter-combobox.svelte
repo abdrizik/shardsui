@@ -1,18 +1,25 @@
 <script lang="ts">
+  import type { ComponentProps } from 'svelte'
   import { Combobox } from '$lib/components/combobox'
 
   type TestItem = { id: number; label: string; label2: string }
 
   let {
-    mode = 'contains' as 'contains' | 'reverse',
+    mode = 'contains',
     items = [
       { id: 1, label: 'apple', label2: 'one' },
       { id: 2, label: 'orange', label2: 'two' },
       { id: 3, label: 'banana', label2: 'three' }
-    ] as TestItem[],
-    fruits = ['Apple', 'Banana', 'Zucchini'] as string[],
+    ],
+    fruits = ['Apple', 'Banana', 'Zucchini'],
     autoHighlight = false,
-    onItemHighlighted = undefined as ((value: unknown) => void) | undefined
+    onItemHighlighted
+  }: {
+    mode?: 'contains' | 'reverse'
+    items?: TestItem[]
+    fruits?: string[]
+    autoHighlight?: boolean
+    onItemHighlighted?: ComponentProps<typeof Combobox.Root>['onItemHighlighted']
   } = $props()
 
   let searchValue = $state('')
@@ -35,14 +42,14 @@
 
 {#if mode === 'contains'}
   <Combobox.Root
-    items={items as never}
-    filteredItems={filteredObjects as never}
+    {items}
+    filteredItems={filteredObjects}
     inputValue={searchValue}
     onInputValueChange={(next: string) => (searchValue = next)}
-    value={value as never}
-    onValueChange={(next: unknown) => (value = next as TestItem | null)}
-    itemToStringLabel={labelToDisplay as never}
-    isItemEqualToValue={((item: TestItem, v: TestItem) => item?.id === v?.id) as never}
+    {value}
+    onValueChange={(next) => (value = next)}
+    itemToStringLabel={labelToDisplay}
+    isItemEqualToValue={(item, v) => item?.id === v?.id}
   >
     <Combobox.Input data-testid="input" />
     <Combobox.Portal>
@@ -64,7 +71,7 @@
   <Combobox.Root
     {autoHighlight}
     {onItemHighlighted}
-    filteredItems={reorderedStrings as never}
+    filteredItems={reorderedStrings}
     inputValue={searchValue}
     onInputValueChange={(next: string) => (searchValue = next)}
   >

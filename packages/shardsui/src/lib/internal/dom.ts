@@ -1,8 +1,10 @@
+import { isNode } from '@floating-ui/utils/dom'
+
 export function contains(
   parent: Element | null | undefined,
-  child: Node | null | undefined
+  child: EventTarget | null | undefined
 ): boolean {
-  if (!parent || !child) return false
+  if (!parent || !isNode(child)) return false
   return parent.contains(child)
 }
 

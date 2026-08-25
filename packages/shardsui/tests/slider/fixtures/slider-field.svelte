@@ -5,10 +5,10 @@
   import type { FormValidationMode } from '$lib/components/form'
 
   let {
-    validate = (() => null) as FieldValidator,
-    validationMode = undefined as FormValidationMode | undefined,
+    validate = () => null,
+    validationMode,
     range = false,
-    value = undefined as number | number[] | undefined
+    value
   }: {
     validate?: FieldValidator
     validationMode?: FormValidationMode

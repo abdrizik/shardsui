@@ -1,13 +1,18 @@
 <script lang="ts">
+  import type { ComponentProps } from 'svelte'
   import { Combobox } from '$lib/components/combobox'
   import { Field } from '$lib/components/field'
   import { Form } from '$lib/components/form'
 
-  let { validate = (value: unknown) => (value === 'a' ? 'error' : null) } = $props()
+  type FieldProps = ComponentProps<typeof Field.Root>
+
+  let {
+    validate = (value: unknown) => (value === 'a' ? 'error' : null)
+  }: { validate?: FieldProps['validate'] } = $props()
 </script>
 
 <Form>
-  <Field.Root validate={validate as never}>
+  <Field.Root {validate}>
     <Combobox.Root required>
       <Combobox.Input data-testid="input" />
       <Combobox.Clear data-testid="clear" />

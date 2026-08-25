@@ -282,9 +282,7 @@ describe('<Menu.Root />', () => {
       expect(handle.isOpen).toBe(false)
       expect(
         warnSpy.mock.calls.filter((call) =>
-          call.some(
-            (arg) => typeof arg === 'string' && arg.includes('no root using this handle is mounted')
-          )
+          call.some((arg) => String(arg).includes('no root using this handle is mounted'))
         )
       ).toHaveLength(2)
       warnSpy.mockRestore()

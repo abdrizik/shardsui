@@ -45,7 +45,7 @@
     tree: navigationMenu.floatingTree,
     nodeId: navigationMenu.floatingNodeId,
     outsidePressEvent: 'intentional',
-    outsidePress: (event) => !navigationMenu.containsTrigger(getTarget(event) as Node | null),
+    outsidePress: (event) => !navigationMenu.containsTrigger(getTarget(event)),
     popupElement: navigationMenu.floatingElement,
     isInsideElement: (target) =>
       contains(navigationMenu.popupElement, target) || navigationMenu.containsTrigger(target),

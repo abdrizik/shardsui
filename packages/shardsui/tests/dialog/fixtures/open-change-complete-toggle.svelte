@@ -1,13 +1,13 @@
 <script lang="ts">
-  import DialogShapes from './dialog-shapes.svelte'
+  import DialogArrangements from './dialog-arrangements.svelte'
 
   let {
-    shape = 'contained',
+    arrangement = 'contained',
     open = $bindable(false),
     mode = 'none',
-    onOpenChangeComplete = undefined
+    onOpenChangeComplete
   }: {
-    shape?: 'contained' | 'detached' | 'multiple-detached'
+    arrangement?: 'contained' | 'detached' | 'multiple-detached'
     open?: boolean
     mode?: 'none' | 'enter' | 'exit'
     onOpenChangeComplete?: (open: boolean) => void
@@ -39,5 +39,10 @@
     </style>
   {/if}
   <button data-testid="toggle" onclick={() => (open = !open)}>Toggle</button>
-  <DialogShapes {shape} bind:open popupClass="animation-test-indicator" {onOpenChangeComplete} />
+  <DialogArrangements
+    {arrangement}
+    bind:open
+    popupClass="animation-test-indicator"
+    {onOpenChangeComplete}
+  />
 </div>

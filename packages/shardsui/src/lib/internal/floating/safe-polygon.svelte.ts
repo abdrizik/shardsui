@@ -123,7 +123,7 @@ export function safePolygon(options: () => CloseGuardOptions = () => ({})): Clos
       if (!domReference || !floating) return
 
       const { clientX, clientY } = event
-      const target = getTarget(event) as Element | null
+      const target = getTarget(event)
       const isLeave = event.type === 'mouseleave'
       const isOverFloating = contains(floating, target)
       const isOverReference = contains(domReference, target)

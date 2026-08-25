@@ -1,8 +1,8 @@
 <script lang="ts">
   import { Autocomplete } from '$lib/components/autocomplete'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
 
-  let { validate = undefined }: { validate?: (value: unknown) => string | null } = $props()
+  let { validate }: { validate?: FieldValidator } = $props()
 </script>
 
 <Field.Root validationMode="onBlur" {validate}>

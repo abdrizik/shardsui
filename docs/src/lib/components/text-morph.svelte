@@ -97,7 +97,7 @@
   function diff(previous: Segment[], text: string): Diff {
     const graphemes = Array.from(segmenter.segment(text), ({ segment }) => segment)
     const longest = Math.max(graphemes.length, previous.length)
-    const kept: (string | undefined)[] = new Array(graphemes.length)
+    const kept: (string | undefined)[] = Array.from({ length: graphemes.length })
 
     const matched =
       longest > MAX_DIFF
@@ -120,7 +120,7 @@
 
   function commonSubsequence(before: string[], after: string[]) {
     const lengths: number[][] = Array.from({ length: before.length + 1 }, () =>
-      new Array(after.length + 1).fill(0)
+      Array.from({ length: after.length + 1 }, () => 0)
     )
 
     for (let i = 1; i <= before.length; i++) {

@@ -1,32 +1,35 @@
 <script lang="ts">
+  import type { ComponentProps } from 'svelte'
   import { Combobox } from '$lib/components/combobox'
   import ItemsList from './items-list.svelte'
 
+  type RootProps = ComponentProps<typeof Combobox.Root>
+
   let {
     value = $bindable(),
-    onValueChange = undefined,
+    onValueChange,
     open = $bindable(),
-    onOpenChange = undefined,
-    items = undefined as readonly unknown[] | undefined,
-    filteredItems = undefined,
-    filter = undefined,
-    limit = undefined as number | undefined,
-    openOnInputClick = undefined as boolean | undefined,
-    autoComplete = undefined as string | undefined,
-    name = undefined,
+    onOpenChange,
+    items,
+    filteredItems,
+    filter,
+    limit,
+    openOnInputClick,
+    autoComplete,
+    name,
     multiple = false,
-    label = (item: unknown) => String(item),
+    label = (item) => String(item),
     withIndex = false,
-    autoHighlight = undefined as boolean | undefined,
-    onItemHighlighted = undefined
+    autoHighlight,
+    onItemHighlighted
   }: {
-    value?: unknown
-    onValueChange?: (value: unknown) => void
+    value?: RootProps['value']
+    onValueChange?: RootProps['onValueChange']
     open?: boolean
     onOpenChange?: (open: boolean) => void
-    items?: readonly unknown[]
-    filteredItems?: readonly unknown[] | undefined
-    filter?: ((item: unknown, query: string) => boolean) | null | undefined
+    items?: RootProps['items']
+    filteredItems?: RootProps['filteredItems']
+    filter?: RootProps['filter']
     limit?: number | undefined
     openOnInputClick?: boolean | undefined
     autoComplete?: string | undefined
@@ -35,7 +38,7 @@
     label?: (item: unknown) => string
     withIndex?: boolean
     autoHighlight?: boolean
-    onItemHighlighted?: (value: unknown) => void
+    onItemHighlighted?: RootProps['onItemHighlighted']
   } = $props()
 
   const resolvedItems = $derived(
@@ -44,9 +47,9 @@
 </script>
 
 <Combobox.Root
-  items={resolvedItems as never}
-  filteredItems={filteredItems as never}
-  filter={filter as never}
+  items={resolvedItems}
+  {filteredItems}
+  {filter}
   {value}
   {onValueChange}
   {open}

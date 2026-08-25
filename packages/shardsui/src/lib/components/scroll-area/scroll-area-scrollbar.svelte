@@ -88,7 +88,7 @@
   function scrollToTrackPosition(event: PointerEvent) {
     if (event.button !== 0) return
 
-    const target = getTarget(event) as Node | null
+    const target = getTarget(event)
     const thumb = vertical ? scrollArea.thumbYElement : scrollArea.thumbXElement
 
     if (contains(thumb, target)) return

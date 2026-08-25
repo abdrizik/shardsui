@@ -2,15 +2,15 @@
   import { Combobox } from '$lib/components/combobox'
 
   let {
-    value = $bindable('banana' as unknown),
-    onItemHighlighted = undefined,
+    value = $bindable('banana'),
+    onItemHighlighted,
     multiple = false,
-    nextValue = null as unknown
+    nextValue = null
   }: {
-    value?: unknown
+    value?: string | string[] | null
     onItemHighlighted?: (value: unknown) => void
     multiple?: boolean
-    nextValue?: unknown
+    nextValue?: string | string[] | null
   } = $props()
 </script>
 

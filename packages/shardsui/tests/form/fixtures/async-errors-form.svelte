@@ -6,9 +6,7 @@
   let errors = $state<FormErrors | undefined>()
 
   function onFormSubmit() {
-    const next = Object.create(null) as FormErrors
-    next.first = 'First error'
-    next.second = 'Second error'
+    const next: FormErrors = { first: 'First error', second: 'Second error' }
     void Promise.resolve().then(() => {
       errors = next
     })

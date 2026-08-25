@@ -7,8 +7,8 @@
     items = [
       { value: 'a1', label: 'A1' },
       { value: 'a2', label: 'A2' }
-    ] as Opt[],
-    rootItems = undefined
+    ],
+    rootItems
   }: {
     items?: Opt[]
     rootItems?: Record<string, string>
@@ -18,7 +18,7 @@
 </script>
 
 <button data-testid="reset" onclick={() => (value = null)}>Reset</button>
-<Select.Root {value} items={rootItems} onValueChange={(v) => (value = v as string | null)}>
+<Select.Root {value} items={rootItems} onValueChange={(v: string | null) => (value = v)}>
   <Select.Trigger data-testid="trigger">
     <Select.Value data-testid="value" />
   </Select.Trigger>

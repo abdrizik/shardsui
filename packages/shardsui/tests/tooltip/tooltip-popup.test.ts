@@ -36,7 +36,7 @@ describe('<Tooltip.Popup />', () => {
       })
       const opacityAnimations = popup
         .getAnimations()
-        .filter((a) => (a as CSSTransition).transitionProperty === 'opacity')
+        .filter((a) => a instanceof CSSTransition && a.transitionProperty === 'opacity')
       expect(opacityAnimations.length).toBe(0)
     })
   })

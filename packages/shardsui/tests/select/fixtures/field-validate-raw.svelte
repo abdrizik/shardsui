@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Select } from '$lib/components/select'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
 
   type Item = { code: string; label: string }
 
@@ -8,11 +8,11 @@
     items = [
       { code: 'US', label: 'United States' },
       { code: 'CA', label: 'Canada' }
-    ] as Item[],
-    validate = undefined
+    ],
+    validate
   }: {
     items?: Item[]
-    validate?: (value: unknown) => string | null
+    validate?: FieldValidator
   } = $props()
 </script>
 

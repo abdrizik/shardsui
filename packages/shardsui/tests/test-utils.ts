@@ -1,9 +1,9 @@
-export const isJSDOM = typeof navigator !== 'undefined' && /jsdom/i.test(navigator?.userAgent ?? '')
+export const isJSDOM = /jsdom/i.test(globalThis.navigator?.userAgent ?? '')
 
-export const isWebKit =
-  typeof CSS === 'undefined' || !CSS.supports ? false : CSS.supports('-webkit-backdrop-filter:none')
+export const isWebKit = globalThis.CSS?.supports?.('-webkit-backdrop-filter:none') ?? false
 
-export const isGecko = !isWebKit && (navigator?.userAgent ?? '').toLowerCase().includes('firefox')
+export const isGecko =
+  !isWebKit && (globalThis.navigator?.userAgent ?? '').toLowerCase().includes('firefox')
 
 type TouchPoint = { clientX: number; clientY: number }
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Select } from '$lib/components/select'
 
-  let { onitemclick = undefined as ((event: MouseEvent) => void) | undefined } = $props()
+  let { onitemclick = undefined }: { onitemclick?: (event: MouseEvent) => void } = $props()
 </script>
 
 <Select.Root open disabled>

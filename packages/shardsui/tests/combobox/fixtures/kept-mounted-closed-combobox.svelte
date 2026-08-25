@@ -5,7 +5,7 @@
   let { items = ['apple', 'banana'] } = $props()
 </script>
 
-<Combobox.Root items={items as never} autoHighlight bind:open={() => false, () => {}}>
+<Combobox.Root {items} autoHighlight bind:open={() => false, () => {}}>
   <Combobox.Input data-testid="input" />
   <Combobox.Portal keepMounted>
     <Combobox.Positioner>

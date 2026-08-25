@@ -4,9 +4,15 @@
   let {
     value = $bindable(['a']),
     open = $bindable(),
-    onOpenChange = undefined,
+    onOpenChange,
     readOnly = false,
-    openOnInputClick = undefined as boolean | undefined
+    openOnInputClick
+  }: {
+    value?: string[]
+    open?: boolean
+    onOpenChange?: (open: boolean) => void
+    readOnly?: boolean
+    openOnInputClick?: boolean
   } = $props()
 </script>
 

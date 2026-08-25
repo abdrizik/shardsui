@@ -6,7 +6,7 @@
 
   let { as = 'div', ref = $bindable(null), children, ...rest }: Props = $props()
 
-  const group = $state({ labelId: undefined as string | undefined })
+  const group: SelectGroupContext = $state({ labelId: undefined })
   SelectGroupContext.set(group)
 </script>
 

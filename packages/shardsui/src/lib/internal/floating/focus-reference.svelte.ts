@@ -44,7 +44,7 @@ export function createFocusReference(options: () => FocusReferenceOptions) {
       reset()
     }
 
-    const target = getTarget(event) as Element | null
+    const target = getTarget(event)
     if (!target) return true
 
     if (isMacSafari && !event.relatedTarget) {
@@ -126,7 +126,7 @@ export function createFocusReference(options: () => FocusReferenceOptions) {
     },
 
     onblur: (event: FocusEvent): void => {
-      const relatedTarget = event.relatedTarget as Element | null
+      const relatedTarget = event.relatedTarget
 
       reset()
 

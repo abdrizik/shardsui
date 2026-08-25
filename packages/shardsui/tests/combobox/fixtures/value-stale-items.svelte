@@ -20,7 +20,7 @@
 <div>
   <button onclick={updateItems}>update</button>
   <button onclick={() => c && (value = c)}>select c</button>
-  <Combobox.Root bind:value items={items as never}>
+  <Combobox.Root bind:value {items}>
     <Combobox.Trigger data-testid="value">
       <Combobox.Value />
     </Combobox.Trigger>

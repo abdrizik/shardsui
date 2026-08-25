@@ -1,3 +1,4 @@
+import type { FieldValidator } from '$lib/components/field'
 import { RadioGroup } from '$lib/components/radio-group'
 import { fireEvent, render, screen, waitFor } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
@@ -462,7 +463,7 @@ describe('<RadioGroup />', () => {
       })
 
       it('revalidates when the controlled value changes externally', async () => {
-        const validateSpy = vi.fn((value: unknown) => ((value as string) === 'b' ? 'error' : null))
+        const validateSpy = vi.fn<FieldValidator>((value) => (value === 'b' ? 'error' : null))
         render(RadioGroupExternalRevalidate, { validate: validateSpy })
 
         const radioGroup = screen.getByRole('radiogroup')
@@ -542,7 +543,7 @@ describe('<RadioGroup />', () => {
     describe('prop: validationMode', () => {
       it('onSubmit defers validation to submit, then revalidates on change', async () => {
         render(RadioGroupInForm, {
-          validate: (value: unknown) => (value === 'a' || value === 'c' ? 'custom error' : null)
+          validate: (value) => (value === 'a' || value === 'c' ? 'custom error' : null)
         })
         const group = screen.getByTestId('group')
 
@@ -565,7 +566,7 @@ describe('<RadioGroup />', () => {
       })
 
       it('onBlur validates only when focus leaves the group', async () => {
-        const validate = vi.fn((value: unknown) => (value === 'a' ? 'error' : null))
+        const validate = vi.fn<FieldValidator>((value) => (value === 'a' ? 'error' : null))
         render(ValidationModeOnBlur, { validate })
 
         const group = screen.getByRole('radiogroup')

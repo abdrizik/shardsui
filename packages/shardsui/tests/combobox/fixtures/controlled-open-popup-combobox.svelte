@@ -2,14 +2,10 @@
   import { Combobox } from '$lib/components/combobox'
   import ItemsList from './items-list.svelte'
 
-  let { items = ['Apple', 'Apricot', 'Banana', 'Grape', 'Orange'], onOpenChange = undefined } =
-    $props()
+  let { items = ['Apple', 'Apricot', 'Banana', 'Grape', 'Orange'], onOpenChange } = $props()
 </script>
 
-<Combobox.Root
-  items={items as never}
-  bind:open={() => true, (next: boolean) => onOpenChange?.(next)}
->
+<Combobox.Root {items} bind:open={() => true, (next: boolean) => onOpenChange?.(next)}>
   <Combobox.Trigger data-testid="trigger">Open</Combobox.Trigger>
   <Combobox.Portal>
     <Combobox.Positioner>

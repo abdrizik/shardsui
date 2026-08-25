@@ -5,7 +5,7 @@
   import type { FormErrors } from '$lib/components/form/form.svelte'
 
   let {
-    errors = { test: 'test' } as FormErrors,
+    errors = { test: 'test' },
     value = 50
   }: {
     errors?: FormErrors

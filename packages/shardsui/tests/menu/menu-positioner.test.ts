@@ -46,17 +46,7 @@ describe('<Menu.Positioner />', () => {
     })
 
     it('is placed at the specified position', async () => {
-      const boundingRect = {
-        x: 200,
-        y: 100,
-        top: 100,
-        left: 200,
-        bottom: 100,
-        right: 200,
-        height: 0,
-        width: 0,
-        toJSON: () => {}
-      } as DOMRect
+      const boundingRect = new DOMRect(200, 100, 0, 0)
 
       render(PositionerVirtualAnchor, {
         props: { anchor: { getBoundingClientRect: () => boundingRect } }

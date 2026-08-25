@@ -1,27 +1,30 @@
 <script lang="ts">
+  import type { ComponentProps } from 'svelte'
   import { Combobox } from '$lib/components/combobox'
 
   type ItemGroup = { value: string; items: string[] }
 
   let {
     open = $bindable(),
-    limit = undefined as number | undefined,
-    filter = undefined as ((item: unknown, query: string) => boolean) | null | undefined,
+    limit,
+    filter,
     groups = [
       { value: 'citrus', items: ['orange', 'lemon', 'lime'] },
       { value: 'berries', items: ['strawberry', 'blueberry', 'raspberry'] }
-    ] as ItemGroup[],
-    staticItems = undefined as string[] | undefined,
+    ],
+    staticItems,
     groupLabel = (group: ItemGroup) => group.value
+  }: {
+    open?: boolean
+    limit?: number
+    filter?: ComponentProps<typeof Combobox.Root>['filter']
+    groups?: ItemGroup[]
+    staticItems?: string[]
+    groupLabel?: (group: ItemGroup) => string
   } = $props()
 </script>
 
-<Combobox.Root
-  {open}
-  {limit}
-  filter={filter as never}
-  items={staticItems ? (undefined as never) : (groups as never)}
->
+<Combobox.Root {open} {limit} {filter} items={staticItems ? undefined : groups}>
   <Combobox.Input data-testid="input" />
   <Combobox.Portal>
     <Combobox.Positioner>

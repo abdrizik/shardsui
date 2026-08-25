@@ -5,7 +5,7 @@
   let { open = $bindable(), multiple = true } = $props()
 </script>
 
-<Combobox.Root {multiple} items={['apple', 'apricot', 'banana'] as never} {open}>
+<Combobox.Root {multiple} items={['apple', 'apricot', 'banana']} {open}>
   <Combobox.Trigger data-testid="trigger">
     <Combobox.Value />
   </Combobox.Trigger>

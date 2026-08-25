@@ -1,8 +1,10 @@
 <script lang="ts">
   import { Select } from '$lib/components/select'
+
+  let { onValueChange = undefined }: { onValueChange?: (value: unknown) => void } = $props()
 </script>
 
-<Select.Root>
+<Select.Root {onValueChange}>
   <Select.Trigger data-testid="trigger">
     <Select.Value placeholder="Pick one" />
   </Select.Trigger>

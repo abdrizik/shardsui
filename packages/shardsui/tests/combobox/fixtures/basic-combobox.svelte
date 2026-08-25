@@ -3,11 +3,11 @@
 
   let {
     value = $bindable(),
-    onValueChange = undefined,
+    onValueChange,
     inputValue = $bindable(),
-    onInputValueChange = undefined,
+    onInputValueChange,
     open = $bindable(),
-    onOpenChange = undefined,
+    onOpenChange,
     disabled = false,
     inputDisabled = false,
     readOnly = false,
@@ -15,13 +15,34 @@
     multiple = false,
     withTrigger = false,
     withDisabledItem = false,
-    name = undefined,
+    name,
     loopFocus = true,
-    as = 'input' as 'input' | 'textarea',
-    inputStyle = undefined as string | undefined,
-    side = undefined as 'top' | 'right' | 'bottom' | 'left' | undefined,
-    onInputCompositionStart = undefined as ((event: CompositionEvent) => void) | undefined,
-    onTriggerPointerDown = undefined as ((event: PointerEvent) => void) | undefined
+    as = 'input',
+    inputStyle,
+    side,
+    onInputCompositionStart,
+    onTriggerPointerDown
+  }: {
+    value?: unknown
+    onValueChange?: (value: unknown) => void
+    inputValue?: string
+    onInputValueChange?: (value: string) => void
+    open?: boolean
+    onOpenChange?: (open: boolean) => void
+    disabled?: boolean
+    inputDisabled?: boolean
+    readOnly?: boolean
+    required?: boolean
+    multiple?: boolean
+    withTrigger?: boolean
+    withDisabledItem?: boolean
+    name?: string
+    loopFocus?: boolean
+    as?: 'input' | 'textarea'
+    inputStyle?: string
+    side?: 'top' | 'right' | 'bottom' | 'left'
+    onInputCompositionStart?: (event: CompositionEvent) => void
+    onTriggerPointerDown?: (event: PointerEvent) => void
   } = $props()
 </script>
 

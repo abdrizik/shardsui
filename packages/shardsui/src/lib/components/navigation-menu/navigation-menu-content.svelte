@@ -3,6 +3,7 @@
     cancelAnimationFrameTick,
     requestAnimationFrameTick
   } from '$lib/internal/animation-frame.svelte'
+  import { isElement } from '@floating-ui/utils/dom'
   import { createAnimationsFinished } from '$lib/internal/animations-finished.svelte'
   import { chain } from '$lib/internal/chain'
   import { FOCUS_GUARD_ATTRIBUTE } from '$lib/internal/constants'
@@ -95,13 +96,13 @@
   const renderHidden = $derived(portalContainer != null && status === null && keepMounted)
 
   function trackFocusInside(event: FocusEvent) {
-    const target = getTarget(event) as Element | null
-    if (target?.hasAttribute(FOCUS_GUARD_ATTRIBUTE)) return
+    const target = getTarget(event)
+    if (isElement(target) && target.hasAttribute(FOCUS_GUARD_ATTRIBUTE)) return
     focusInside = true
   }
 
   function releaseFocusInside(event: FocusEvent) {
-    if (!contains(ref, event.relatedTarget as Node | null)) focusInside = false
+    if (!contains(ref, event.relatedTarget)) focusInside = false
   }
 
   const mergedStyle = $derived(

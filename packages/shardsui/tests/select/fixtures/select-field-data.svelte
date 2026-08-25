@@ -1,18 +1,18 @@
 <script lang="ts">
   import { Select } from '$lib/components/select'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
 
   let {
     value = $bindable(),
     multiple = false,
-    validationMode = undefined,
-    validate = undefined,
+    validationMode,
+    validate,
     withEmptyItem = true
   }: {
     value?: unknown
     multiple?: boolean
     validationMode?: 'onBlur' | 'onChange' | undefined
-    validate?: (value: unknown) => string | null
+    validate?: FieldValidator
     withEmptyItem?: boolean
   } = $props()
 </script>

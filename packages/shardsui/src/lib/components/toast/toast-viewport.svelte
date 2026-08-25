@@ -68,7 +68,7 @@
       const activeEl = doc.activeElement
       if (
         target === win ||
-        !contains(provider.viewport, target as HTMLElement | null) ||
+        !contains(provider.viewport, target) ||
         !matchesFocusVisible(activeEl)
       ) {
         provider.resumeTimers()
@@ -152,8 +152,7 @@
   }
 
   function exitViewport(event: FocusEvent) {
-    if (!provider.focused || contains(provider.viewport, event.relatedTarget as HTMLElement | null))
-      return
+    if (!provider.focused || contains(provider.viewport, event.relatedTarget)) return
     provider.focused = false
     resumeTimersIfWindowFocused()
   }

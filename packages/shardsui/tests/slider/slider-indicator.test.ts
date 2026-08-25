@@ -10,18 +10,18 @@ const THUMB_SIZE = 10
 const parityCases = (['horizontal-ltr', 'horizontal-rtl', 'vertical-ltr'] as const).flatMap(
   (axis) =>
     (['center', 'edge'] as const).flatMap((alignment) =>
-      (['single', 'range'] as const).map((valueShape) => ({ axis, alignment, valueShape }))
+      (['single', 'range'] as const).map((valueKind) => ({ axis, alignment, valueKind }))
     )
 )
 
 describe('<Slider.Indicator />', () => {
   it.skipIf(isJSDOM).each(parityCases)(
-    'preserves keyboard and indicator parity for $axis $alignment $valueShape sliders',
-    async ({ axis, alignment, valueShape }) => {
+    'preserves keyboard and indicator parity for $axis $alignment $valueKind sliders',
+    async ({ axis, alignment, valueKind }) => {
       const user = userEvent.setup()
       const vertical = axis === 'vertical-ltr'
       const direction = axis === 'horizontal-rtl' ? 'rtl' : 'ltr'
-      const range = valueShape === 'range'
+      const range = valueKind === 'range'
       const edge = alignment === 'edge'
 
       render(ThumbAlignment, {

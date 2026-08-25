@@ -10,18 +10,37 @@
     step = 1,
     largeStep = 10,
     disabled = false,
-    name = undefined,
-    format = undefined,
-    locale = undefined,
-    ariaLabelledby = undefined,
-    thumbAriaLabelledby = undefined,
-    thumbAriaValuetext = undefined,
-    thumbTabindex = undefined,
-    thumbOnfocus = undefined as ((event: FocusEvent) => void) | undefined,
-    thumbOnblur = undefined as ((event: FocusEvent) => void) | undefined,
+    name,
+    format,
+    locale,
+    ariaLabelledby,
+    thumbAriaLabelledby,
+    thumbAriaValuetext,
+    thumbTabindex,
+    thumbOnfocus,
+    thumbOnblur,
     showChild = false,
-    onValueChange = undefined as ((value: Value) => void) | undefined,
-    onValueCommitted = undefined as ((value: Value) => void) | undefined
+    onValueChange,
+    onValueCommitted
+  }: {
+    value?: Value
+    min?: number
+    max?: number
+    step?: number
+    largeStep?: number
+    disabled?: boolean
+    name?: string
+    format?: Intl.NumberFormatOptions
+    locale?: string
+    ariaLabelledby?: string
+    thumbAriaLabelledby?: string
+    thumbAriaValuetext?: string
+    thumbTabindex?: number
+    thumbOnfocus?: (event: FocusEvent) => void
+    thumbOnblur?: (event: FocusEvent) => void
+    showChild?: boolean
+    onValueChange?: (value: Value) => void
+    onValueCommitted?: (value: Value) => void
   } = $props()
 </script>
 

@@ -1,12 +1,12 @@
 <script lang="ts">
   import { Autocomplete } from '$lib/components/autocomplete'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import { Form } from '$lib/components/form'
 
   let {
-    validate = undefined
+    validate
   }: {
-    validate?: (value: unknown) => string | null
+    validate?: FieldValidator
   } = $props()
 </script>
 

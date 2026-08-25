@@ -13,7 +13,7 @@
   } = $props()
 </script>
 
-<Select.Root {value} items={items as never}>
+<Select.Root {value} {items}>
   <Select.Value data-testid="value">
     {#snippet children(v)}Custom: {v}{/snippet}
   </Select.Value>

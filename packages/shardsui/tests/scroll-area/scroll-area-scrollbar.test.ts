@@ -55,7 +55,7 @@ describe('<ScrollArea.Scrollbar />', () => {
         this: Element,
         selector: string
       ) {
-        if (selector === ':hover' && (this as HTMLElement).dataset.testid === 'viewport') {
+        if (selector === ':hover' && this.getAttribute('data-testid') === 'viewport') {
           return true
         }
         return originalMatches.call(this, selector)

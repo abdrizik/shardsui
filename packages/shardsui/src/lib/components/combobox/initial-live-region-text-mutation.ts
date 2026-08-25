@@ -7,7 +7,7 @@ const LIVE_REGION_MARKER = '\u2060'
 // Safari VoiceOver needed roughly 200ms to reliably notice the initial polite live-region change.
 const INITIAL_LIVE_REGION_TEXT_MUTATION_RESET_DELAY = 200
 
-function findLastTextNode(root: HTMLElement): Text | null {
+function findLastTextNode(root: Element): Text | null {
   const walker = root.ownerDocument.createTreeWalker(root, NodeFilter.SHOW_TEXT)
   let lastTextNode: Text | null = null
 
@@ -26,8 +26,7 @@ export const initialLiveRegionTextMutation: Attachment = (node) => {
     return undefined
   }
 
-  const root = node as HTMLElement
-  const textNode = findLastTextNode(root)
+  const textNode = findLastTextNode(node)
   if (textNode == null) {
     return undefined
   }

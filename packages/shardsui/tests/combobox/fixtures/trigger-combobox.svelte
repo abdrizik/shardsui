@@ -4,26 +4,40 @@
 
   let {
     value = $bindable(),
-    onValueChange = undefined,
+    onValueChange,
     open = $bindable(),
-    onOpenChange = undefined,
+    onOpenChange,
     disabled = false,
     triggerDisabled = false,
     readOnly = false,
     required = false,
     multiple = false,
     inputInsidePopup = false,
-    items = undefined as readonly unknown[] | undefined,
-    side = undefined as Side | undefined,
-    triggerAs = 'button' as 'button' | 'div'
+    items,
+    side,
+    triggerAs = 'button'
+  }: {
+    value?: unknown
+    onValueChange?: (value: unknown) => void
+    open?: boolean
+    onOpenChange?: (open: boolean) => void
+    disabled?: boolean
+    triggerDisabled?: boolean
+    readOnly?: boolean
+    required?: boolean
+    multiple?: boolean
+    inputInsidePopup?: boolean
+    items?: readonly string[]
+    side?: Side
+    triggerAs?: 'button' | 'div'
   } = $props()
 
-  const fallbackItems = ['apple', 'banana', 'cherry']
-  const labels: Record<string, string> = { apple: 'Apple', banana: 'Banana', cherry: 'Cherry' }
+  const fallbackItems = ['apple', 'banana', 'cherry'] as const
+  const labels = { apple: 'Apple', banana: 'Banana', cherry: 'Cherry' }
 </script>
 
 <Combobox.Root
-  items={items as never}
+  {items}
   {value}
   {onValueChange}
   {open}

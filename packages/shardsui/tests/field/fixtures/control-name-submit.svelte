@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import { Form } from '$lib/components/form'
 
   let {
@@ -7,7 +7,7 @@
     validate
   }: {
     onFormSubmit: (values: Record<string, unknown>) => void
-    validate: (value: unknown, formValues: unknown) => null
+    validate: FieldValidator
   } = $props()
 </script>
 

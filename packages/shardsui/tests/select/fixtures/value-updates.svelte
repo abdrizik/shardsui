@@ -3,7 +3,7 @@
   import { Select } from '$lib/components/select'
 
   let {
-    items = undefined,
+    items,
     initialValue = 'sans'
   }: {
     items?: Record<string, unknown> | ReadonlyArray<{ value: unknown; label: unknown }>
@@ -15,7 +15,7 @@
 
 <button onclick={() => (value = 'serif')}>serif</button>
 <button onclick={() => (value = 'mono')}>mono</button>
-<Select.Root {value} onValueChange={(v) => (value = v as string | null)} {items}>
+<Select.Root {value} onValueChange={(v: string | null) => (value = v)} {items}>
   <Select.Trigger>
     <Select.Value data-testid="value" />
   </Select.Trigger>

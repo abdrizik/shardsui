@@ -4,20 +4,35 @@
   type Value = number | number[]
 
   let {
-    value = $bindable([20, 50] as number[]),
+    value = $bindable([20, 50]),
     min = 0,
     max = 100,
     step = 1,
     largeStep = 10,
     minStepsBetweenValues = 0,
-    thumbCollisionBehavior = 'push' as 'push' | 'swap' | 'none',
-    onValueChange = undefined as ((value: Value) => void) | undefined,
-    onValueCommitted = undefined as ((value: Value) => void) | undefined,
+    thumbCollisionBehavior = 'push',
+    onValueChange,
+    onValueCommitted,
     disabled = false,
-    orientation = 'horizontal' as 'horizontal' | 'vertical',
-    name = undefined,
-    format = undefined,
-    locale = undefined
+    orientation = 'horizontal',
+    name,
+    format,
+    locale
+  }: {
+    value?: number[]
+    min?: number
+    max?: number
+    step?: number
+    largeStep?: number
+    minStepsBetweenValues?: number
+    thumbCollisionBehavior?: 'push' | 'swap' | 'none'
+    onValueChange?: (value: Value) => void
+    onValueCommitted?: (value: Value) => void
+    disabled?: boolean
+    orientation?: 'horizontal' | 'vertical'
+    name?: string
+    format?: Intl.NumberFormatOptions
+    locale?: string
   } = $props()
 </script>
 

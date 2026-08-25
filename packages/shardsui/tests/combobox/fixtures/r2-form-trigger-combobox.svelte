@@ -3,7 +3,7 @@
   import { Field } from '$lib/components/field'
   import { Form } from '$lib/components/form'
 
-  let { onsubmit = undefined as ((event: SubmitEvent) => void) | undefined } = $props()
+  let { onsubmit = undefined }: { onsubmit?: (event: SubmitEvent) => void } = $props()
 </script>
 
 <Form {onsubmit}>

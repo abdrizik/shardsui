@@ -5,11 +5,11 @@ const components = import.meta.glob<Component>('/src/lib/components/content/demo
   eager: true
 })
 
-const sources = import.meta.glob('/src/lib/components/content/demos/**/demo.svelte', {
+const sources = import.meta.glob<string>('/src/lib/components/content/demos/**/demo.svelte', {
   query: '?raw',
   import: 'default',
   eager: true
-}) as Record<string, string>
+})
 
 function demoPath(name: string): string {
   return `/src/lib/components/content/demos/${name}/demo.svelte`

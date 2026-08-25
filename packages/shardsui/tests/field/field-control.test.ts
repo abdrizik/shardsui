@@ -1,4 +1,4 @@
-import { Field } from '$lib/components/field'
+import { Field, type FieldValidator } from '$lib/components/field'
 import { fireEvent, render, screen } from '@testing-library/svelte'
 import { expect, vi } from 'vitest'
 import PrefilledRequired from './fixtures/prefilled-required.svelte'
@@ -12,7 +12,7 @@ describe('<Field.Control />', () => {
   })
 
   it('validates once when changed by the user', async () => {
-    const validate = vi.fn((_value: unknown, _formValues: unknown) => null)
+    const validate = vi.fn<FieldValidator>(() => null)
     render(ValidatedField, { validate, validationMode: 'onChange' })
 
     await fireEvent.input(screen.getByTestId('control'), { target: { value: 'a' } })

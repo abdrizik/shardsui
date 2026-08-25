@@ -1,15 +1,15 @@
 <script lang="ts">
   import { Form } from '$lib/components/form'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
 
-  let { validate }: { validate?: (value: unknown) => string | null } = $props()
+  let { validate }: { validate?: FieldValidator } = $props()
 
   let errors = $state<Record<string, string | string[]>>({})
 
   function onsubmit(event: SubmitEvent) {
     event.preventDefault()
     const formData = new FormData(event.currentTarget as HTMLFormElement)
-    const name = (formData.get('name') as string) ?? ''
+    const name = String(formData.get('name') ?? '')
     errors = name === 'abcde' ? { name: 'submit error' } : {}
   }
 </script>

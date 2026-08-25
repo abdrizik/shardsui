@@ -176,20 +176,19 @@ describe('<Combobox.Trigger />', () => {
       render(TriggerCancelOpen)
 
       const trigger = screen.getByTestId('trigger')
-      trigger.getBoundingClientRect = () =>
-        ({
-          left: 0,
-          top: 0,
-          right: 100,
-          bottom: 40,
-          width: 100,
-          height: 40,
-          x: 0,
-          y: 0,
-          toJSON() {
-            return {}
-          }
-        }) as DOMRect
+      trigger.getBoundingClientRect = (): DOMRect => ({
+        left: 0,
+        top: 0,
+        right: 100,
+        bottom: 40,
+        width: 100,
+        height: 40,
+        x: 0,
+        y: 0,
+        toJSON() {
+          return {}
+        }
+      })
 
       fireEvent.pointerDown(trigger, { pointerType: 'mouse', button: 0 })
       fireEvent.mouseDown(trigger, { button: 0 })

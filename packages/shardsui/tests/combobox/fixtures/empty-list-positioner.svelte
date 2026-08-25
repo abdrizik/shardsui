@@ -4,7 +4,7 @@
 
   let {
     open = $bindable(true),
-    items = [] as readonly unknown[],
+    items = [],
     withEmpty = false
   }: {
     open?: boolean
@@ -13,7 +13,7 @@
   } = $props()
 </script>
 
-<Combobox.Root {open} items={items as never}>
+<Combobox.Root {open} {items}>
   <Combobox.Input data-testid="input" />
   <Combobox.Portal>
     <Combobox.Positioner data-testid="positioner">

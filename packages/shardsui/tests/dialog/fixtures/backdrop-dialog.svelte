@@ -5,7 +5,13 @@
     includeNestedBackdrop = false,
     nestedOpen = true,
     modal = false,
-    onOpenChange = undefined as ((open: boolean) => void) | undefined
+    onOpenChange
+  }: {
+    open?: boolean
+    includeNestedBackdrop?: boolean
+    nestedOpen?: boolean
+    modal?: boolean
+    onOpenChange?: (open: boolean) => void
   } = $props()
 </script>
 

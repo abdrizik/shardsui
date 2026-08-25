@@ -3,11 +3,11 @@
 
   let {
     value = $bindable(null),
-    onValueChange = undefined,
-    delay = undefined,
-    closeDelay = undefined,
+    onValueChange,
+    delay,
+    closeDelay,
     keepMountedPortal = false,
-    orientation = 'horizontal' as 'horizontal' | 'vertical'
+    orientation = 'horizontal'
   }: {
     value?: unknown
     onValueChange?: (value: unknown) => void

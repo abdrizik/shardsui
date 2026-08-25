@@ -3,12 +3,20 @@
 
   let {
     value = $bindable(),
-    onValueChange = undefined,
+    onValueChange,
     open = $bindable(),
     disabled = false,
     readOnly = false,
-    chips = [] as string[],
-    removeAs = 'button' as 'button' | 'div'
+    chips = [],
+    removeAs = 'button'
+  }: {
+    value?: string[] | null
+    onValueChange?: (value: unknown) => void
+    open?: boolean
+    disabled?: boolean
+    readOnly?: boolean
+    chips?: string[]
+    removeAs?: 'button' | 'div'
   } = $props()
 </script>
 

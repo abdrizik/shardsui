@@ -65,7 +65,7 @@ describe('<Select.Item />', () => {
   it('does not select a disabled item', async () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()
-    render(SelectWithDisabledItem, { onValueChange } as unknown as Record<string, unknown>)
+    render(SelectWithDisabledItem, { onValueChange })
 
     await user.click(screen.getByRole('combobox'))
     const disabledItem = screen.getByRole('option', { name: 'Option B (disabled)' })

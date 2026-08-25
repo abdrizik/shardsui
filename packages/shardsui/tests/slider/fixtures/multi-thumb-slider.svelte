@@ -1,12 +1,19 @@
 <script lang="ts">
   import { Slider } from '$lib/components/slider'
   let {
-    value = $bindable([40, 60, 80, 95] as number[]),
+    value = $bindable([40, 60, 80, 95]),
     min = 0,
     max = 100,
     step = 1,
     minStepsBetweenValues = 0,
-    thumbCollisionBehavior = 'push' as 'push' | 'swap' | 'none'
+    thumbCollisionBehavior = 'push'
+  }: {
+    value?: number[]
+    min?: number
+    max?: number
+    step?: number
+    minStepsBetweenValues?: number
+    thumbCollisionBehavior?: 'push' | 'swap' | 'none'
   } = $props()
 </script>
 

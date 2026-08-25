@@ -5,25 +5,18 @@ import BasicSlider from './fixtures/basic-slider.svelte'
 import ControlOutsideRoot from './fixtures/control-outside-root.svelte'
 import ControlSlider from './fixtures/control-slider.svelte'
 
-function mockRect(element: HTMLElement, rect: Partial<DOMRect>) {
+function mockRect(
+  element: HTMLElement,
+  rect: { left?: number; top?: number; width?: number; height?: number }
+) {
+  const { left = 0, top = 0, width = 0, height = 0 } = rect
   vi.spyOn(element, 'getBoundingClientRect').mockImplementation(
-    () =>
-      ({
-        width: 0,
-        height: 0,
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        x: 0,
-        y: 0,
-        ...rect
-      }) as DOMRect
+    () => new DOMRect(left, top, width, height)
   )
 }
 
 function mockHorizontalControl(control: HTMLElement, width = 100) {
-  mockRect(control, { width, height: 10, right: width, bottom: 10 })
+  mockRect(control, { width, height: 10 })
 }
 
 // jsdom has no `Touch` constructor, so `changedTouches` is defined on a plain Event instead.
@@ -56,7 +49,7 @@ describe('<Slider.Control />', () => {
     const control = screen.getByTestId('control')
     const lastThumb = screen.getByTestId('thumb-2')
     mockHorizontalControl(control)
-    mockRect(lastThumb, { width: 20, height: 10, left: 90, right: 110, bottom: 10 })
+    mockRect(lastThumb, { width: 20, height: 10, left: 90 })
 
     fireEvent.pointerDown(lastThumb, { buttons: 1, clientX: 100 })
     fireEvent.pointerMove(document.body, { buttons: 1, clientX: 50 })
@@ -76,7 +69,7 @@ describe('<Slider.Control />', () => {
     const control = screen.getByTestId('control')
     const thumb = screen.getByTestId('thumb-0')
     mockHorizontalControl(control)
-    mockRect(thumb, { width: 20, height: 10, left: 10, right: 30, bottom: 10 })
+    mockRect(thumb, { width: 20, height: 10, left: 10 })
 
     fireEvent.pointerDown(thumb, { buttons: 1, clientX: 30 })
     fireEvent.pointerMove(document.body, { buttons: 1, clientX: 70 })
@@ -97,7 +90,7 @@ describe('<Slider.Control />', () => {
     const control = screen.getByTestId('control')
     const thumb = screen.getByTestId('thumb-0')
     mockHorizontalControl(control)
-    mockRect(thumb, { width: 20, height: 10, left: 10, right: 30, bottom: 10 })
+    mockRect(thumb, { width: 20, height: 10, left: 10 })
 
     fireEvent.pointerDown(thumb, { button: 0, buttons: 1, clientX: 20 })
     fireEvent.pointerMove(document.body, { buttons: 1, clientX: 80 })
@@ -109,15 +102,15 @@ describe('<Slider.Control />', () => {
     {
       name: 'horizontal',
       orientation: 'horizontal' as const,
-      control: { width: 100, height: 10, right: 100, bottom: 10 },
-      thumb: { width: 20, height: 10, left: 40, right: 60, bottom: 10 },
+      control: { width: 100, height: 10 },
+      thumb: { width: 20, height: 10, left: 40 },
       pointer: { clientX: 10, clientY: 5 }
     },
     {
       name: 'vertical',
       orientation: 'vertical' as const,
-      control: { width: 10, height: 100, right: 10, bottom: 100 },
-      thumb: { width: 10, height: 20, top: 40, right: 10, bottom: 60 },
+      control: { width: 10, height: 100 },
+      thumb: { width: 10, height: 20, top: 40 },
       pointer: { clientX: 5, clientY: 90 }
     }
   ]

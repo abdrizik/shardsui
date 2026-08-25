@@ -6,8 +6,8 @@
 
   let {
     open = true,
-    collisionAvoidance = { side: 'flip' } as CollisionAvoidance,
-    anchor = undefined
+    collisionAvoidance = { side: 'flip' },
+    anchor
   }: {
     open?: boolean
     collisionAvoidance?: CollisionAvoidance

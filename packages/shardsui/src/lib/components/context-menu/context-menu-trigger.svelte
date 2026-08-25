@@ -49,7 +49,7 @@
   const blockNativeContextMenu: Attachment<HTMLElement> = (element) =>
     on(element.ownerDocument, 'contextmenu', (event) => {
       if (menu.disabled) return
-      const target = getTarget(event) as Node | null
+      const target = getTarget(event)
       if (
         contains(element, target) ||
         contains(menu.internalBackdropElement, target) ||
@@ -83,9 +83,9 @@
     allowMouseUpTimeout.clear()
     allowMouseUp = false
 
-    const target = getTarget(event) as Element | null
+    const target = getTarget(event)
     if (contains(menu.positionerElement, target)) return
-    if (target && findRootOwnerId(target) === menu.rootId) return
+    if (findRootOwnerId(target) === menu.rootId) return
 
     menu.setOpen(false, REASONS.cancelOpen, event)
   }

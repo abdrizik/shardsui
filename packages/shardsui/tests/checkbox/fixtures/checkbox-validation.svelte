@@ -1,17 +1,17 @@
 <script lang="ts">
   import { Checkbox } from '$lib/components/checkbox'
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import { Form, type FormValidationMode } from '$lib/components/form'
 
   let {
     validationMode = 'onBlur',
-    validate = undefined,
+    validate,
     required = false,
     invalid = false,
     useForm = false
   }: {
     validationMode?: FormValidationMode
-    validate?: (val: unknown) => string | null
+    validate?: FieldValidator
     required?: boolean
     invalid?: boolean
     useForm?: boolean

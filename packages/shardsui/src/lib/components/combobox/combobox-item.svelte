@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { isElement } from '@floating-ui/utils/dom'
   import { Button } from '$lib/internal/button.svelte'
   import { chain } from '$lib/internal/chain'
   import { dataAttrs } from '$lib/internal/data-attrs'
@@ -85,8 +86,8 @@
   const id = $derived(index >= 0 ? `${combobox.rootId}-${index}` : undefined)
 
   function selectItem(domEvent: Event) {
-    const targetEl = getTarget(domEvent) as HTMLElement | null
-    const href = targetEl?.closest('a')?.getAttribute('href')
+    const targetEl = getTarget(domEvent)
+    const href = isElement(targetEl) ? targetEl.closest('a')?.getAttribute('href') : undefined
     if (href) {
       if (href.startsWith('#')) {
         combobox.setOpen(false, REASONS.itemPress)

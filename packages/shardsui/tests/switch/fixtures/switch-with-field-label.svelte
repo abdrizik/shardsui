@@ -1,7 +1,8 @@
 <script lang="ts">
   import { Switch } from '$lib/components/switch'
   import { Field } from '$lib/components/field'
-  let { labelPosition = 'sibling' as 'implicit' | 'sibling' | 'nonNativeLabel' } = $props()
+  let { labelPosition = 'sibling' }: { labelPosition?: 'implicit' | 'sibling' | 'nonNativeLabel' } =
+    $props()
 </script>
 
 <Field.Root>

@@ -5,13 +5,15 @@
   type Country = { code: string; label: string }
 
   let {
-    countries = undefined as Country[] | undefined,
+    countries,
     inputInsidePopup = false,
-    isItemEqualToValue = ((item: Country, v: Country) => item?.code === v?.code) as (
-      item: Country,
-      v: Country
-    ) => boolean,
-    initialValue = undefined as Country | undefined
+    isItemEqualToValue = (item: Country, v: Country) => item?.code === v?.code,
+    initialValue
+  }: {
+    countries?: Country[]
+    inputInsidePopup?: boolean
+    isItemEqualToValue?: (item: Country, v: Country) => boolean
+    initialValue?: Country
   } = $props()
 
   let value = $state<Country | null>(untrack(() => initialValue) ?? null)
@@ -19,12 +21,12 @@
 </script>
 
 <Combobox.Root
-  items={countries as never}
+  items={countries}
   filter={null}
   bind:value
   bind:inputValue
-  isItemEqualToValue={isItemEqualToValue as never}
-  itemToStringLabel={((item: Country) => item.label) as never}
+  {isItemEqualToValue}
+  itemToStringLabel={(item: Country) => item.label}
 >
   {#if !inputInsidePopup}
     <Combobox.Input data-testid="input" />

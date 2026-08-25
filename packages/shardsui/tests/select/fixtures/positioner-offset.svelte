@@ -7,9 +7,9 @@
   } from '$lib/internal/floating/anchor-positioning.svelte'
 
   let {
-    sideOffset = undefined,
-    alignOffset = undefined,
-    side = undefined,
+    sideOffset,
+    alignOffset,
+    side,
     align = 'center'
   }: {
     sideOffset?: number | OffsetFunction
@@ -22,13 +22,7 @@
 <Select.Root open>
   <Select.Trigger style="width:72px;height:36px">Trigger</Select.Trigger>
   <Select.Portal>
-    <Select.Positioner
-      data-testid="positioner"
-      {side}
-      {align}
-      sideOffset={sideOffset as never}
-      alignOffset={alignOffset as never}
-    >
+    <Select.Positioner data-testid="positioner" {side} {align} {sideOffset} {alignOffset}>
       <Select.Popup style="width:52px;height:24px">Popup</Select.Popup>
     </Select.Positioner>
   </Select.Portal>

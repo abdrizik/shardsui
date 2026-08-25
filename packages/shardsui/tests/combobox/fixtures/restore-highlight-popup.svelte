@@ -1,20 +1,31 @@
 <script lang="ts">
+  import type { ComponentProps } from 'svelte'
   import { Combobox } from '$lib/components/combobox'
   import ItemsList from './items-list.svelte'
 
+  type RootProps = ComponentProps<typeof Combobox.Root>
+
   let {
-    items = undefined as readonly unknown[] | undefined,
-    staticItems = undefined as string[] | undefined,
+    items,
+    staticItems,
     value = $bindable(),
     multiple = false,
     autoHighlight = false,
-    onItemHighlighted = undefined,
-    itemToStringLabel = undefined as ((item: unknown) => string) | undefined
+    onItemHighlighted,
+    itemToStringLabel
+  }: {
+    items?: RootProps['items']
+    staticItems?: string[]
+    value?: RootProps['value']
+    multiple?: boolean
+    autoHighlight?: boolean
+    onItemHighlighted?: RootProps['onItemHighlighted']
+    itemToStringLabel?: RootProps['itemToStringLabel']
   } = $props()
 </script>
 
 <Combobox.Root
-  items={items as never}
+  {items}
   bind:value
   {multiple}
   {autoHighlight}

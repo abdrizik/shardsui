@@ -4,9 +4,13 @@
   import type { FieldValidator } from '$lib/components/field/field.svelte'
 
   let {
-    validate = (() => null) as FieldValidator,
-    value = [20, 50] as number[],
+    validate = () => null,
+    value = [20, 50],
     showHelp = false
+  }: {
+    validate?: FieldValidator
+    value?: number[]
+    showHelp?: boolean
   } = $props()
 </script>
 

@@ -1,13 +1,15 @@
 <script lang="ts">
-  import DialogShapes from './dialog-shapes.svelte'
+  import DialogArrangements from './dialog-arrangements.svelte'
 
-  let { shape = 'contained' }: { shape?: 'contained' | 'detached' | 'multiple-detached' } = $props()
+  let {
+    arrangement = 'contained'
+  }: { arrangement?: 'contained' | 'detached' | 'multiple-detached' } = $props()
 
   let open = $state(false)
 </script>
 
-<DialogShapes
-  {shape}
+<DialogArrangements
+  {arrangement}
   bind:open={
     () => open,
     (next) => {

@@ -4,7 +4,11 @@
   let {
     value = $bindable(),
     multiple = false,
-    placeholder = undefined as string | undefined
+    placeholder
+  }: {
+    value?: unknown
+    multiple?: boolean
+    placeholder?: string
   } = $props()
 </script>
 

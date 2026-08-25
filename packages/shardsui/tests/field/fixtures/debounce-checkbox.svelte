@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Field } from '$lib/components/field'
+  import { Field, type FieldValidator } from '$lib/components/field'
   import { Checkbox } from '$lib/components/checkbox'
 
-  let { validate }: { validate: (value: unknown) => string | null } = $props()
+  let { validate }: { validate: FieldValidator } = $props()
 </script>
 
 <Field.Root validationDebounceTime={100} validationMode="onChange" {validate}>

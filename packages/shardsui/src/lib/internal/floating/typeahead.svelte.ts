@@ -130,7 +130,7 @@ export function createTypeahead(options: () => TypeaheadOptions) {
       const opts = options()
       if (opts.enabled === false) return
 
-      const next = event.relatedTarget as Element | null
+      const next = event.relatedTarget
       const referenceElement = opts.referenceElement
       const floatingElement = opts.floatingElement
 

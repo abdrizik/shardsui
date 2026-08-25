@@ -8,7 +8,7 @@ import DrawerSwipeArea from './fixtures/drawer-swipe-area.svelte'
 type Point = { x: number; y: number }
 
 type SwipeOptions = {
-  beforeRelease?: () => unknown | Promise<unknown>
+  beforeRelease?: () => void | Promise<void>
   input?: 'pointer' | 'touch'
 }
 
@@ -140,18 +140,14 @@ async function swipeLeft(
 }
 
 describe('<Drawer.SwipeArea />', () => {
-  let originalPointerEvent: typeof PointerEvent | undefined
-
   beforeAll(() => {
     // PointerEvent is not fully implemented in jsdom, so fireEvent.pointer* ignores options.
     // https://github.com/jsdom/jsdom/issues/2527
-    originalPointerEvent = (window as Window & { PointerEvent?: typeof PointerEvent }).PointerEvent
-    ;(window as Window & { PointerEvent: typeof MouseEvent }).PointerEvent =
-      window.MouseEvent as unknown as typeof PointerEvent
+    vi.stubGlobal('PointerEvent', window.MouseEvent)
   })
 
   afterAll(() => {
-    ;(window as Window & { PointerEvent?: typeof PointerEvent }).PointerEvent = originalPointerEvent
+    vi.unstubAllGlobals()
   })
 
   it('opens the drawer when swiped in the open direction', async () => {

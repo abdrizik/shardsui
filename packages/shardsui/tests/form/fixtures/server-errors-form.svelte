@@ -7,8 +7,8 @@
   function onsubmit(event: SubmitEvent) {
     event.preventDefault()
     const formData = new FormData(event.currentTarget as HTMLFormElement)
-    const name = (formData.get('name') as string) ?? ''
-    const age = (formData.get('age') as string) ?? ''
+    const name = String(formData.get('name') ?? '')
+    const age = String(formData.get('age') ?? '')
     errors = {
       ...(name === '' && { name: 'Name is required' }),
       ...(age === '' && { age: 'Age is required' })

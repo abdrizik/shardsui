@@ -198,7 +198,7 @@ describe('button', () => {
   describe('keyboard activation dispatches real clicks', () => {
     it('bubbles a composed click with detail 0 to ancestors', () => {
       const onclick = vi.fn()
-      const ancestorClick = vi.fn()
+      const ancestorClick = vi.fn<(event: MouseEvent) => void>()
       render(ButtonFixture, { onclick })
       const btn = screen.getByTestId('button')
       btn.parentElement?.addEventListener('click', ancestorClick)
@@ -208,21 +208,21 @@ describe('button', () => {
 
       expect(onclick).toHaveBeenCalledOnce()
       expect(ancestorClick).toHaveBeenCalledOnce()
-      const event = ancestorClick.mock.calls[0][0] as MouseEvent
+      const event = ancestorClick.mock.calls[0][0]
       expect(event.detail).toBe(0)
       expect(event.bubbles).toBe(true)
       expect(event.composed).toBe(true)
     })
 
     it('carries modifier key state', () => {
-      const onclick = vi.fn()
+      const onclick = vi.fn<(event: MouseEvent) => void>()
       render(ButtonFixture, { onclick })
       const btn = screen.getByTestId('button')
       btn.focus()
 
       fireEvent.keyDown(btn, { key: 'Enter', shiftKey: true, metaKey: true })
 
-      const event = onclick.mock.calls[0][0] as MouseEvent
+      const event = onclick.mock.calls[0][0]
       expect(event.shiftKey).toBe(true)
       expect(event.metaKey).toBe(true)
       expect(event.ctrlKey).toBe(false)

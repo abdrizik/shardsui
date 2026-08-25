@@ -60,7 +60,7 @@ export class PopupTriggerMap<TriggerBindings = Record<string, unknown>> {
     return false
   }
 
-  containsNode(target: Node | null | undefined): boolean {
+  containsNode(target: EventTarget | null | undefined): boolean {
     for (const element of this.#idMap.values()) {
       if (contains(element, target)) {
         return true

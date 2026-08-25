@@ -5,14 +5,23 @@
   type Value = number | number[]
 
   let {
-    direction = 'ltr' as TextDirection,
-    orientation = 'horizontal' as 'horizontal' | 'vertical',
-    value = 20 as Value,
+    direction = 'ltr',
+    orientation = 'horizontal',
+    value = 20,
     min = 0,
     max = 100,
     step = 1,
     largeStep = 10,
-    onValueChange = undefined as ((value: Value) => void) | undefined
+    onValueChange
+  }: {
+    direction?: TextDirection
+    orientation?: 'horizontal' | 'vertical'
+    value?: Value
+    min?: number
+    max?: number
+    step?: number
+    largeStep?: number
+    onValueChange?: (value: Value) => void
   } = $props()
 
   const values = $derived(Array.isArray(value) ? value : [value])

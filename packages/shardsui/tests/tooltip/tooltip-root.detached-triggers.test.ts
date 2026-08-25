@@ -2,7 +2,7 @@ import { Tooltip } from '$lib/components/tooltip'
 import { fireEvent, render, screen, waitFor } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
 import { tick } from 'svelte'
-import { expect, vi } from 'vitest'
+import { expect, type MockInstance, vi } from 'vitest'
 import { isJSDOM } from '../test-utils'
 import DetachedDisabled from './fixtures/detached-disabled.svelte'
 import DetachedHover from './fixtures/detached-hover.svelte'
@@ -15,10 +15,8 @@ import SharedHandleRoots from './fixtures/shared-handle-roots.svelte'
 import TooltipDetachedControlled from './fixtures/tooltip-detached-controlled.svelte'
 import TooltipDetachedPayload from './fixtures/tooltip-detached-payload.svelte'
 
-function warningsMatching(spy: ReturnType<typeof vi.spyOn>, text: string) {
-  return spy.mock.calls.filter(
-    ([message]: unknown[]) => typeof message === 'string' && message.includes(text)
-  )
+function warningsMatching(spy: MockInstance<typeof console.warn>, text: string) {
+  return spy.mock.calls.filter(([message]) => typeof message === 'string' && message.includes(text))
 }
 
 describe('<Tooltip.Root />', () => {

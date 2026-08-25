@@ -1,11 +1,11 @@
 <script lang="ts">
-  import DialogShapes from './dialog-shapes.svelte'
+  import DialogArrangements from './dialog-arrangements.svelte'
 
   let {
-    shape = 'contained',
-    onOpenChangeComplete = undefined
+    arrangement = 'contained',
+    onOpenChangeComplete
   }: {
-    shape?: 'contained' | 'detached' | 'multiple-detached'
+    arrangement?: 'contained' | 'detached' | 'multiple-detached'
     onOpenChangeComplete?: (open: boolean) => void
   } = $props()
 
@@ -34,8 +34,8 @@
   </style>
   <button onclick={() => (open = true)}>Open externally</button>
   <button onclick={() => (variant = variant === 'a' ? 'b' : 'a')}>Swap animation</button>
-  <DialogShapes
-    {shape}
+  <DialogArrangements
+    {arrangement}
     bind:open
     popupClass={`animation-test-indicator animation-${variant}`}
     {onOpenChangeComplete}

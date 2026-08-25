@@ -6,7 +6,7 @@
   type Item = { code: string; label: string }
 
   let {
-    onFormSubmit = undefined
+    onFormSubmit
   }: {
     onFormSubmit?: (values: Record<string, unknown>) => void
   } = $props()
@@ -17,7 +17,7 @@
   ]
 </script>
 
-<Form onFormSubmit={(values) => onFormSubmit?.(values)}>
+<Form {onFormSubmit}>
   <Field.Root name="country">
     <Select.Root
       value={items[0]}

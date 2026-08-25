@@ -2,10 +2,15 @@
   import { Combobox } from '$lib/components/combobox'
 
   let {
-    id = undefined as string | undefined,
+    id,
     open = $bindable(),
     inputInsidePopup = false,
-    popupId = undefined as string | undefined
+    popupId
+  }: {
+    id?: string
+    open?: boolean
+    inputInsidePopup?: boolean
+    popupId?: string
   } = $props()
 </script>
 

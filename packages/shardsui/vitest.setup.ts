@@ -22,7 +22,7 @@ document.addEventListener('submit', (event) => event.preventDefault(), true)
 document.addEventListener(
   'click',
   (event) => {
-    if ((event.target as Element | null)?.closest?.('a')?.getAttribute('href')) {
+    if (event.target instanceof Element && event.target.closest('a')?.getAttribute('href')) {
       event.preventDefault()
     }
   },
@@ -35,7 +35,7 @@ if (typeof globalThis.ResizeObserver === 'undefined') {
     observe() {}
     unobserve() {}
     disconnect() {}
-  } as unknown as typeof ResizeObserver
+  }
 }
 
 if (typeof Element.prototype.getAnimations === 'undefined') {

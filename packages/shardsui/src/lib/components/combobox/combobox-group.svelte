@@ -9,7 +9,7 @@
 
   let { as = 'div', ref = $bindable(null), items, children, ...rest }: Props = $props()
 
-  const group = $state({ labelId: undefined as string | undefined })
+  const group: ComboboxGroupContext = $state({ labelId: undefined })
   ComboboxGroupContext.set(group)
 
   if (untrack(() => items) !== undefined) {

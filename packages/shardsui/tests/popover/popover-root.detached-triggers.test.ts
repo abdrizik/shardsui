@@ -2,7 +2,7 @@ import { Popover } from '$lib/components/popover'
 import { fireEvent, render, screen, waitFor } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
 import { tick } from 'svelte'
-import { expect, vi } from 'vitest'
+import { expect, type MockInstance, vi } from 'vitest'
 import { isJSDOM } from '../test-utils'
 import BasicPopover from './fixtures/basic-popover.svelte'
 import PopoverConditionalTriggers from './fixtures/popover-conditional-triggers.svelte'
@@ -19,10 +19,8 @@ import PopoverProgrammaticTriggers from './fixtures/popover-programmatic-trigger
 import PopoverSharedHandleRoots from './fixtures/popover-shared-handle-roots.svelte'
 import PopoverTriggerAfterRoot from './fixtures/popover-trigger-after-root.svelte'
 
-function warningsMatching(spy: ReturnType<typeof vi.spyOn>, text: string) {
-  return spy.mock.calls.filter(
-    ([message]: unknown[]) => typeof message === 'string' && message.includes(text)
-  )
+function warningsMatching(spy: MockInstance<typeof console.warn>, text: string) {
+  return spy.mock.calls.filter(([message]) => typeof message === 'string' && message.includes(text))
 }
 
 describe('<Popover.Root />', () => {
@@ -212,7 +210,7 @@ describe('<Popover.Root />', () => {
       const popup = screen.getByTestId('popup')
 
       expect(trigger2).toHaveAttribute('aria-expanded', 'true')
-      expect(trigger2).toHaveAttribute('aria-controls', popup.getAttribute('id') as string)
+      expect(trigger2).toHaveAttribute('aria-controls', popup.id)
       expect(trigger1).toHaveAttribute('aria-expanded', 'false')
       expect(trigger1).not.toHaveAttribute('aria-controls')
     })
@@ -314,7 +312,7 @@ describe('<Popover.Root />', () => {
     }
   )
 
-  describe('handle-backed root ownership', () => {
+  describe('handle-backed root ownership: trigger registration', () => {
     it('registers a detached trigger declared after the root', async () => {
       const user = userEvent.setup()
       const handle = new Popover.Handle()

@@ -249,7 +249,7 @@ describe('<Combobox.Root />', () => {
       const { container } = render(EmptyListPositioner, { open: true, items: [] })
       const outer = container.parentElement as HTMLElement
       outer.addEventListener('keydown', (event) => {
-        if ((event as KeyboardEvent).key === 'Escape') onOuterKeyDown()
+        if (event.key === 'Escape') onOuterKeyDown()
       })
 
       const positioner = await screen.findByTestId('positioner')
@@ -269,7 +269,7 @@ describe('<Combobox.Root />', () => {
       const { container } = render(EmptyListPositioner, { open: true, items: [], withEmpty: true })
       const outer = container.parentElement as HTMLElement
       outer.addEventListener('keydown', (event) => {
-        if ((event as KeyboardEvent).key === 'Escape') onOuterKeyDown()
+        if (event.key === 'Escape') onOuterKeyDown()
       })
 
       const positioner = await screen.findByTestId('positioner')
@@ -1281,7 +1281,7 @@ describe('<Combobox.Root />', () => {
       const { container } = render(InlineCombobox, { open: true })
       const outer = container.parentElement as HTMLElement
       outer.addEventListener('keydown', (e) => {
-        if ((e as KeyboardEvent).key === 'Escape') escaped()
+        if (e.key === 'Escape') escaped()
       })
 
       const input = screen.getByTestId('input')
@@ -2041,11 +2041,11 @@ describe('<Combobox.Root />', () => {
     })
 
     it('does not call comparator with null when clearing the value', async () => {
-      const compare = vi.fn((item: unknown, value: unknown) => {
+      const compare = vi.fn((item: { id: number }, value: { id: number }) => {
         if (value == null) {
           throw new Error('Compared against null')
         }
-        return (item as { id: number }).id === (value as { id: number }).id
+        return item.id === value.id
       })
 
       render(ComboboxCompareClear, { isItemEqualToValue: compare })
@@ -2347,8 +2347,10 @@ describe('<Combobox.Root />', () => {
         name: 'country',
         value: countries[0],
         items: countries,
-        itemToStringLabel: (item: unknown) => (item as { label: string }).label,
-        itemToStringValue: (item: unknown) => (item as { code: string }).code
+        itemToStringLabel: (item: unknown) =>
+          countries.find((country) => country === item)?.label ?? '',
+        itemToStringValue: (item: unknown) =>
+          countries.find((country) => country === item)?.code ?? ''
       })
       await user.click(screen.getByText('Submit'))
       expect(handleFormSubmit.mock.calls.length).toBe(1)
@@ -2360,12 +2362,14 @@ describe('<Combobox.Root />', () => {
         name: 'country',
         value: countries[1],
         items: countries,
-        itemToStringLabel: (item: unknown) => (item as { label: string }).label,
-        itemToStringValue: (item: unknown) => (item as { code: string }).code
+        itemToStringLabel: (item: unknown) =>
+          countries.find((country) => country === item)?.label ?? '',
+        itemToStringValue: (item: unknown) =>
+          countries.find((country) => country === item)?.code ?? ''
       })
-      const hiddenInput = document.querySelector('input[name="country"]') as HTMLInputElement | null
+      const hiddenInput = document.querySelector<HTMLInputElement>('input[name="country"]')
       expect(hiddenInput).not.toBeNull()
-      expect(hiddenInput!.value).toBe('CA')
+      expect(hiddenInput?.value).toBe('CA')
     })
 
     it('serializes {value,label} objects using their value field into a hidden input', () => {
@@ -2374,9 +2378,9 @@ describe('<Combobox.Root />', () => {
         { value: 'CA', label: 'Canada' }
       ]
       render(ItemsCombobox, { name: 'country', value: items[1], items })
-      const hiddenInput = document.querySelector('input[name="country"]') as HTMLInputElement | null
+      const hiddenInput = document.querySelector<HTMLInputElement>('input[name="country"]')
       expect(hiddenInput).not.toBeNull()
-      expect(hiddenInput!.value).toBe('CA')
+      expect(hiddenInput?.value).toBe('CA')
     })
 
     it('triggers native HTML validation on submit', async () => {
@@ -2507,7 +2511,7 @@ describe('<Combobox.Root />', () => {
         multiple: true,
         items,
         value: selected,
-        label: (item: unknown) => (item as { label: string }).label
+        label: (item: unknown) => items.find((candidate) => candidate === item)?.label ?? ''
       })
 
       const hiddenInputs = container.querySelectorAll('input[name="countries"]')
@@ -3159,11 +3163,14 @@ describe('<Combobox.Root />', () => {
 
     it('matches browser autofill against an item rendered label when using the items prop', async () => {
       const user = userEvent.setup()
-      const countryNames: Record<string, string> = { US: 'United States', CA: 'Canada' }
+      const countryNames = new Map<unknown, string>([
+        ['US', 'United States'],
+        ['CA', 'Canada']
+      ])
       const { container } = render(ItemsCombobox, {
         name: 'country',
         items: ['US', 'CA'],
-        label: (code: unknown) => countryNames[code as string]
+        label: (code: unknown) => countryNames.get(code) ?? ''
       })
 
       await fireEvent.change(hiddenInput(container), { target: { value: 'Canada' } })
@@ -3302,8 +3309,8 @@ describe('<Combobox.Root />', () => {
       await screen.findByRole('option', { name: 'cherry' })
 
       await waitFor(() => expect(input).toHaveAttribute('aria-activedescendant'))
-      const activeId = input.getAttribute('aria-activedescendant')
-      expect(document.getElementById(activeId as string)).toHaveTextContent('cherry')
+      const activeId = input.getAttribute('aria-activedescendant') ?? ''
+      expect(document.getElementById(activeId)).toHaveTextContent('cherry')
     })
 
     it('returns the highlight to the selected item without the items prop', async () => {
@@ -3321,8 +3328,8 @@ describe('<Combobox.Root />', () => {
       await user.clear(input)
 
       await waitFor(() => expect(input).toHaveAttribute('aria-activedescendant'))
-      const activeId = input.getAttribute('aria-activedescendant')
-      expect(document.getElementById(activeId as string)).toHaveTextContent('cherry')
+      const activeId = input.getAttribute('aria-activedescendant') ?? ''
+      expect(document.getElementById(activeId)).toHaveTextContent('cherry')
     })
 
     it('restores an array-valued single selection when the query is cleared', async () => {
@@ -3335,7 +3342,7 @@ describe('<Combobox.Root />', () => {
       render(RestoreHighlightPopup, {
         items,
         value: items[1],
-        itemToStringLabel: (item: unknown) => (item as number[]).join('-')
+        itemToStringLabel: (item: unknown) => (Array.isArray(item) ? item.join('-') : String(item))
       })
 
       await user.click(screen.getByTestId('trigger'))
@@ -3542,7 +3549,7 @@ describe('<Combobox.Root />', () => {
       )
       expect(
         onItemHighlighted.mock.calls.some(([value]) => {
-          const id = (value as { id?: number } | undefined)?.id
+          const id = value instanceof Object && 'id' in value ? value.id : undefined
           return id !== undefined && id !== 2
         })
       ).toBe(false)

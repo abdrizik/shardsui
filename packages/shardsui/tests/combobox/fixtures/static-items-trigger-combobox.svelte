@@ -4,7 +4,11 @@
   let {
     value = $bindable(),
     keepMounted = false,
-    items = ['apple', 'apricot', 'banana'] as string[]
+    items = ['apple', 'apricot', 'banana']
+  }: {
+    value?: unknown
+    keepMounted?: boolean
+    items?: string[]
   } = $props()
 </script>
 

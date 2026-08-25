@@ -22,7 +22,7 @@
 
         <label for="fruit">Fruit</label>
         <Combobox.Root
-          items={['Apple', 'Banana', 'Cherry'] as never}
+          items={['Apple', 'Banana', 'Cherry']}
           {value}
           onValueChange={(next: unknown) => (value = next as string | null)}
           disabled={loading}

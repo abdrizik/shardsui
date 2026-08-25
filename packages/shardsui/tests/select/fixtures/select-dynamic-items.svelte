@@ -3,10 +3,10 @@
 
   let {
     value = $bindable<string | null>(null),
-    onValueChange = undefined
+    onValueChange
   }: {
-    value?: string | null
-    onValueChange?: (v: unknown) => void
+    value?: unknown
+    onValueChange?: (value: unknown) => void
   } = $props()
 
   let items = $state(['a', 'b', 'c'])

@@ -315,7 +315,7 @@ export class FieldRoot {
   }
 
   #getValidityState(element: HTMLInputElement): ValidityFlags {
-    const computed = {} as ValidityFlags
+    const computed: ValidityFlags = { ...DEFAULT_VALIDITY_STATE }
     for (const key of VALIDITY_KEYS) computed[key] = element.validity[key]
 
     if (computed.valueMissing && !hasErrorBesides(computed, 'valueMissing') && !this.#markedDirty) {

@@ -53,7 +53,7 @@ export function mockResizeObserver() {
     observe() {}
     unobserve() {}
     disconnect() {}
-  } as unknown as typeof ResizeObserver
+  }
   return () => {
     globalThis.ResizeObserver = original
   }

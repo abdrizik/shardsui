@@ -39,7 +39,7 @@
   const select = SelectContext.get()
   const registry = select.itemRegistry
   const isDisabled = $derived(disabled || select.disabled)
-  let pointerType: 'mouse' | 'touch' | 'pen' = 'mouse'
+  let pointerType = 'mouse'
   let allowMouseSelection = false
 
   const itemValue = $derived(value)
@@ -84,7 +84,7 @@
   function isBlockedMouseClick(event: MouseEvent) {
     if (pointerType === 'touch') return false
     const isActivatingVirtualClick =
-      isVirtualClick(event) && ((event as PointerEvent).pointerType !== undefined || highlighted)
+      isVirtualClick(event) && ('pointerType' in event || highlighted)
     return !isActivatingVirtualClick && !allowMouseSelection
   }
 
@@ -101,7 +101,7 @@
   }
 
   function trackPointerType(event: PointerEvent) {
-    pointerType = event.pointerType as 'mouse' | 'touch' | 'pen'
+    pointerType = event.pointerType
   }
 
   function trackDragDistance(event: PointerEvent) {
@@ -113,7 +113,7 @@
   }
 
   function beginMouseSelection(event: PointerEvent) {
-    pointerType = event.pointerType as 'mouse' | 'touch' | 'pen'
+    pointerType = event.pointerType
     allowMouseSelection = true
     select.mouseUpSelection.dragY = 0
   }

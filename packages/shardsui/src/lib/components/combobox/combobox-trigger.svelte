@@ -98,7 +98,7 @@
   }
 
   function commitFieldOnBlur(event: FocusEvent) {
-    if (contains(combobox.positionerElement, event.relatedTarget as Node | null)) return
+    if (contains(combobox.positionerElement, event.relatedTarget)) return
 
     field?.commitOnBlur(combobox.noSelection ? combobox.inputValue : combobox.value)
   }
@@ -133,7 +133,7 @@
         const element = ref
         if (!element) return
         const positioner = combobox.positionerElement
-        const target = getTarget(mouseEvent) as Element | null
+        const target = getTarget(mouseEvent)
 
         if (
           contains(element, target) ||

@@ -21,11 +21,11 @@
 </script>
 
 <Combobox.Root
-  items={movies as never}
+  items={movies}
   bind:value
-  filter={((item: Movie | null, query: string) =>
-    item ? filter.contains(item, query, stringifyMovie) : false) as never}
-  itemToStringLabel={((movie: Movie | null) => movie?.english ?? '') as never}
+  filter={(item: Movie | null, query: string) =>
+    item ? filter.contains(item, query, stringifyMovie) : false}
+  itemToStringLabel={(movie: Movie | null) => movie?.english ?? ''}
 >
   <Combobox.Input data-testid="input" />
   <Combobox.Portal>

@@ -1,4 +1,5 @@
 import { CheckboxGroup } from '$lib/components/checkbox-group'
+import type { FieldValidator } from '$lib/components/field'
 import { fireEvent, render, screen, waitFor } from '@testing-library/svelte'
 import userEvent from '@testing-library/user-event'
 import { expect, vi } from 'vitest'
@@ -51,6 +52,8 @@ import UnmountAllRequired from './fixtures/unmount-all-required.svelte'
 import UnmountAllValidate from './fixtures/unmount-all-validate.svelte'
 import UnmountFirstFocus from './fixtures/unmount-first-focus.svelte'
 import UnmountValidationMode from './fixtures/unmount-validation-mode.svelte'
+
+type CapturedFormData = { data: FormData | null }
 
 describe('<CheckboxGroup />', () => {
   describe('prop: initial value', () => {
@@ -225,10 +228,9 @@ describe('<CheckboxGroup />', () => {
 
   describe('Field', () => {
     it('prop: validationMode=onChange — validates on every change', async () => {
-      const validateSpy = vi.fn((value: unknown) => {
-        const v = value as string[]
-        return v.includes('one') ? 'error' : null
-      })
+      const validateSpy = vi.fn<FieldValidator>((value) =>
+        Array.isArray(value) && value.includes('one') ? 'error' : null
+      )
 
       render(FieldValidationCheckboxGroup, {
         validate: validateSpy,
@@ -260,10 +262,9 @@ describe('<CheckboxGroup />', () => {
     })
 
     it('prop: validationMode=onBlur — validates on blur', async () => {
-      const validateSpy = vi.fn((value: unknown) => {
-        const v = value as string[]
-        return v.includes('one') ? 'error' : null
-      })
+      const validateSpy = vi.fn<FieldValidator>((value) =>
+        Array.isArray(value) && value.includes('one') ? 'error' : null
+      )
 
       render(FieldValidationCheckboxGroup, {
         validate: validateSpy,
@@ -377,8 +378,8 @@ describe('<CheckboxGroup />', () => {
     })
 
     it('does not leave a stale custom error when toggling checkboxes in a group', async () => {
-      const validateSpy = vi.fn((value: unknown) =>
-        (value as string[]).length < 2 ? 'pick two' : null
+      const validateSpy = vi.fn<FieldValidator>((value) =>
+        Array.isArray(value) && value.length >= 2 ? null : 'pick two'
       )
       render(FieldCustomToggle, { validate: validateSpy })
 
@@ -414,11 +415,11 @@ describe('<CheckboxGroup />', () => {
     })
 
     it('prop: validationMode=onSubmit, continues revalidating after the first submit', async () => {
-      const validateSpy = vi.fn((value: unknown) => {
-        const v = value as string[]
-        if (v.length === 0) return 'custom error 1'
-        if (v.length < 2) return 'custom error 2'
-        if (v.includes('two')) return 'custom error 3'
+      const validateSpy = vi.fn<FieldValidator>((value) => {
+        if (!Array.isArray(value)) throw new Error('expected an array value')
+        if (value.length === 0) return 'custom error 1'
+        if (value.length < 2) return 'custom error 2'
+        if (value.includes('two')) return 'custom error 3'
         return null
       })
       const user = userEvent.setup()
@@ -521,8 +522,8 @@ describe('<CheckboxGroup />', () => {
   describe('Form values', () => {
     it('projects selected enabled checkboxes while preserving the logical validation value', async () => {
       const onFormSubmit = vi.fn()
-      const validateGroup = vi.fn((_value: unknown, _values: Record<string, unknown>) => null)
-      const validateOther = vi.fn((_value: unknown, _values: Record<string, unknown>) => null)
+      const validateGroup = vi.fn<FieldValidator>(() => null)
+      const validateOther = vi.fn<FieldValidator>(() => null)
       render(FormValuesDisabled, { onFormSubmit, validateGroup, validateOther })
 
       await fireEvent.click(screen.getByText('Submit'))
@@ -617,7 +618,7 @@ describe('<CheckboxGroup />', () => {
 
     it('omits checkboxes disabled by a fieldset', async () => {
       const onFormSubmit = vi.fn()
-      const validate = vi.fn((_value: unknown, _values: Record<string, unknown>) => null)
+      const validate = vi.fn<FieldValidator>(() => null)
       render(FormValuesFieldset, { onFormSubmit, validate })
 
       await fireEvent.click(screen.getByText('Submit'))
@@ -744,8 +745,8 @@ describe('<CheckboxGroup />', () => {
     it('clears a custom error when an inputless group becomes valid after submission', async () => {
       const user = userEvent.setup()
       const onFormSubmit = vi.fn()
-      const validate = vi.fn((value: unknown) =>
-        (value as string[]).length > 0 ? null : 'required'
+      const validate = vi.fn<FieldValidator>((value) =>
+        Array.isArray(value) && value.length > 0 ? null : 'required'
       )
       render(InputlessCustomError, { onFormSubmit, validate })
 
@@ -845,8 +846,8 @@ describe('<CheckboxGroup />', () => {
     it('still runs custom validation after every checkbox in the group unmounts', async () => {
       const user = userEvent.setup()
       const onFormSubmit = vi.fn()
-      const validate = vi.fn((value: unknown) =>
-        (value as string[]).length > 0 ? null : 'required'
+      const validate = vi.fn<FieldValidator>((value) =>
+        Array.isArray(value) && value.length > 0 ? null : 'required'
       )
       render(UnmountAllValidate, { onFormSubmit, validate })
 
@@ -883,7 +884,7 @@ describe('<CheckboxGroup />', () => {
     })
 
     it('includes the checkbox group value in form submission', async () => {
-      const captured: { data: FormData | null } = { data: null }
+      const captured: CapturedFormData = { data: null }
       render(CheckboxGroupFormSubmit, { onData: (d: FormData) => (captured.data = d) })
 
       await fireEvent.click(screen.getByText('Submit'))
@@ -909,8 +910,8 @@ describe('<CheckboxGroup />', () => {
 
   describe('revalidates on external controlled change', () => {
     it('revalidates when the controlled value changes externally', async () => {
-      const validate = vi.fn((value: unknown) =>
-        (value as string[]).includes('one') ? 'error' : null
+      const validate = vi.fn<FieldValidator>((value) =>
+        Array.isArray(value) && value.includes('one') ? 'error' : null
       )
       render(RevalidateExternalCheckboxGroup, { validate })
 

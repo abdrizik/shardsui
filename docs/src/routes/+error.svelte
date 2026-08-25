@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state'
   import { resolve } from '$app/paths'
-  import Shapes from '$lib/components/shapes.svelte'
+  import Ornaments from '$lib/components/ornaments.svelte'
 </script>
 
 <main>
@@ -22,7 +22,7 @@
   <a href={resolve('/(docs)/svelte/[slug]', { slug: 'quick-start' })}>Back to docs</a>
 </main>
 
-<Shapes />
+<Ornaments />
 
 <style>
   main {

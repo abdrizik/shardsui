@@ -4,9 +4,13 @@
   type Value = number | number[]
 
   let {
-    value = $bindable([20, 80] as number[]),
-    thumbCollisionBehavior = 'push' as 'push' | 'swap' | 'none',
-    onValueChange = undefined as ((value: Value) => void) | undefined
+    value = $bindable([20, 80]),
+    thumbCollisionBehavior = 'push',
+    onValueChange
+  }: {
+    value?: number[]
+    thumbCollisionBehavior?: 'push' | 'swap' | 'none'
+    onValueChange?: (value: Value) => void
   } = $props()
 </script>
 

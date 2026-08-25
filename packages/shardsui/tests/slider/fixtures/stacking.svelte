@@ -2,9 +2,9 @@
   import { Slider } from '$lib/components/slider'
 
   let {
-    value = [20, 20] as number[],
-    onfocus = undefined,
-    onblur = undefined
+    value = [20, 20],
+    onfocus,
+    onblur
   }: {
     value?: number[]
     onfocus?: (event: FocusEvent) => void

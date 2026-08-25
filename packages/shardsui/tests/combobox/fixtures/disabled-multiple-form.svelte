@@ -2,7 +2,7 @@
   import { Combobox } from '$lib/components/combobox'
 
   let {
-    value = $bindable(['a'] as unknown[]),
+    value = $bindable(['a']),
     disabled = true,
     name = 'x'
   }: {
