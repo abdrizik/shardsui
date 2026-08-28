@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getDemoComponent, getDemoSource } from '$lib/components/content/demos'
   import CopyButton from '$lib/components/copy-button.svelte'
+  import InspectOverlay from '$lib/components/content/inspect-overlay.svelte'
   import { highlight } from '$lib/utils/highlight'
   import { Collapsible } from '@shardsui/svelte/collapsible'
   import type { Snippet } from 'svelte'
@@ -21,18 +22,39 @@
   const codeHtml = $derived(await highlight(code.trim(), lang))
 
   let expanded = $state(false)
+  let inspecting = $state(false)
+  let playgroundInner = $state<HTMLElement | null>(null)
+
+  const playgroundInnerRef = (node: HTMLElement) => {
+    playgroundInner = node
+    return () => (playgroundInner = null)
+  }
 </script>
 
 <div class="demo-root not-prose">
   <div class="demo-playground thin-scrollbar">
-    <div class="demo-playground-inner">
+    <div class="demo-playground-inner" {@attach playgroundInnerRef}>
       {#if Component}
         <Component />
       {:else if children}
         {@render children()}
       {/if}
     </div>
+
+    {#if inspecting && playgroundInner}
+      <InspectOverlay content={playgroundInner} onclose={() => (inspecting = false)} />
+    {/if}
   </div>
+
+  <button
+    type="button"
+    class="demo-inspect-button"
+    aria-pressed={inspecting}
+    onclick={() => (inspecting = !inspecting)}
+  >
+    {@render inspectIcon()}
+    Inspect
+  </button>
 
   <Collapsible.Root bind:open={expanded}>
     <div class="demo-code-card" role="figure" aria-label="Component demo code">
@@ -67,6 +89,18 @@
   </div>
 {/snippet}
 
+{#snippet inspectIcon()}
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path
+      d="M12 1.75V8.25M22.25 12H15.75M12 15.75V22.25M8.25 12H1.75M12 19.25C7.99594 19.25 4.75 16.0041 4.75 12C4.75 7.99594 7.99594 4.75 12 4.75C16.0041 4.75 19.25 7.99594 19.25 12C19.25 16.0041 16.0041 19.25 12 19.25Z"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+{/snippet}
+
 {#snippet collapseArrowIcon()}
   <svg
     class="demo-collapse-arrow-icon"
@@ -92,6 +126,7 @@
     --demo-shell: var(--color-gray-100);
     margin-block: calc(var(--spacing) * 6);
     padding: var(--padding);
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--padding);
@@ -118,6 +153,58 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .demo-inspect-button {
+    position: absolute;
+    z-index: 4;
+    inset-block-start: calc(var(--padding) + var(--spacing) * 2);
+    inset-inline-end: calc(var(--padding) + var(--spacing) * 2);
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--spacing) * 1.5);
+    block-size: calc(var(--spacing) * 7);
+    padding-inline: calc(var(--spacing) * 2.5) calc(var(--spacing) * 1.5);
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-gray-600);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    outline: 0;
+  }
+  .demo-inspect-button svg {
+    flex-shrink: 0;
+  }
+  .demo-inspect-button[aria-pressed='true'] {
+    background-color: var(--demo-shell);
+    color: var(--color-gray-900);
+  }
+  .demo-inspect-button:focus-visible {
+    outline: 2px solid var(--color-gray-900);
+    outline-offset: -1px;
+  }
+
+  @media (hover: hover) {
+    .demo-inspect-button {
+      opacity: 0;
+      transition: opacity 150ms ease;
+    }
+    .demo-root:hover .demo-inspect-button,
+    .demo-root:focus-within .demo-inspect-button,
+    .demo-inspect-button[aria-pressed='true'] {
+      opacity: 1;
+    }
+    .demo-inspect-button:hover {
+      color: var(--color-gray-900);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .demo-inspect-button {
+      transition: none;
+    }
   }
 
   .demo-code-card {
