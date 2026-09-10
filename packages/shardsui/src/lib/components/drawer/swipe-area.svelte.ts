@@ -314,11 +314,8 @@ export class DrawerSwipeArea {
 
     const displacement = getDisplacement(this.swipeDirection, details.deltaX, details.deltaY)
 
-    if (!this.#openedBySwipe && displacement < MIN_SWIPE_START_DISTANCE) {
-      return
-    }
-
     if (!this.#openedBySwipe) {
+      if (displacement < MIN_SWIPE_START_DISTANCE) return
       this.#openDrawer()
     }
 

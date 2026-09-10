@@ -75,7 +75,7 @@ export class DrawerSwipe {
   #drawer: DrawerRoot
   #provider: DrawerProviderContext | undefined
 
-  #release = $state<number | null>(null)
+  #releaseStrength = $state<number | null>(null)
   #releasing = $state(false)
   #pendingCloseSnapPoint: DrawerSnapPoint | null | undefined = undefined
 
@@ -132,7 +132,7 @@ export class DrawerSwipe {
   }
 
   get swipeStrength(): number | null {
-    return this.#release
+    return this.#releaseStrength
   }
 
   get releasing(): boolean {
@@ -269,7 +269,7 @@ export class DrawerSwipe {
   #clearRelease(): void {
     this.#drawer.swipeDismissed = false
     this.#releasing = false
-    this.#release = null
+    this.#releaseStrength = null
   }
 
   #applyProgress(resolvedProgress: number): void {
@@ -437,7 +437,7 @@ export class DrawerSwipe {
     flushSync(() => {
       this.#drawer.swipeDismissed = true
       this.#releasing = true
-      this.#release = this.#releaseScalar(direction, details)
+      this.#releaseStrength = this.#releaseScalar(direction, details)
     })
   }
 
@@ -629,12 +629,12 @@ export class DrawerSwipe {
     const doc = rootElement.ownerDocument
     const isVerticalScrollAxis = this.#isVerticalScrollAxis
 
+    // Avoid blocking pinch zoom or text selection adjustments on iOS Safari.
+    if (event.touches.length === 2) return
+
     const drawerAxisDelta = isVerticalScrollAxis
       ? touch.clientY - scrollState.lastY
       : touch.clientX - scrollState.lastX
-
-    // Avoid blocking pinch zoom or text selection adjustments on iOS Safari.
-    if (event.touches.length === 2) return
 
     const allowTouchMove = shouldIgnoreSwipeForTextSelection(doc, rootElement)
 

@@ -219,21 +219,16 @@ export class SliderThumb {
     const slider = this.#slider
     slider.setActive(-1)
 
-    if (slider.thumbElements.some((thumb) => contains(thumb, event.relatedTarget))) {
-      this.#options().onblur?.(event)
-      return
+    const movingToAnotherThumb = slider.thumbElements.some((thumb) =>
+      contains(thumb, event.relatedTarget)
+    )
+
+    if (!movingToAnotherThumb) {
+      this.#field?.commitOnBlur(
+        getSliderValue(this.value, this.index, slider.min, slider.max, slider.range, slider.values)
+      )
     }
 
-    this.#field?.commitOnBlur(
-      getSliderValue(
-        this.value,
-        this.index,
-        slider.min,
-        slider.max,
-        this.#slider.range,
-        slider.values
-      )
-    )
     this.#options().onblur?.(event)
   }
 }

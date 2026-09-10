@@ -112,9 +112,9 @@ export class DrawerPopup {
   dragTransition = $derived(this.#dragStyles.transition ?? null)
 
   popupHeightVar = $derived.by(() => {
-    const shouldUseAutoHeight =
-      !this.#drawer.hasNestedDrawer && this.#dialog.transitionStatus !== 'ending'
-    return this.#drawer.popupHeight && !shouldUseAutoHeight ? `${this.#drawer.popupHeight}px` : null
+    const shouldPinHeight =
+      this.#drawer.hasNestedDrawer || this.#dialog.transitionStatus === 'ending'
+    return this.#drawer.popupHeight && shouldPinHeight ? `${this.#drawer.popupHeight}px` : null
   })
 
   frontmostHeightVar = $derived.by(() =>

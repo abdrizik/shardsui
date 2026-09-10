@@ -372,18 +372,17 @@ export function manageFocus(options: () => FocusManagerOptions): void {
 
     if (contains(floatingFocusElement, doc.activeElement)) return
 
-    const target = isHTMLElement(initialFocus)
-      ? initialFocus
-      : (() => {
-          if (typeof initialFocus === 'function') {
-            const result = initialFocus(interactionType)
-            if (isHTMLElement(result)) return result
-            if (result === false || result === undefined) return null
-          }
-          const tabbableElements = tabbable(floatingFocusElement)
-          return tabbableElements[0] ?? floatingFocusElement
-        })()
+    const resolveTarget = (): FocusableElement | null => {
+      if (isHTMLElement(initialFocus)) return initialFocus
+      if (typeof initialFocus === 'function') {
+        const result = initialFocus(interactionType)
+        if (isHTMLElement(result)) return result
+        if (result === false || result === undefined) return null
+      }
+      return tabbable(floatingFocusElement)[0] ?? floatingFocusElement
+    }
 
+    const target = resolveTarget()
     if (!target) return
 
     const frameId = requestAnimationFrameTick(() => {
