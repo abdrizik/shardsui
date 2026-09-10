@@ -4,6 +4,7 @@ import { isJSDOM } from '../test-utils'
 import AnchorWidthCombobox from './fixtures/anchor-width-combobox.svelte'
 import ArrowOutsidePositioner from './fixtures/arrow-outside-positioner.svelte'
 import CappedHeightCombobox from './fixtures/capped-height-combobox.svelte'
+import IframeComboboxApp from './fixtures/iframe-combobox-app.svelte'
 import MultipleCombobox from './fixtures/multiple-combobox.svelte'
 
 vi.mock('$lib/internal/detect-browser', async (importOriginal) => {
@@ -32,6 +33,26 @@ describe('<Combobox.Positioner />', () => {
     expect(document.body.style.overflowX).not.toBe('hidden')
     expect(document.body.style.overflowY).not.toBe('hidden')
     expect(document.documentElement.style.overflowX).not.toBe('hidden')
+    expect(document.documentElement.style.overflowY).not.toBe('hidden')
+  })
+
+  it.skipIf(!isJSDOM)('locks scrolling in the document that owns the combobox', async () => {
+    document.body.removeAttribute('style')
+    document.documentElement.removeAttribute('style')
+
+    render(IframeComboboxApp)
+
+    const iframe = (await screen.findByTestId('iframe')) as HTMLIFrameElement
+    const iframeDocument = iframe.contentDocument ?? iframe.contentWindow?.document
+    expect(iframeDocument).not.toBeUndefined()
+
+    await waitFor(() => {
+      const html = iframeDocument!.documentElement
+      const body = iframeDocument!.body
+      expect(html.style.overflowY === 'hidden' || body.style.overflowY === 'hidden').toBe(true)
+    })
+
+    expect(document.body.style.overflowY).not.toBe('hidden')
     expect(document.documentElement.style.overflowY).not.toBe('hidden')
   })
 

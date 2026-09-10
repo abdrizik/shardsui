@@ -67,7 +67,10 @@
     lazyFlip: true
   }))
 
-  scrollLock(() => ({ enabled: combobox.open && combobox.modal }))
+  scrollLock(() => ({
+    enabled: combobox.open && combobox.modal,
+    referenceElement: combobox.inputGroupElement ?? combobox.inputElement ?? combobox.triggerElement
+  }))
 
   $effect.pre(() => {
     combobox.popupSide = combobox.mounted ? positioning.side : null
