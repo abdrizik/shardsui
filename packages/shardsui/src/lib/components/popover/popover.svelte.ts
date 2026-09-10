@@ -1,6 +1,10 @@
 import { PATIENT_CLICK_THRESHOLD } from '$lib/internal/constants'
 import { RootAttachments } from '$lib/internal/detached-handle'
-import { detachedTriggerSelectionById } from '$lib/internal/detached-trigger-selection.svelte'
+import {
+  detachedTriggerSelectionById,
+  selectActiveTrigger,
+  type ActiveTriggerSelection
+} from '$lib/internal/detached-trigger-selection.svelte'
 import { isClickLikeEvent } from '$lib/internal/floating/event'
 import { attachFloatingNode, type FloatingTree } from '$lib/internal/floating/floating-tree.svelte'
 import { dispatchOpenChange } from '$lib/internal/floating/hover/interaction.svelte'
@@ -11,7 +15,6 @@ import { PopupTriggerMap } from '$lib/internal/popup-trigger-map'
 import { REASONS } from '$lib/internal/reasons'
 import { Timeout } from '$lib/internal/timeout'
 import { Transition } from '$lib/internal/transition-status.svelte'
-import { isHTMLElement } from '@floating-ui/utils/dom'
 import type { PopoverOpenReason } from './context'
 
 type PopoverAttachment = {
@@ -115,6 +118,12 @@ export class PopoverRoot<Payload = unknown> {
     if (bindings) this.applyTriggerBindings(bindings)
   }
 
+  #triggerSelection: ActiveTriggerSelection = {
+    setActiveTriggerId: this.setActiveTriggerId,
+    setTriggerElement: (element) => (this.triggerElement = element),
+    applyTriggerBindings: this.#applyTriggerBindingsById
+  }
+
   setOpen = (
     next: boolean,
     reason?: PopoverOpenReason,
@@ -142,7 +151,7 @@ export class PopoverRoot<Payload = unknown> {
 
     this.openChangeReason = reason ?? null
 
-    this.#selectTrigger(next, trigger)
+    selectActiveTrigger(this.#triggerSelection, next, trigger)
 
     if (reason === REASONS.triggerPress) {
       this.instantType = event instanceof UIEvent && event.detail === 0 ? 'click' : undefined
@@ -153,17 +162,6 @@ export class PopoverRoot<Payload = unknown> {
     } else {
       this.instantType = undefined
     }
-  }
-
-  #selectTrigger(next: boolean, trigger: HTMLElement | null | undefined): void {
-    const triggerId = trigger?.id ?? null
-    if (!triggerId && !next) return
-
-    this.setActiveTriggerId(triggerId)
-    if (!next) return
-
-    if (isHTMLElement(trigger)) this.triggerElement = trigger
-    this.#applyTriggerBindingsById(triggerId)
   }
 
   containsTrigger = (target: Node): boolean => {
@@ -177,14 +175,12 @@ export class PopoverRoot<Payload = unknown> {
     this.#attached = options
 
     detachedTriggerSelectionById(() => ({
+      ...this.#triggerSelection,
       triggerElements: this.triggerElements,
       triggerId: this.activeTriggerId,
       open: this.open,
       activeTriggerId: this.activeTriggerId,
-      triggerElement: this.triggerElement,
-      setActiveTriggerId: this.setActiveTriggerId,
-      setTriggerElement: (element) => (this.triggerElement = element),
-      applyTriggerBindings: this.#applyTriggerBindingsById
+      triggerElement: this.triggerElement
     }))
 
     const transition = new Transition(() => ({ open: this.open }))

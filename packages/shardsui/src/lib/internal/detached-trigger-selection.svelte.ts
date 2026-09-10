@@ -1,3 +1,4 @@
+import { isHTMLElement } from '@floating-ui/utils/dom'
 import { untrack } from 'svelte'
 import type { PopupTriggerMap } from './popup-trigger-map'
 
@@ -30,15 +31,34 @@ export function detachedTriggerSelection(options: () => DetachedTriggerSelection
   })
 }
 
-type DetachedTriggerSelectionByIdOptions = {
+export type ActiveTriggerSelection = {
+  setActiveTriggerId: (id: string | null) => void
+  setTriggerElement: (element: HTMLElement | null) => void
+  applyTriggerBindings: (id: string | null) => void
+}
+
+export function selectActiveTrigger(
+  selection: ActiveTriggerSelection,
+  open: boolean,
+  trigger: HTMLElement | null | undefined
+): void {
+  const triggerId = trigger?.id || null
+  if (!triggerId && !open) return
+
+  selection.setActiveTriggerId(triggerId)
+  if (!open) return
+
+  if (isHTMLElement(trigger)) selection.setTriggerElement(trigger)
+  selection.applyTriggerBindings(triggerId)
+}
+
+type DetachedTriggerSelectionByIdOptions = ActiveTriggerSelection & {
   triggerElements: PopupTriggerMap
   triggerId: string | null
   open: boolean
   activeTriggerId: string | null
   triggerElement: HTMLElement | null
-  setActiveTriggerId: (id: string | null) => void
-  setTriggerElement: (element: HTMLElement) => void
-  applyTriggerBindings: (id: string | null) => void
+  closeOnActiveTriggerUnmount?: (() => boolean) | undefined
 }
 
 export function detachedTriggerSelectionById(
@@ -74,5 +94,28 @@ export function detachedTriggerSelectionById(
     if (el && triggerElement !== el) {
       untrack(() => options().setTriggerElement(el))
     }
+  })
+
+  $effect(() => {
+    if (!open) return
+
+    const lostTriggerId = activeTriggerId
+    if (!lostTriggerId) return
+    if (triggerElements.getById(lostTriggerId)) return
+
+    // Deferred so a replacement trigger with the same id can register first.
+    queueMicrotask(() => {
+      const current = options()
+      if (
+        !current.open ||
+        current.activeTriggerId !== lostTriggerId ||
+        triggerElements.getById(lostTriggerId)
+      ) {
+        return
+      }
+      if (!current.closeOnActiveTriggerUnmount?.()) return
+      current.setActiveTriggerId(null)
+      current.setTriggerElement(null)
+    })
   })
 }
