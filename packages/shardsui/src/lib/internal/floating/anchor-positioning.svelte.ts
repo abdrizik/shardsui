@@ -427,10 +427,11 @@ export class AnchorPositioning {
     const biasLeft = sideParam === 'right' ? bias : 0
     const collisionPadding = getPaddingObject(opts.collisionPadding ?? 5)
 
+    const collisionBoundary = opts.collisionBoundary ?? 'clipping-ancestors'
     const boundary =
-      opts.collisionBoundary === 'clipping-ancestors'
+      collisionBoundary === 'clipping-ancestors'
         ? ('clippingAncestors' as const)
-        : opts.collisionBoundary
+        : collisionBoundary
     const commonCollisionProps = { boundary, padding: collisionPadding }
     const avoidSide = collisionAvoidance.side || 'flip'
     const avoidAlign = collisionAvoidance.align || 'flip'

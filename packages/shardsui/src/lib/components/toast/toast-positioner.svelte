@@ -3,7 +3,6 @@
   import {
     AnchorPositioning,
     type Side,
-    type Boundary,
     type CollisionAvoidance,
     type AnchorPositioningProps
   } from '$lib/internal/floating/anchor-positioning.svelte'
@@ -54,9 +53,7 @@
   const align = $derived(alignProp ?? posProps.align)
   const sideOffset = $derived(sideOffsetProp ?? posProps.sideOffset)
   const alignOffset = $derived(alignOffsetProp ?? posProps.alignOffset)
-  const collisionBoundary = $derived<Boundary>(
-    collisionBoundaryProp ?? posProps.collisionBoundary ?? 'clipping-ancestors'
-  )
+  const collisionBoundary = $derived(collisionBoundaryProp ?? posProps.collisionBoundary)
   const collisionPadding = $derived(collisionPaddingProp ?? posProps.collisionPadding)
   const collisionAvoidance = $derived<CollisionAvoidance>(
     collisionAvoidanceProp ?? posProps.collisionAvoidance ?? POPUP_COLLISION_AVOIDANCE

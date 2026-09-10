@@ -97,7 +97,7 @@ export class MenuPositioner {
         align: this.#align,
         sideOffset: opts.sideOffset ?? (this.#isCursorAnchored ? -5 : 0),
         alignOffset: opts.alignOffset ?? (this.#isCursorAnchored ? 2 : 0),
-        positionMethod: menu.insideContextMenu ? 'fixed' : (opts.positionMethod ?? 'absolute'),
+        positionMethod: menu.insideContextMenu ? 'fixed' : opts.positionMethod,
         collisionBoundary: opts.collisionBoundary,
         collisionPadding: opts.collisionPadding,
         collisionAvoidance: this.#collisionAvoidance,
