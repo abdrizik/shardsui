@@ -1,5 +1,9 @@
 import { RootAttachments } from '$lib/internal/detached-handle'
-import { detachedTriggerSelectionById } from '$lib/internal/detached-trigger-selection.svelte'
+import {
+  detachedTriggerSelectionById,
+  selectActiveTrigger,
+  type ActiveTriggerSelection
+} from '$lib/internal/detached-trigger-selection.svelte'
 import { isClickLikeEvent } from '$lib/internal/floating/event'
 import { attachFloatingNode, type FloatingTree } from '$lib/internal/floating/floating-tree.svelte'
 import { dispatchOpenChange } from '$lib/internal/floating/hover/interaction.svelte'
@@ -91,6 +95,12 @@ export class PreviewCardRoot<Payload = unknown> {
     if (bindings) this.applyTriggerBindings(bindings)
   }
 
+  #triggerSelection: ActiveTriggerSelection = {
+    setActiveTriggerId: this.setActiveTriggerId,
+    setTriggerElement: (element) => (this.triggerElement = element),
+    applyTriggerBindings: this.#applyTriggerBindingsById
+  }
+
   setOpen = (
     next: boolean,
     reason?: PreviewCardOpenReason,
@@ -124,14 +134,7 @@ export class PreviewCardRoot<Payload = unknown> {
       this.instantType = undefined
     }
 
-    const triggerId = trigger?.id ?? null
-    if (triggerId || next) {
-      this.setActiveTriggerId(triggerId)
-      if (next) {
-        if (trigger) this.triggerElement = trigger
-        this.#applyTriggerBindingsById(triggerId)
-      }
-    }
+    selectActiveTrigger(this.#triggerSelection, next, trigger)
 
     return this.open === next
   }
@@ -168,37 +171,14 @@ export class PreviewCardRoot<Payload = unknown> {
     }))
 
     detachedTriggerSelectionById(() => ({
+      ...this.#triggerSelection,
       triggerElements: this.triggerElements,
       triggerId: this.activeTriggerId,
       open: this.open,
       activeTriggerId: this.activeTriggerId,
       triggerElement: this.triggerElement,
-      setActiveTriggerId: this.setActiveTriggerId,
-      setTriggerElement: (element) => (this.triggerElement = element),
-      applyTriggerBindings: this.#applyTriggerBindingsById
+      closeOnActiveTriggerUnmount: () => this.setOpen(false, REASONS.none)
     }))
-
-    $effect(() => {
-      if (!this.open) return
-
-      const lostTriggerId = this.activeTriggerId
-      if (!lostTriggerId) return
-      if (this.triggerElements.getById(lostTriggerId)) return
-
-      // Deferred so a replacement trigger with the same id can register first.
-      queueMicrotask(() => {
-        if (
-          !this.open ||
-          this.activeTriggerId !== lostTriggerId ||
-          this.triggerElements.getById(lostTriggerId)
-        ) {
-          return
-        }
-        if (!this.setOpen(false, REASONS.none)) return
-        this.setActiveTriggerId(null)
-        this.triggerElement = null
-      })
-    })
 
     $effect.pre(() => {
       if (this.open && this.activeTriggerId == null) {
