@@ -45,7 +45,7 @@
   const backwardArrowKey = $derived(isRtl ? 'ArrowRight' : 'ArrowLeft')
   const forwardArrowKey = $derived(isRtl ? 'ArrowLeft' : 'ArrowRight')
 
-  function resolveNextChipIndex(
+  function handleChipKey(
     event: KeyboardEvent,
     chips: ComboboxChipsContextValue
   ): number | undefined {
@@ -83,7 +83,7 @@
     if (combobox.disabled || combobox.readOnly) return
     if (!chips) return
 
-    const nextIndex = resolveNextChipIndex(event, chips)
+    const nextIndex = handleChipKey(event, chips)
     chips.highlightedIndex = nextIndex
 
     if (nextIndex === undefined) {

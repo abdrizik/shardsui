@@ -722,7 +722,7 @@ export class SwipeDismiss {
     })
   }
 
-  #startPendingSwipe(
+  #handlePendingSwipeMove(
     event: PointerEvent | TouchEvent,
     position: { x: number; y: number }
   ): boolean {
@@ -808,12 +808,9 @@ export class SwipeDismiss {
       }
     }
 
-    if (
-      !this.swiping &&
-      this.#pendingSwipeStartPos !== null &&
-      this.#startPendingSwipe(event, currentPos)
-    ) {
-      return
+    if (!this.swiping && this.#pendingSwipeStartPos !== null) {
+      const shouldIgnoreMove = this.#handlePendingSwipeMove(event, currentPos)
+      if (shouldIgnoreMove) return
     }
 
     const previousPos = this.#lastMovePos

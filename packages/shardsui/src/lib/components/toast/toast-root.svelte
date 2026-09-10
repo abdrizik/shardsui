@@ -130,10 +130,9 @@
   })
 
   function closeOnEscape(event: KeyboardEvent) {
-    if (event.key === 'Escape') {
-      if (!contains(ref, (ref?.ownerDocument ?? document).activeElement)) return
-      provider.close(toast.id)
-    }
+    if (event.key !== 'Escape') return
+    if (!contains(ref, (ref?.ownerDocument ?? document).activeElement)) return
+    provider.close(toast.id)
   }
 </script>
 

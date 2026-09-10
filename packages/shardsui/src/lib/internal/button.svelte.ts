@@ -46,10 +46,13 @@ export class Button {
 
     let tabindex: number | undefined
     if (!this.#composite) {
-      const untabbable = !this.#native && this.#disabled && !this.#focusableWhenDisabled
       const requested = this.#options().tabindex
-      tabindex =
-        requested === null ? undefined : requested !== undefined ? requested : untabbable ? -1 : 0
+      if (requested === undefined) {
+        const untabbable = !this.#native && this.#disabled && !this.#focusableWhenDisabled
+        tabindex = untabbable ? -1 : 0
+      } else if (requested !== null) {
+        tabindex = requested
+      }
     }
 
     return {

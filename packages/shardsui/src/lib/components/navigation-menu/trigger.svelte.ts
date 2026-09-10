@@ -314,7 +314,7 @@ export class NavigationMenuTrigger {
     })
   }
 
-  #open(event: MouseEvent | KeyboardEvent): void {
+  #activateWithSizing(event: MouseEvent | KeyboardEvent): void {
     const previousSize = this.#navigationMenu.sizing.measureBeforeValueChange(
       this.#item.value,
       event.type === 'click' || this.#pointerType !== 'touch'
@@ -325,7 +325,7 @@ export class NavigationMenuTrigger {
     if (previousSize) this.#navigationMenu.sizing.morphFrom(previousSize)
   }
 
-  #nextClickOpen(): boolean {
+  #shouldOpenOnClick(): boolean {
     if (!this.#navigationMenu.open || !this.isActive) return true
     const openEvent = this.#navigationMenu.data.openEvent
     if (openEvent && this.#stickIfOpen) {
@@ -336,8 +336,8 @@ export class NavigationMenuTrigger {
 
   #onclick = (event: MouseEvent): void => {
     if (this.#options().disabled) return
-    const nextOpen = this.#navigationMenu.interactionsEnabled ? this.#nextClickOpen() : false
-    this.#open(event)
+    const nextOpen = this.#navigationMenu.interactionsEnabled ? this.#shouldOpenOnClick() : false
+    this.#activateWithSizing(event)
     if (this.#navigationMenu.interactionsEnabled) {
       this.#navigationMenu.setOpen(nextOpen, REASONS.triggerPress, event, this.#options().ref)
     }
@@ -345,7 +345,7 @@ export class NavigationMenuTrigger {
 
   onmouseenter = (event: MouseEvent): void => {
     if (this.#options().disabled) return
-    this.#open(event)
+    this.#activateWithSizing(event)
   }
 
   onmousemove = (): void => {
@@ -429,7 +429,7 @@ export class NavigationMenuTrigger {
     if (openHorizontal || openVertical) {
       flushSync(() => {
         this.#navigationMenu.setValue(this.#item.value, REASONS.listNavigation, event)
-        this.#open(event)
+        this.#activateWithSizing(event)
       })
       event.preventDefault()
       event.stopPropagation()

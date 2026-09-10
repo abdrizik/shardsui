@@ -168,7 +168,7 @@ export class Composite {
     if (target && isNativeInput(target) && !isElementDisabled(target)) {
       const selectionStart = target.selectionStart
       const selectionEnd = target.selectionEnd
-      const textContent = target.value
+      const value = target.value
 
       if (selectionStart != null) {
         if (selectionStart !== selectionEnd) return
@@ -176,7 +176,7 @@ export class Composite {
         const forwardKey = orientation === 'vertical' ? 'ArrowDown' : horizontalNext
         const backwardKey = orientation === 'vertical' ? 'ArrowUp' : horizontalPrev
 
-        if (event.key !== backwardKey && selectionStart < textContent.length) return
+        if (event.key !== backwardKey && selectionStart < value.length) return
         if (event.key !== forwardKey && selectionStart > 0) return
       }
     }

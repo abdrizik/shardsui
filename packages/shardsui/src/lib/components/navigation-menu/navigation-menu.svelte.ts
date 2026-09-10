@@ -106,7 +106,7 @@ export class NavigationMenuRoot {
       open: this.open,
       element: this.popupElement,
       onComplete: () => {
-        if (!this.open) this.#returnFocusToTrigger()
+        if (!this.open) this.#completeClose()
       }
     }))
 
@@ -114,7 +114,7 @@ export class NavigationMenuRoot {
       open: this.open,
       element: this.viewportTargetElement,
       onComplete: () => {
-        if (!this.open) this.#returnFocusToTrigger()
+        if (!this.open) this.#completeClose()
       }
     }))
 
@@ -194,7 +194,7 @@ export class NavigationMenuRoot {
     }
   }
 
-  #returnFocusToTrigger(): void {
+  #completeClose(): void {
     if (!this.#isReturnFocusBlocked() && this.prevTriggerElement && this.popupElement) {
       const activeEl = (this.rootElement?.ownerDocument ?? document).activeElement
       if (

@@ -33,8 +33,7 @@ function getMatchingIndex(opts: TypeaheadOptions, query: string, startIndex = 0)
   for (let offset = 0; offset < items.length; offset += 1) {
     const idx = (normalizedStart + offset) % items.length
     const text = items[idx]
-    if (!text?.toLowerCase().startsWith(lower) || !isItemAvailable(opts, idx)) continue
-    return idx
+    if (text?.toLowerCase().startsWith(lower) && isItemAvailable(opts, idx)) return idx
   }
   return -1
 }

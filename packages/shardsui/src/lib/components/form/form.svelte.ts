@@ -105,7 +105,6 @@ export class FormRoot {
     if (firstControl) {
       firstControl.focus()
       if (firstControl instanceof HTMLInputElement) firstControl.select()
-      return true
     }
 
     return hasInvalid
@@ -127,7 +126,8 @@ export class FormRoot {
       field.validate()
     }
 
-    if (this.#focusFirstInvalid()) {
+    const hasInvalidField = this.#focusFirstInvalid()
+    if (hasInvalidField) {
       event.preventDefault()
       return
     }

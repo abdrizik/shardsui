@@ -168,7 +168,8 @@ export class ScrollAreaRoot {
     $effect(this.#scrollYTimeout.disposeEffect)
   }
 
-  #setScrolling = (vertical: boolean, value: boolean) => {
+  #setScrolling = (orientation: Orientation, value: boolean) => {
+    const vertical = orientation === 'vertical'
     const timeout = vertical ? this.#scrollYTimeout : this.#scrollXTimeout
 
     if (vertical) this.scrollingY = value
@@ -188,8 +189,8 @@ export class ScrollAreaRoot {
     const offsetY = next.y - this.#scrollPosition.y
     this.#scrollPosition = next
 
-    if (offsetY !== 0) this.#setScrolling(true, true)
-    if (offsetX !== 0) this.#setScrolling(false, true)
+    if (offsetY !== 0) this.#setScrolling('vertical', true)
+    if (offsetX !== 0) this.#setScrolling('horizontal', true)
   }
 
   measure = () => {
@@ -395,7 +396,7 @@ export class ScrollAreaRoot {
 
     if (vertical) viewport.scrollTop = nextScroll
     else viewport.scrollLeft = nextScroll
-    this.#setScrolling(vertical, true)
+    this.#setScrolling(this.#dragOrientation, true)
     event.preventDefault()
   }
 
@@ -403,7 +404,7 @@ export class ScrollAreaRoot {
     if (event.pointerId !== this.#activePointerId) return
 
     this.#activePointerId = null
-    this.#setScrolling(this.#dragOrientation === 'vertical', false)
+    this.#setScrolling(this.#dragOrientation, false)
 
     if (this.#savedSnapType !== null) {
       if (this.viewportElement) {

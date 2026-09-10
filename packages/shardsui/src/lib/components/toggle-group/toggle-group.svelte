@@ -50,7 +50,7 @@
     } else if (nextPressed) {
       next = [...groupValue, item]
     } else {
-      next = groupValue.filter((v) => v !== item)
+      next = groupValue.filter((entry) => entry !== item)
     }
 
     onValueChange?.(next)
